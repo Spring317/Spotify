@@ -15,8 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class Current_Song extends Fragment {
@@ -58,8 +58,17 @@ public class Current_Song extends Fragment {
         gradientDrawable.setCornerRadius(0f);
 
         // Set the background to gradient
-        ScrollView backGround = view.findViewById(R.id.background);
-        backGround.setBackground(gradientDrawable);
+        view.setBackground(gradientDrawable);
+
+        // Set lyrics background to dominant color
+        LinearLayout lyrics_area = view.findViewById(R.id.lyrics_area);
+
+        // Get the background for drawable/lyrics_background
+        GradientDrawable lyrics_drawable = (GradientDrawable) lyrics_area.getBackground();
+
+        // Change background color
+        lyrics_drawable.setColor(dominantColor);
+        lyrics_area.setBackground(lyrics_drawable);
 
         // Inflate the layout for this fragment
         return view;
