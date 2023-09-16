@@ -12,6 +12,13 @@ public class MusicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
         Log.i(TAG, "onCreate: Success");
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.container, Current_Song.class, null)
+                    .commit();
+        }
     }
 
     @Override
