@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Spotify</string>
+    <string name="greeting"><b>Good evening</b></string>
+
+    <string name="album_title_1"><b>Try something else</b></string>
+    <string name="album_title_2"><b>Featured Charts</b></string>
+    <string name="album_title_3"><b>Trending now</b></string>
+    <string name="album_title_4">Shows To Try</string>
+    <string name="album_title_5">Mood</string>
+
+
+    <string name="song_info">Tại vì sao\nSingle - MCK</string>
+    <string name="song_info_1">tlinh, RPT MCK, GREY D,\nĐen, Low G</string>
+    <string name="song_info_2">tlinh, RPT MCK, GREY D,\nSơn Tùng M-TP, Đen</string>
+    <string name="song_info_3">The Weeknd, Jung Kook,\nLatto, Lily-Rose Depp, J...</string>
+    <string name="song_info_4">Rush, tlinh, RPT MCK,\nĐen, Low G</string>
+    <string name="song_info_5">Your daily update of the\nmost played tracks right...</string>
+    <string name="song_info_6">Taylor Swift, Lana Del Rey,\nOlivia Rodrigo, Ed Sheer...</string>
+    <string name="song_info_7">Rush, tlinh, RPT MCK,\nGREY D, Vũ.</string>
+    <string name="song_info_8">RPT MCK, GREY D, Sơn\nTùng M-TP, Đen, Vũ.</string>
+    <string name="song_info_9">tlinh, RPT MCK, GREY D,\nSơn Tùng M-TP, Vũ.</string>
+    <string name="song_info_10">Your weekly update of the\nmost played tracks right...</string>
+    <string name="song_info_11"><b>Paint The Town Read</b>\nSingle • Doja Cat</string>
+    <string name="song_info_12"><b>Rap Việt Mùa 3 (2023)...</b>\nAlbum • RAP VIỆT</string>
+    <string name="song_info_13"><b>ái</b>\nAlbum • tlinh</string>
+    <string name="song_info_14"><b>Miên Man</b>\nSingle • Minh Huy</string>
+    <string name="song_info_15"><b>Tình cờ yêu em</b>\nSingle • Kuun Đức Nam,\nLinh Thôn</string>
+    <string name="song_info_16"><b>99%</b>\nAlbum • RPT MCK</string>
+    <string name="song_info_17"><b>Vẫn</b>\nSingle • 24k.Right, Hipz,\nHuỳnh Tú</string>
+    <string name="song_info_18"><b>Hồng Hồng</b>\nSingle • Pháo, Tez</string>
+    <string name="song_info_19"><b>Mượn Rượu Tỏ Tình</b>\nSingle • Big Daddy, Emily</string>
+    <string name="song_info_20"><b>Layover</b>\nEP • V</string>
+
 </resources>

@@ -1,13 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_padding"
-    android:paddingTop="@dimen/activity_vertical_padding"
-    android:paddingRight="@dimen/activity_horizontal_padding"
-    android:paddingLeft="@dimen/activity_horizontal_padding"
-    tools:context=".MusicActivity">
+    tools:context=".MusicActivity"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:name="vn.edu.usth.spotify.HomeFragment"
+        tools:layout="@layout/fragment_home"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/BottomNav">
+    </fragment>
+
+    <LinearLayout
+        android:id="@+id/BottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_home_filled"
+            app:tint="@color/white"
+            android:layout_gravity="center_vertical"
+            android:paddingVertical="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+        </ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_search_small"
+            app:tint="@color/white"
+            android:layout_gravity="center_vertical"
+            android:paddingVertical="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+        </ImageView>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_library_small"
+            app:tint="@color/white"
+            android:layout_gravity="center_vertical"
+            android:paddingVertical="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+        </ImageView>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
