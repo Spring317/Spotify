@@ -16,7 +16,7 @@ public class MusicActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.container, Current_Song.class, null)
+                    .add(R.id.container, MediaPlayer.class, null)
                     .commit();
         }
     }
