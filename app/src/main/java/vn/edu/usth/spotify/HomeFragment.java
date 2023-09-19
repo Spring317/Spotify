@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,7 +61,28 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Get the current time
+        Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+        // Find the TextView by its ID
+        TextView greetingTextView = view.findViewById(R.id.greetingTextView);
+
+        // Determine the appropriate greeting based on the time
+        String greeting;
+        if (hourOfDay >= 0 && hourOfDay < 12) {
+            greeting = "Good Morning";
+        } else if (hourOfDay >= 12 && hourOfDay < 18) {
+            greeting = "Good Afternoon";
+        } else {
+            greeting = "Good Evening";
+        }
+
+        // Set the greeting in the TextView
+        greetingTextView.setText(greeting);
+
+        return view;
     }
 }

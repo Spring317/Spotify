@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment"
     android:background="@color/black"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:id="@+id/HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             tools:context=".YourActivity">
 
             <TextView
+                android:id="@+id/greetingTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/greeting"
@@ -27,7 +29,8 @@
                 android:paddingTop="15dp"
                 android:paddingLeft="20dp"
                 android:textColor="@color/white"
-                tools:ignore="MissingConstraints">
+                tools:ignore="MissingConstraints"
+                android:textStyle="bold">
             </TextView>
 
             <!-- Guideline for 2/3 width -->
