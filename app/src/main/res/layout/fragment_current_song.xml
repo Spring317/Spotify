@@ -31,6 +31,7 @@
                 android:src="@drawable/music_player_kill"/>
 
             <TextView
+                android:id="@+id/song_header"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -57,9 +58,9 @@
             android:layout_below="@+id/menu"/>
 
                 <LinearLayout
+                    android:id="@+id/Song_title_and_author"
                     android:layout_width="340dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/Song_title"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/Song_pic"
                     android:layout_marginTop="55dp"
@@ -72,6 +73,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/Song_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
@@ -80,6 +82,7 @@
                             android:text="@string/song_title_default"/>
 
                         <TextView
+                            android:id="@+id/Song_author"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/spotify_halfTrans"
@@ -102,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/progressArea"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/Song_title"
+                    android:layout_below="@+id/Song_title_and_author"
                     android:orientation="vertical">
 
                     <ProgressBar
