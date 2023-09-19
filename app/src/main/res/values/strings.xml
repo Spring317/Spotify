@@ -2,4 +2,6 @@
     <string name="app_name">Spotify</string>
     <string name="current_time_default">0:00</string>
     <string name="remain_time_default">-0:00</string>
+    <string name="song_title_default">Blank Song</string>
+    <string name="author_default">No one</string>
 </resources>
