@@ -146,6 +146,8 @@ public class MediaPlayer extends Fragment {
         } catch (Exception e) {
             Log.i(TAG1, "Cannot sleep for 1 sec");
         }
+
+        isStopped = true; // Old thread will be kill within 1 secs
         song_current_percent = 0; // Reset song progress
 
         if (isSwipeRight > 0) {
@@ -278,7 +280,6 @@ public class MediaPlayer extends Fragment {
 
             @Override
             public void run() {
-                isStopped = true; // Old thread will be kill within 1 secs
                 try {
                     // Slow down new thread for easier control
                     Thread.sleep(1000); // 1 secs
