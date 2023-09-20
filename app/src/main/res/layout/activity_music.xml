@@ -9,5 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_padding"
     android:paddingLeft="@dimen/activity_horizontal_padding"
     tools:context=".MusicActivity">
-
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/SearchFragment"
+        android:name="vn.edu.usth.spotify.SearchFragment"
+        tools:layout="@layout/fragment_search">
+    </fragment>
 </LinearLayout>
