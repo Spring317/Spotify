@@ -130,11 +130,13 @@ public class MediaPlayer extends Fragment {
     // Function to update and display all the content of MediaPlayer fragment
     private void UpdateContent() {
         UpdateBackGround(this.image);
-        try {
+
+        try { // Will output error first time create fragment!! (Null exception)
             songPicPagerAdapter.updatePic(this.image); // Call func to update the song picture
         } catch (Exception exception) {
             Log.i(TAG1, "error while update image" + exception);
         }
+
         setProgressBar(this.song_length);
         UpdateTitleNAuthor(this.song_title, this.song_author);
 
