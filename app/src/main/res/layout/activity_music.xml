@@ -4,10 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_padding"
-    android:paddingTop="@dimen/activity_vertical_padding"
-    android:paddingRight="@dimen/activity_horizontal_padding"
-    android:paddingLeft="@dimen/activity_horizontal_padding"
-    tools:context=".MusicActivity">
+    tools:context=".MusicActivity"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/LibraryFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="vn.edu.usth.spotify.LibraryFragment"
+        tools:layout="@layout/fragment_library">
+
+    </fragment>
 
 </LinearLayout>

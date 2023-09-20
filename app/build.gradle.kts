@@ -7,6 +7,7 @@ android {
     namespace = "vn.edu.usth.spotify"
     compileSdk = 33
 
+
     defaultConfig {
         applicationId = "vn.edu.usth.spotify"
         minSdk = 24
