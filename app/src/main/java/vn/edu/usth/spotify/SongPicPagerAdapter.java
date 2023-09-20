@@ -11,9 +11,6 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class SongPicPagerAdapter extends PagerAdapter {
@@ -21,13 +18,13 @@ public class SongPicPagerAdapter extends PagerAdapter {
 
     private View itemView;
 
-    private int image;
+    private final int initial_image;
 
     private final String TAG = "SongPicPagerAdapter";
 
     public SongPicPagerAdapter(Context context, int image) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.image = image;
+        this.initial_image = image;
     }
 
 
@@ -59,7 +56,7 @@ public class SongPicPagerAdapter extends PagerAdapter {
         Objects.requireNonNull(container).addView(itemView);
 
         if (position == Integer.MAX_VALUE / 2)
-            updatePic(image);
+            updatePic(initial_image);
 
         return itemView;
     }

@@ -51,13 +51,19 @@ public class MediaPlayer extends Fragment {
 
         Log.i(TAG1, "View created");
 
+        UpdateValue(R.drawable.mck, 0, "Tết Real Khum?", "Wowy x MCK x hnhngan");
+        UpdateContent();
+
         // Initialize songPicPagerAdapter and songPicPager
         songPicPager = view.findViewById(R.id.Song_pic);
-        songPicPagerAdapter = new SongPicPagerAdapter(requireContext(), image);
+        songPicPagerAdapter = new SongPicPagerAdapter(requireContext(), this.image);
         songPicPager.setAdapter(songPicPagerAdapter);
         songPicPager.setCurrentItem(Integer.MAX_VALUE / 2,false);
 
         songPicPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            int previousPosition = Integer.MAX_VALUE / 2;
+            int isSwipeRight = 0;
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
@@ -66,21 +72,25 @@ public class MediaPlayer extends Fragment {
                 // Fail safe for people who swipe 1073741822 times!!!
                 if (position == 0 || position == Integer.MAX_VALUE)
                     songPicPager.setCurrentItem(Integer.MAX_VALUE / 2,false);
+
+                // Return 0 if equal, negative value if less and positive value if bigger
+                isSwipeRight = Integer.compare(position, previousPosition);
+
+                previousPosition = position;
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
                 switch (state) {
                     case ViewPager.SCROLL_STATE_IDLE: {
-                        // Call function to update all the value
-                        UpdateValue(R.drawable.kill_this_love, 188, "Kill This Love", "Blackpink");
+                        Swipe(isSwipeRight);
 
-                        // Call function to update all the content
-                        UpdateContent(image, song_length, song_title, song_author);
+                        Log.i("SongPicPager", "SCROLL_STATE_IDLE");
                         break;
                     }
                     case ViewPager.SCROLL_STATE_SETTLING: {
-                        setProgressBar(0);
+
+                        Log.i("SongPicPager", "SCROLL_STATE_SETTLING");
                         break;
                     }
                 }
@@ -89,6 +99,22 @@ public class MediaPlayer extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void Swipe(int isSwipeRight) {
+        if (isSwipeRight > 0) {
+            Log.i("SongPicPager", "User scrolled right");
+
+            // Call function to update all the value
+            UpdateValue(R.drawable.kill_this_love, 188, "Kill This Love", "Blackpink");
+
+            // Call function to update all the content
+            UpdateContent();
+        }
+        else if (isSwipeRight < 0) {
+            Log.i("SongPicPager", "User scrolled left");
+        }
+        else Log.i("SongPicPager", "User didn't scroll");
     }
 
     // Function to update all the content value
@@ -102,11 +128,15 @@ public class MediaPlayer extends Fragment {
     }
 
     // Function to update and display all the content of MediaPlayer fragment
-    private void UpdateContent(int image, int song_length, String title, String author) {
-        UpdateBackGround(image);
-        songPicPagerAdapter.updatePic(image);
-        setProgressBar(song_length);
-        UpdateTitleNAuthor(title, author);
+    private void UpdateContent() {
+        UpdateBackGround(this.image);
+        try {
+            songPicPagerAdapter.updatePic(this.image); // Call func to update the song picture
+        } catch (Exception exception) {
+            Log.i(TAG1, "error while update image" + exception);
+        }
+        setProgressBar(this.song_length);
+        UpdateTitleNAuthor(this.song_title, this.song_author);
 
         Log.i(TAG1, "All content updated");
     }
