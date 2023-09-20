@@ -189,8 +189,8 @@
                         android:scaleType="center"
                         android:layout_centerInParent="true"
                         android:background="@null"
-                        android:id="@+id/play_btn"
-                        android:src="@drawable/music_player_pause"
+                        android:id="@+id/play_pause_btn"
+                        android:button="@drawable/music_player_play_pause_selector"
                         android:checked="false"
                         android:contentDescription="Play/Pause song"/>
 
