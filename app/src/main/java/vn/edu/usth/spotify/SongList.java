@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -122,30 +123,15 @@ public class SongList extends Fragment  {
 
         });
 
+        LinearLayout songpack = (LinearLayout) view.findViewById(R.id.song_pack);
+        songpack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Playing song",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
-//        });
-//        public void showPopup(View view) {
-//            PopupMenu popup = new PopupMenu(getActivity(), view);
-//            MenuInflater inflater = popup.getMenuInflater();
-//            inflater.inflate(R.menu.musicmenu, popup.getMenu());
-//
-//            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                @Override
-//                public boolean onMenuItemClick(MenuItem menuItem) {
-//
-//                    Toast.makeText(getActivity(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-//                    return true;
-//                }
-//            });
-//            popup.show();
-//
-//        }
-//
-//
-
-//        // Inflate the layout for this fragment
-
     }
 
 
