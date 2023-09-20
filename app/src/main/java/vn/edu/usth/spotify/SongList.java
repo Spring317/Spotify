@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 /**
@@ -123,7 +124,7 @@ public class SongList extends Fragment  {
 
         });
 
-        LinearLayout songpack = (LinearLayout) view.findViewById(R.id.song_pack);
+        RelativeLayout songpack = (RelativeLayout) view.findViewById(R.id.song_pack);
         songpack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
