@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Spotify</string>
+
+    <!-- Album. Single and EP name: -->
+    <string name="intothenight">Into The Night</string>
+
+    <!--Release type -->
+    <string name="single">Single</string>
+
+    <!--Author-->
+    <string name="yoasobi">YOASOBI</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="year2021">2021</string>
+
+    <string name="addtolibrary">Add to Library</string>
+    <string name="ViewArtist">View artist</string>
+    <string name="AddToPlaylist">Add to playlist</string>
+    <string name="AddToQueue">Add to queue</string>
 </resources>
