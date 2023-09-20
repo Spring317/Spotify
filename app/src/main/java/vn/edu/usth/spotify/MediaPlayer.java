@@ -51,7 +51,7 @@ public class MediaPlayer extends Fragment {
 
         Log.i(TAG1, "View created");
 
-        UpdateValue(R.drawable.mck, 0, "Tết Real Khum?", "Wowy x MCK x hnhngan");
+        UpdateValue(R.drawable.light_switch, 0, "Light Switch", "Charlie Puth");
         UpdateContent();
 
         // Initialize songPicPagerAdapter and songPicPager

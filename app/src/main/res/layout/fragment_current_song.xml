@@ -28,7 +28,8 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@null"
-                android:src="@drawable/music_player_kill"/>
+                android:src="@drawable/music_player_kill"
+                android:contentDescription="Kill fragment"/>
 
             <TextView
                 android:id="@+id/song_header"
@@ -46,7 +47,8 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@null"
-                android:src="@drawable/music_player_menu"/>
+                android:src="@drawable/music_player_menu"
+                android:contentDescription="Pop up menu"/>
 
         </LinearLayout>
 
@@ -55,7 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="340dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/menu"/>
+            android:layout_below="@+id/menu"
+            android:contentDescription="Switch between songs with swipes"/>
 
                 <LinearLayout
                     android:id="@+id/Song_title_and_author"
@@ -96,7 +99,8 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:background="@null"
-                        android:src="@drawable/music_player_add"/>
+                        android:src="@drawable/music_player_add"
+                        android:contentDescription="Add song to fav"/>
 
                 </LinearLayout>
 
@@ -164,7 +168,8 @@
                         android:background="@null"
                         android:paddingEnd="20dp"
                         android:id="@+id/shuffle_btn"
-                        android:src="@drawable/music_player_shuffle"/>
+                        android:src="@drawable/music_player_shuffle"
+                        android:contentDescription="Choose shuffle mode"/>
 
                     <ImageButton
                         android:layout_width="48dp"
@@ -175,16 +180,19 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="17dp"
                         android:id="@+id/back_btn"
-                        android:src="@drawable/music_player_back"/>
+                        android:src="@drawable/music_player_back"
+                        android:contentDescription="Play previous"/>
 
-                    <ImageButton
+                    <ToggleButton
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:scaleType="center"
                         android:layout_centerInParent="true"
                         android:background="@null"
                         android:id="@+id/play_btn"
-                        android:src="@drawable/music_player_pause"/>
+                        android:src="@drawable/music_player_pause"
+                        android:checked="false"
+                        android:contentDescription="Play/Pause song"/>
 
                     <ImageButton
                         android:layout_width="48dp"
@@ -195,7 +203,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="17dp"
                         android:id="@+id/skip_btn"
-                        android:src="@drawable/music_player_skip"/>
+                        android:src="@drawable/music_player_skip"
+                        android:contentDescription="Play next"/>
 
                     <ImageButton
                         android:layout_width="48dp"
@@ -206,7 +215,8 @@
                         android:layout_centerVertical="true"
                         android:paddingStart="20dp"
                         android:id="@+id/repeat_btn"
-                        android:src="@drawable/music_player_repeat"/>
+                        android:src="@drawable/music_player_repeat"
+                        android:contentDescription="Choose repeat mode"/>
 
                 </RelativeLayout>
 
@@ -227,7 +237,8 @@
                         android:paddingEnd="20dp"
                         android:background="@null"
                         android:scaleType="centerInside"
-                        android:src="@drawable/music_player_devices"/>
+                        android:src="@drawable/music_player_devices"
+                        android:contentDescription="Setup devices"/>
 
                     <ImageButton
                         android:id="@+id/share_song_btn"
@@ -238,7 +249,8 @@
                         android:paddingStart="25dp"
                         android:background="@null"
                         android:scaleType="center"
-                        android:src="@drawable/music_player_share_song"/>
+                        android:src="@drawable/music_player_share_song"
+                        android:contentDescription="Share song"/>
 
                 </RelativeLayout>
 
