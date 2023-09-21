@@ -5,6 +5,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -16,8 +17,9 @@ public class MusicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_music);
         Log.i(TAG, "onCreate: Success");
 
+        LinearLayout container = findViewById(R.id.container);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        ViewPager viewPager = container.findViewById(R.id.view_pager);
 
         CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);

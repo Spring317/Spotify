@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MusicActivity"
-    android:orientation="vertical"
-    android:id="@+id/container">
+    android:orientation="vertical">
 
 <!--    <fragment-->
 <!--        android:id="@+id/HomeFragment"-->
@@ -19,21 +18,29 @@
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
 <!--        app:layout_constraintBottom_toTopOf="@id/BottomNav">-->
 <!--    </fragment>-->
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:background="@null"
+        android:id="@+id/container"
+        tools:ignore="MissingConstraints"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/tab_layout">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </androidx.viewpager.widget.ViewPager>
+
+        </androidx.viewpager.widget.ViewPager>
+
+    </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tab_layout"
-        app:layout_constraintTop_toBottomOf="@+id/view_pager"
+        app:layout_constraintTop_toBottomOf="@+id/container"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/black">
 

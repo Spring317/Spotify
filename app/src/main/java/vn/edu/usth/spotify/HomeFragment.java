@@ -82,12 +82,11 @@ public class HomeFragment extends Fragment {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SongList songList = new SongList();
+
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-                transaction.replace(R.id.HomeFragment, songList);
-                transaction.addToBackStack(null);
+                transaction.hide(HomeFragment.this);
+                transaction.add(R.id.container, new SongList());
                 transaction.commit();
                 Log.i("Button", "Pressed");
             }
