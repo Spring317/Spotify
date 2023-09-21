@@ -1,9 +1,12 @@
 package vn.edu.usth.spotify;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class MusicActivity extends AppCompatActivity {
     private static final String TAG = "Spotify says: ";
@@ -13,12 +16,26 @@ public class MusicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_music);
         Log.i(TAG, "onCreate: Success");
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.container, MediaPlayer.class, null)
-                    .commit();
-        }
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+
+        CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+
+        viewPager.setOnTouchListener((v, event) -> true);
+
+        tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.selector_home);
+        tabLayout.getTabAt(1).setIcon(R.drawable.selector_search);
+        tabLayout.getTabAt(2).setIcon(R.drawable.selector_library);
+
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .setReorderingAllowed(true)
+//                    .add(R.id.container, MediaPlayer.class, null)
+//                    .commit();
+//        }
     }
 
     @Override
