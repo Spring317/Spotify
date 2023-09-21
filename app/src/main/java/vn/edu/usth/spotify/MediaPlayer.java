@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class MediaPlayer extends Fragment {
     private static final String TAG1 = "MediaPlayer";
@@ -26,6 +27,9 @@ public class MediaPlayer extends Fragment {
     // Declare pager and its adapter
     ViewPager songPicPager;
     SongPicPagerAdapter songPicPagerAdapter;
+
+    // Declare play and pause btn
+    ToggleButton playPauseBtn;
 
     // Declare view
     View view;
@@ -35,6 +39,10 @@ public class MediaPlayer extends Fragment {
     private int song_length = 0;
     private String song_title = "Blank_Song";
     private String song_author = "No one";
+
+    private int song_current_percent = 0;
+
+    private boolean isPaused = false, isStopped = false;
 
     @Override
     public void onDestroy() {
@@ -51,8 +59,9 @@ public class MediaPlayer extends Fragment {
 
         Log.i(TAG1, "View created");
 
-        UpdateValue(R.drawable.mck, 0, "Tết Real Khum?", "Wowy x MCK x hnhngan");
-        UpdateContent();
+        // Simulate database from API
+//        UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
+//        UpdateContent();
 
         // Initialize songPicPagerAdapter and songPicPager
         songPicPager = view.findViewById(R.id.Song_pic);
@@ -77,6 +86,7 @@ public class MediaPlayer extends Fragment {
                 isSwipeRight = Integer.compare(position, previousPosition);
 
                 previousPosition = position;
+
             }
 
             @Override
@@ -97,30 +107,69 @@ public class MediaPlayer extends Fragment {
             }
         });
 
+        // Reference the Play/Pause button
+        playPauseBtn = view.findViewById(R.id.play_pause_btn);
+
+        // add play pause listener
+        playPauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (playPauseBtn.isChecked()){
+                    isPaused = true;
+
+                    Log.i(TAG1, "Song paused");
+                }
+                else{
+                    isPaused = false;
+
+                    setProgressBar(song_length);
+
+                    Log.i(TAG1, "Song playing");
+                }
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
 
     private void Swipe(int isSwipeRight) {
-        if (isSwipeRight > 0) {
-            Log.i("SongPicPager", "User scrolled right");
+        if (isSwipeRight == 0) {
+            Log.i("SongPicPager", "User didn't swipe");
+            return;
+        }
 
+        // cooldown 0.5 sec after a swipe to prevent swipe spam
+        // only when the pager has been set to IDLE state!!!
+        try {
+            Thread.sleep(500); // 0.5 sec
+        } catch (Exception e) {
+            Log.i(TAG1, "Cannot sleep for 1 sec");
+        }
+
+        isStopped = true; // Old thread will be kill within 1 secs
+        song_current_percent = 0; // Reset song progress
+
+        if (isSwipeRight > 0) {
+            Log.i("SongPicPager", "User swiped right");
+
+            // Simulate database from API
             // Call function to update all the value
-            UpdateValue(R.drawable.kill_this_love, 188, "Kill This Love", "Blackpink");
+            UpdateValue(R.drawable.kill_this_love, 188, 0, "Kill This Love", "Blackpink");
 
             // Call function to update all the content
             UpdateContent();
         }
-        else if (isSwipeRight < 0) {
-            Log.i("SongPicPager", "User scrolled left");
+        else {
+            Log.i("SongPicPager", "User swiped left");
         }
-        else Log.i("SongPicPager", "User didn't scroll");
     }
 
     // Function to update all the content value
-    private void UpdateValue(int image, int song_length, String title, String author) {
+    private void UpdateValue(int image, int song_length, int current_progress, String title, String author) {
         this.image = image;
         this.song_length = song_length;
+        this.song_current_percent = current_progress;
         this.song_title = title;
         this.song_author = author;
 
@@ -130,13 +179,21 @@ public class MediaPlayer extends Fragment {
     // Function to update and display all the content of MediaPlayer fragment
     private void UpdateContent() {
         UpdateBackGround(this.image);
+
         try {
             songPicPagerAdapter.updatePic(this.image); // Call func to update the song picture
         } catch (Exception exception) {
-            Log.i(TAG1, "error while update image" + exception);
+            Log.i(TAG1, "error while update image: " + exception);
         }
+
         setProgressBar(this.song_length);
         UpdateTitleNAuthor(this.song_title, this.song_author);
+
+        try {
+            playPauseBtn.setChecked(false);
+        } catch (Exception exception) {
+            Log.i(TAG1, "error while update play/pause btn status: " + exception);
+        }
 
         Log.i(TAG1, "All content updated");
     }
@@ -223,11 +280,40 @@ public class MediaPlayer extends Fragment {
 
             @Override
             public void run() {
+                try {
+                    // Slow down new thread for easier control
+                    Thread.sleep(1000); // 1 secs
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                isStopped = false;
 
                 Log.i(TAG2, "THREAD: Started new one");
 
-                int progress = 0;
+                isPaused = false;
+
+                int progress = song_current_percent;
+
+                Log.i(TAG2, "Song begin at " + progress + "/1000");
+
                 while (progress < totalProgress) {
+                    if (isPaused) {
+                        song_current_percent = progress;
+
+                        Log.i(TAG2, "Song paused at " + song_current_percent + "/1000");
+
+                        break;
+                    }
+                    if (isStopped) {
+                        song_current_percent = 0;
+
+                        Log.i(TAG2, "Song stopped");
+
+                        break;
+                    }
+
                     progress += 1;
                     final int finalProgress = progress;
                     handler.post(new Runnable() {
@@ -241,17 +327,21 @@ public class MediaPlayer extends Fragment {
                         }
                     });
                     try {
-                        // Sleep for a while to simulate time-consuming
+                        // Sleep for SecProgress mills to simulate time-consuming
                         Thread.sleep(SecProgress);
 
-                        Log.i(TAG2, "THREAD: sleeping for a certain of time");
+                        Log.i(TAG2, "THREAD: sleeping for " + SecProgress + " mills");
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                // Reset remain time to 0 because the remain time was plus 1 sec
-                remain_time.setText(getString(R.string.remain_time_default));
+                if (!isPaused) {
+                    // Reset remain time to 0 because the remain time was plus 1 sec
+                    remain_time.setText(getString(R.string.remain_time_default));
+
+                    Log.i(TAG2, "finished the song");
+                }
 
                 Log.i(TAG2, "THREAD: finished");
             }
