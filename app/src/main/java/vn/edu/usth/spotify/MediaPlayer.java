@@ -60,8 +60,8 @@ public class MediaPlayer extends Fragment {
         Log.i(TAG1, "View created");
 
         // Simulate database from API
-        UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
-        UpdateContent();
+//        UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
+//        UpdateContent();
 
         // Initialize songPicPagerAdapter and songPicPager
         songPicPager = view.findViewById(R.id.Song_pic);
@@ -183,7 +183,7 @@ public class MediaPlayer extends Fragment {
         try {
             songPicPagerAdapter.updatePic(this.image); // Call func to update the song picture
         } catch (Exception exception) {
-            Log.i(TAG1, "error while update image" + exception);
+            Log.i(TAG1, "error while update image: " + exception);
         }
 
         setProgressBar(this.song_length);
@@ -192,7 +192,7 @@ public class MediaPlayer extends Fragment {
         try {
             playPauseBtn.setChecked(false);
         } catch (Exception exception) {
-            Log.i(TAG1, "error while update play/pause btn status" + exception);
+            Log.i(TAG1, "error while update play/pause btn status: " + exception);
         }
 
         Log.i(TAG1, "All content updated");
