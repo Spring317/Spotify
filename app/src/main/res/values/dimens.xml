@@ -4,4 +4,12 @@
     <dimen name="activity_vertical_padding">16dp</dimen>
     <dimen name="header_size">22sp</dimen>
     <dimen name="song_info_size">12sp</dimen>
+    <dimen name="cover_position_padding_vertical">32dp</dimen>
+    <dimen name="cover_position_padding_horizontal">16dp</dimen>
+    <dimen name="text_padding_right">5dp</dimen>
+    <dimen name="text_size_title">25dp</dimen>
+    <dimen name="text_size_content_1">15dp</dimen>
+    <dimen name="text_size_content_2">10dp</dimen>
+    <dimen name="contact_photo_height">250dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

@@ -31,4 +31,19 @@
     <string name="song_info_19"><b>Mượn Rượu Tỏ Tình</b>\nSingle • Big Daddy, Emily</string>
     <string name="song_info_20"><b>Layover</b>\nEP • V</string>
 
+    <!-- Album. Single and EP name: -->
+    <string name="intothenight">Into The Night</string>
+
+    <!--Release type -->
+    <string name="single">Single</string>
+
+    <!--Author-->
+    <string name="yoasobi">YOASOBI</string>
+
+    <string name="year2021">2021</string>
+
+    <string name="addtolibrary">Add to Library</string>
+    <string name="ViewArtist">View artist</string>
+    <string name="AddToPlaylist">Add to playlist</string>
+    <string name="AddToQueue">Add to queue</string>
 </resources>

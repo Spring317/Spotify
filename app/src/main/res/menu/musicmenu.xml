@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add_to_library"
+        android:icon="@drawable/artist"
+        android:title="@string/addtolibrary"
+        app:showAsAction="collapseActionView"/>
+    <item
+        android:id="@+id/view_artist"
+        android:icon="@drawable/artist"
+        android:title="@string/ViewArtist"
+        app:showAsAction="collapseActionView"
+        />
+
+    <item
+        android:id="@+id/add_to_playlist"
+        android:icon="@drawable/artist"
+        android:title="@string/AddToPlaylist"
+        app:showAsAction="collapseActionView"
+        />
+
+    <item
+        android:id="@+id/add_to_queue"
+        android:icon="@drawable/artist"
+        android:title="@string/AddToQueue"
+        app:showAsAction="collapseActionView"/>
+
+
+
+</menu>
