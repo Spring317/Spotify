@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SearchFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/black">
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -86,7 +87,7 @@
                 android:textStyle="bold"
                 android:layout_marginLeft="7dp">
             </TextView>
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
@@ -97,6 +98,7 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/podcasts"
+                    android:layout_gravity="left"
                     android:layout_marginRight="30dp"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
@@ -104,11 +106,11 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/leny"
-                    android:layout_toRightOf="@id/podcasts"
+                    android:layout_gravity="right"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
-            </RelativeLayout>
-            <RelativeLayout
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
@@ -120,6 +122,7 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/madeforu"
+                    android:layout_gravity="left"
                     android:layout_marginRight="30dp"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
@@ -127,11 +130,11 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/newreleases"
-                    android:layout_toRightOf="@id/madeforu"
+                    android:layout_gravity="right"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
-            </RelativeLayout>
-            <RelativeLayout
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
@@ -143,6 +146,7 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/vietnamesemusics"
+                    android:layout_gravity="left"
                     android:layout_marginRight="30dp"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
@@ -150,11 +154,11 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/pop"
-                    android:layout_toRightOf="@id/vnm"
+                    android:layout_gravity="right"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
-            </RelativeLayout>
-            <RelativeLayout
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
@@ -166,6 +170,7 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/kpop"
+                    android:layout_gravity="left"
                     android:layout_marginRight="30dp"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
@@ -173,11 +178,11 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/hiphop"
-                    android:layout_toRightOf="@id/kpop"
+                    android:layout_gravity="right"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
-            </RelativeLayout>
-            <RelativeLayout
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
@@ -189,6 +194,7 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/charts"
+                    android:layout_gravity="left"
                     android:layout_marginRight="30dp"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
@@ -196,11 +202,11 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/freshfinds"
-                    android:layout_toRightOf="@id/charts"
+                    android:layout_gravity="right"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
-            </RelativeLayout>
-            <RelativeLayout
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
@@ -212,6 +218,7 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/equal"
+                    android:layout_gravity="left"
                     android:layout_marginRight="30dp"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
@@ -219,10 +226,10 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:src="@drawable/glow"
-                    android:layout_toRightOf="@id/equal"
+                    android:layout_gravity="right"
                     android:scaleType="centerInside"
                     android:padding="0dp"/>
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
