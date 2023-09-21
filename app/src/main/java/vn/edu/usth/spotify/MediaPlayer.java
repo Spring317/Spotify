@@ -60,8 +60,8 @@ public class MediaPlayer extends Fragment {
         Log.i(TAG1, "View created");
 
         // Simulate database from API
-//        UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
-//        UpdateContent();
+        UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
+        UpdateContent();
 
         // Initialize songPicPagerAdapter and songPicPager
         songPicPager = view.findViewById(R.id.Song_pic);
