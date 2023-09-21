@@ -1,24 +1,18 @@
 package vn.edu.usth.spotify;
 
-import android.media.Image;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -36,6 +30,13 @@ public class SongList extends Fragment  {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    boolean liked = false;
+    boolean shuffled = false;
+
+    boolean played = false;
+
+    boolean song_clicked = false;
+
 
     public SongList() {
         // Required empty public constructor
@@ -67,25 +68,47 @@ public class SongList extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_song_list, container, false);
-        CheckBox liked = (CheckBox) view.findViewById(R.id.btn_like);
+        ImageButton heart = (ImageButton) view.findViewById(R.id.btn_like);
 
-        liked.setOnClickListener(new View.OnClickListener() {
+        heart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CharSequence added = "Added to library!";
                 CharSequence removed = "Removed from library!";
                 int duration = Toast.LENGTH_SHORT;
-                if (liked.isChecked())
-                {
-                    Toast.makeText(getContext(), added, duration).show();
 
+                if (!liked)
+                {
+                    liked = true;
+                    heart.setImageResource(R.drawable.heart_liked);
+                    Toast.makeText(getContext(), added, duration).show();
                 }
-                else{
+                else
+                {
+
+                    liked = false;
+                    heart.setImageResource(R.drawable.heart);
                     Toast.makeText(getContext(),removed, duration).show();
                 }
+
             }
         });
+        ImageButton shuffleSong = (ImageButton) view.findViewById(R.id.btn_shuffle);
+        shuffleSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               if (!shuffled){
+                     shuffled = true;
+                     shuffleSong.setImageResource(R.drawable.player_shuffled);
 
+               }
+
+               else{
+                     shuffled = false;
+                     shuffleSong.setImageResource(R.drawable.player_shuffle);
+               }
+            }
+        });
         ImageView imgview = (ImageView) view.findViewById(R.id.popupmenu);
 
         imgview.setOnClickListener(new View.OnClickListener() {
@@ -104,7 +127,20 @@ public class SongList extends Fragment  {
             }
 
         });
-
+        ImageButton player = (ImageButton) view.findViewById(R.id. btn_play);
+        player.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!played){
+                    played = true;
+                    player.setImageResource(R.drawable.player_resume);
+                }
+                else{
+                    played = false;
+                    player.setImageResource(R.drawable.music_player_pause);
+                }
+            }
+        });
         ImageView songimgview = (ImageView) view.findViewById(R.id.song_popupmenu);
 
         songimgview.setOnClickListener(new View.OnClickListener() {
@@ -128,14 +164,20 @@ public class SongList extends Fragment  {
         songpack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Playing song",Toast.LENGTH_SHORT).show();
+                if (!song_clicked){
+                    song_clicked = true;
+                    TextView songname = (TextView) view.findViewById(R.id.song_name);
+                    songname.setTextColor(getResources().getColor(R.color.green_spotify));
+                }
+
+
             }
         });
 
         return view;
     }
 
-
+    
 
 
 }
