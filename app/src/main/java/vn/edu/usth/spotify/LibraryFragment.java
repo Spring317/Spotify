@@ -1,7 +1,10 @@
 package vn.edu.usth.spotify;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -55,7 +58,7 @@ public class LibraryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -86,7 +89,9 @@ public class LibraryFragment extends Fragment {
         return view;
     }
 
-
-
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_appbar, menu);
+    }
 }
 
