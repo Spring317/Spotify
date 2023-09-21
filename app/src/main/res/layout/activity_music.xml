@@ -8,7 +8,6 @@
     android:orientation="vertical">
 
     <fragment
-<<<<<<< HEAD
         android:id="@+id/HomeFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -70,13 +69,5 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-=======
-        android:id="@+id/LibraryFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:name="vn.edu.usth.spotify.LibraryFragment"
-        tools:layout="@layout/fragment_library">
 
-    </fragment>
->>>>>>> MAD012
 
