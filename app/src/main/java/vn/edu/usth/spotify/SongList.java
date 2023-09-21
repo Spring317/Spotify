@@ -176,8 +176,4 @@ public class SongList extends Fragment  {
 
         return view;
     }
-
-    
-
-
 }
