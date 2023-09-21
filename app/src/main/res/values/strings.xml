@@ -46,4 +46,10 @@
     <string name="ViewArtist">View artist</string>
     <string name="AddToPlaylist">Add to playlist</string>
     <string name="AddToQueue">Add to queue</string>
+
+    <string name="current_time_default">0:00</string>
+    <string name="remain_time_default">-0:00</string>
+    <string name="song_title_default">Blank Song</string>
+    <string name="author_default">No one</string>
+
 </resources>
