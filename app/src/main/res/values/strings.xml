@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Spotify</string>
+<<<<<<< HEAD
     <string name="greeting"><b>Good evening</b></string>
 
     <string name="album_title_1"><b>Try something else</b></string>
@@ -31,4 +32,8 @@
     <string name="song_info_19"><b>Mượn Rượu Tỏ Tình</b>\nSingle • Big Daddy, Emily</string>
     <string name="song_info_20"><b>Layover</b>\nEP • V</string>
 
+=======
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+>>>>>>> origin/MAD011
 </resources>

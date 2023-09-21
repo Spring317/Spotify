@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     tools:context=".MusicActivity"
     android:orientation="vertical">
 
@@ -69,3 +70,18 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+=======
+    android:paddingBottom="@dimen/activity_vertical_padding"
+    android:paddingTop="@dimen/activity_vertical_padding"
+    android:paddingRight="@dimen/activity_horizontal_padding"
+    android:paddingLeft="@dimen/activity_horizontal_padding"
+    tools:context=".MusicActivity">
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/SearchFragment"
+        android:name="vn.edu.usth.spotify.SearchFragment"
+        tools:layout="@layout/fragment_search">
+    </fragment>
+</LinearLayout>
+>>>>>>> origin/MAD011
