@@ -1,9 +1,13 @@
 package vn.edu.usth.spotify;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,21 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SongList!newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SongList extends Fragment  {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     boolean liked = false;
     boolean shuffled = false;
 
@@ -42,32 +32,38 @@ public class SongList extends Fragment  {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     *
-     * @return A new instance of fragment SongList.
-     */
-    // TODO: Rename and change types and number of parameters
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-
-
+    public void onDestroy() {
+        MusicActivity activity = (MusicActivity) getActivity();
+        if (activity != null) {
+            activity.restoreViewPager();
         }
+
+        super.onDestroy();
+        Log.i("SongList", "fragment destroyed");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_song_list, container, false);
+
+        // Reference the kill playlist button
+        ImageButton kill_playlist_btn = view.findViewById(R.id.kill_playlist_btn);
+
+        kill_playlist_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                transaction.remove(SongList.this);
+
+                transaction.commit();
+            }
+        });
+
         ImageButton heart = (ImageButton) view.findViewById(R.id.btn_like);
 
         heart.setOnClickListener(new View.OnClickListener() {
@@ -109,12 +105,12 @@ public class SongList extends Fragment  {
                }
             }
         });
-        ImageView imgview = (ImageView) view.findViewById(R.id.popupmenu);
+        ImageView menu = (ImageView) view.findViewById(R.id.popupmenu);
 
-        imgview.setOnClickListener(new View.OnClickListener() {
+        menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(getContext(), imgview);
+                PopupMenu popup = new PopupMenu(getContext(), menu);
                 popup.getMenuInflater().inflate(R.menu.musicmenu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
@@ -133,11 +129,11 @@ public class SongList extends Fragment  {
             public void onClick(View view) {
                 if(!played){
                     played = true;
-                    player.setImageResource(R.drawable.player_resume);
+                    player.setImageResource(R.drawable.playlist_pause);
                 }
                 else{
                     played = false;
-                    player.setImageResource(R.drawable.music_player_pause);
+                    player.setImageResource(R.drawable.player_resume);
                 }
             }
         });
@@ -160,14 +156,24 @@ public class SongList extends Fragment  {
 
         });
 
-        RelativeLayout songpack = (RelativeLayout) view.findViewById(R.id.song_pack);
-        songpack.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout songPack = (RelativeLayout) view.findViewById(R.id.song_pack);
+        songPack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!song_clicked){
                     song_clicked = true;
-                    TextView songname = (TextView) view.findViewById(R.id.song_name);
-                    songname.setTextColor(getResources().getColor(R.color.green_spotify));
+                    TextView songName = (TextView) view.findViewById(R.id.song_name);
+                    songName.setTextColor(getResources().getColor(R.color.green_spotify));
+
+                    MusicActivity activity = (MusicActivity) getActivity();
+                    if (activity != null) {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        activity.popupFragment(mediaPlayer);
+                        song_clicked = false;
+                        songName.setTextColor(getResources().getColor(R.color.white));
+                    }
+
+                    Log.i("Button", "Pressed");
                 }
 
 

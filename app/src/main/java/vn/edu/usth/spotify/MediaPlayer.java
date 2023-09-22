@@ -7,6 +7,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -68,6 +71,19 @@ public class MediaPlayer extends Fragment {
         songPicPagerAdapter = new SongPicPagerAdapter(requireContext(), this.image);
         songPicPager.setAdapter(songPicPagerAdapter);
         songPicPager.setCurrentItem(Integer.MAX_VALUE / 2,false);
+
+        ImageButton kill_song_btn = view.findViewById(R.id.kill_btn);
+
+        kill_song_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                transaction.remove(MediaPlayer.this);
+                transaction.commit();
+            }
+        });
 
         songPicPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             int previousPosition = Integer.MAX_VALUE / 2;
