@@ -2,14 +2,12 @@ package vn.edu.usth.spotify;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
@@ -49,6 +47,13 @@ public class MediaPlayer extends Fragment {
 
     @Override
     public void onDestroy() {
+
+        // Restore the viewpager and TabLayout
+        MusicActivity musicActivity = (MusicActivity) getActivity();
+        if (musicActivity != null) {
+            musicActivity.restoreFragmentsAndTabLayout();
+        }
+
         super.onDestroy();
         view = null; // Nullify the reference to the view
 
@@ -173,11 +178,17 @@ public class MediaPlayer extends Fragment {
             // Call function to update all the value
             UpdateValue(R.drawable.kill_this_love, 188, 0, "Kill This Love", "Blackpink");
 
-            // Call function to update all the content
+            // Call func to update all the content
             UpdateContent();
         }
         else {
             Log.i("SongPicPager", "User swiped left");
+
+            // Simulate database from API
+            UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
+
+            // Call func to update all the content
+            UpdateContent();
         }
     }
 
@@ -234,19 +245,11 @@ public class MediaPlayer extends Fragment {
         // Load the picture into a Bitmap
         Bitmap picBit = BitmapFactory.decodeResource(getResources(), image);
 
-        // Use Palette to extract dominant colors
-        Palette palette = Palette.from(picBit).generate();
+        // Reference music activity
+        MusicActivity activity = (MusicActivity) getActivity();
+        assert activity != null;
 
-        // Get dominant color
-        int defaultColor = Color.BLACK;
-        int dominantColor = palette.getDominantColor(defaultColor);
-
-        GradientDrawable gradientDrawable = new GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                new int[] {dominantColor, defaultColor}
-        );
-
-        gradientDrawable.setCornerRadius(0f);
+        GradientDrawable gradientDrawable = activity.getGradientDrawable(picBit);
 
         // Set the background to gradient
         view.setBackground(gradientDrawable);
@@ -260,7 +263,7 @@ public class MediaPlayer extends Fragment {
         GradientDrawable lyrics_drawable = (GradientDrawable) lyrics_area.getBackground();
 
         // Change background color
-        lyrics_drawable.setColor(dominantColor);
+        lyrics_drawable.setColor(activity.getDominantColor(picBit));
         lyrics_area.setBackground(lyrics_drawable);
 
         Log.i(TAG1, "Lyrics background updated");

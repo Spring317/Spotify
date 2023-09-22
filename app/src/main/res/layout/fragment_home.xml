@@ -124,14 +124,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="165dp"
-                        android:src="@drawable/playlist_1"
+                        android:src="@drawable/intothenight"
                         android:paddingVertical="8dp">
                     </ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:text="@string/song_info_1"
+                        android:text="Into The Void"
                         android:textSize="@dimen/song_info_size"
                         android:layout_marginHorizontal="8dp"
                         android:paddingTop="2dp">
