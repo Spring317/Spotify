@@ -3,7 +3,7 @@
 
     <item
         android:state_checked="true"
-        android:drawable="@drawable/music_player_pause" />
+        android:drawable="@drawable/playlist_pause" />
 
     <item
         android:drawable="@drawable/player_resume"/>
