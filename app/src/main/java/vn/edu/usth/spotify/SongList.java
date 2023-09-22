@@ -1,6 +1,7 @@
 package vn.edu.usth.spotify;
 
-import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -24,8 +25,6 @@ public class SongList extends Fragment  {
     boolean shuffled = false;
 
     boolean played = false;
-
-    boolean song_clicked = false;
 
 
     public SongList() {
@@ -51,6 +50,15 @@ public class SongList extends Fragment  {
 
         // Reference the kill playlist button
         ImageButton kill_playlist_btn = view.findViewById(R.id.kill_playlist_btn);
+
+        RelativeLayout relativeLayout = view.findViewById(R.id.boundedRelativeLayout);
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intothenight);
+
+        MusicActivity activity = (MusicActivity) getActivity();
+
+        assert activity != null;
+        relativeLayout.setBackground(activity.getGradientDrawable(bitmap));
 
         kill_playlist_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,24 +168,19 @@ public class SongList extends Fragment  {
         songPack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!song_clicked){
-                    song_clicked = true;
-                    TextView songName = (TextView) view.findViewById(R.id.song_name);
-                    songName.setTextColor(getResources().getColor(R.color.green_spotify));
 
-                    MusicActivity activity = (MusicActivity) getActivity();
-                    if (activity != null) {
-                        MediaPlayer mediaPlayer = new MediaPlayer();
-                        activity.popupFragment(mediaPlayer);
-                        song_clicked = false;
-                        songName.setTextColor(getResources().getColor(R.color.white));
-                    }
+                TextView songName = (TextView) view.findViewById(R.id.song_name);
+                songName.setTextColor(getResources().getColor(R.color.green_spotify));
+
+                MusicActivity activity = (MusicActivity) getActivity();
+                if (activity != null) {
+                    MediaPlayer mediaPlayer = new MediaPlayer();
+                    activity.popupFragment(mediaPlayer);
+                    activity.hideFragmentsAndTabLayout();
+                }
 
                     Log.i("Button", "Pressed");
                 }
-
-
-            }
         });
 
         return view;
