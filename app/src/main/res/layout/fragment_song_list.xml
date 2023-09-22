@@ -14,20 +14,33 @@
     tools:context=".SongList">
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:id="@+id/boundedLinearLayout"
                 >
 
-                    <ImageView
-                        android:id="@+id/images"
-                        android:layout_width="250dp"
-                        android:layout_height="250dp"
-                        android:src="@drawable/intothenight"
-                        android:layout_gravity="center"
-                        android:importantForAccessibility="no" />
+                <ImageButton
+                    android:id="@+id/kill_playlist_btn"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/playlist_back"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <ImageView
+                    android:id="@+id/images"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:src="@drawable/intothenight"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:importantForAccessibility="no" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -35,6 +48,7 @@
                     android:id="@+id/left_group"
                     android:orientation="vertical"
                     android:layout_marginVertical="10dp"
+                    android:layout_below="@+id/images"
                     >
 
 
@@ -62,9 +76,10 @@
 
 
                 <RelativeLayout
+                    android:id="@+id/button_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    >
+                    android:layout_below="@+id/left_group">
 
 
                     <ImageButton
@@ -133,55 +148,54 @@
 
                 </RelativeLayout>
 
-                    <RelativeLayout
+                <RelativeLayout
+                    android:layout_below="@+id/button_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:focusableInTouchMode="true"
+                    android:id="@+id/song_pack"
+                    android:paddingVertical="10dp"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/song_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:clickable="true"
-                        android:focusableInTouchMode="true"
-                        android:id="@+id/song_pack"
-                        android:paddingVertical="10dp"
-                        android:focusable="true">
+                        android:text="@string/intothenight"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:layout_alignParentStart="true"
+                        />
 
-                        <TextView
-                            android:id="@+id/song_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/intothenight"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:layout_alignParentStart="true"
-                            />
+                    <TextView
+                        android:id="@+id/author_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/yoasobi"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        android:layout_below="@+id/song_name"
 
-                        <TextView
-                            android:id="@+id/author_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/yoasobi"
-                            android:textColor="@color/white"
-                            android:textSize="11sp"
-                            android:layout_below="@+id/song_name"
-
-                            />
+                        />
 
 
-                        <ImageView
+                    <ImageView
 
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:button="@null"
-                            android:id="@+id/song_popupmenu"
-                            android:layout_marginVertical="10dp"
-                            android:src="@drawable/ic_menu_dots"
-                            android:onClick="showPopup"
-                            android:layout_alignParentEnd="true"
-
-                            />
-                    </RelativeLayout>
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:button="@null"
+                        android:id="@+id/song_popupmenu"
+                        android:layout_marginVertical="10dp"
+                        android:src="@drawable/ic_menu_dots"
+                        android:onClick="showPopup"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
 
 
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
 
