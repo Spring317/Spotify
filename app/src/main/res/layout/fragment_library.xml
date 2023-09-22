@@ -10,8 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#121212">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,9 +22,11 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:clickable="true"
-                android:paddingLeft="5dp"
+                android:paddingStart="5dp"
                 android:paddingTop="20dp"
-                android:src="@drawable/ic_artists">
+                android:src="@drawable/ic_artists"
+                android:contentDescription="Profle"
+                android:focusable="true">
 
             </ImageView>
 
@@ -36,8 +37,9 @@
                 android:paddingTop="17dp"
                 android:text="Your Library"
                 android:textColor="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold">
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded">
 
             </TextView>
 
@@ -49,11 +51,12 @@
                     android:id="@+id/plus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:paddingLeft="5dp"
                     android:paddingTop="15dp"
                     android:paddingRight="5dp"
-                    android:src="@drawable/ic_plus">
+                    android:src="@drawable/ic_plus"
+                    android:contentDescription="Plus Icon">
 
 
                 </ImageView>
@@ -62,9 +65,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/plus"
+                    android:layout_toStartOf="@id/plus"
                     android:paddingTop="17dp"
-                    android:paddingRight="7dp"
+                    android:paddingEnd="7dp"
                     android:src="@drawable/ic_search_small"
                     app:tint="@color/white">
 
@@ -74,68 +77,79 @@
 
         </LinearLayout>
 
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center|top">
+            android:gravity="center|top"
+            android:orientation="horizontal">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="13dp"
+                android:id="@+id/playListButton"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|top"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:text="Playlist"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13dp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="6dp"
+                android:layout_width="70dp"
+                android:layout_height="25dp"
+
+                android:layout_gravity="center|top"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:gravity="center"
+
                 android:text="Albums"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13dp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="6dp"
+                android:layout_width="70dp"
+                android:layout_height="25dp"
+
+                android:layout_gravity="center|top"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:gravity="center"
+
+
                 android:text="Artists"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13dp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="6dp"
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center|top"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:gravity="center"
+
                 android:text="Downloaded"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13dp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
@@ -156,15 +170,18 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp">
 
                     <ImageView
                         android:id="@+id/updown"
-                        android:layout_width="27dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentLeft="true"
-                        android:paddingLeft="13dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentStart="true"
                         android:src="@drawable/up_and_down"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:paddingStart="10dp"
                         app:tint="@color/white">
 
                     </ImageView>
@@ -172,54 +189,47 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/updown"
-                        android:gravity="center"
-                        android:paddingLeft="7dp"
-                        android:paddingTop="6dp"
+                        android:layout_centerInParent="true"
+                        android:layout_toEndOf="@id/updown"
                         android:text="Recents"
+                        android:paddingLeft="10dp"
                         android:textColor="@color/white"
-                        android:textSize="12dp">
+                        android:textSize="20dp">
 
                     </TextView>
 
                     <ImageButton
-                        android:id="@+id/list"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="7dp"
-                        android:layout_marginBottom="50dp"
-                        android:paddingBottom="20dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/menu"
-                        app:tint="@color/white"
-                        android:backgroundTint="@color/black">
-                    </ImageButton>
-                    <ImageButton
                         android:id="@+id/menu"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="10dp"
-                        android:paddingBottom="14dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:paddingEnd="10dp"
+                        android:background="@null"
                         android:scaleType="fitCenter"
                         android:src="@drawable/list"
-                        app:tint="@color/white"
-                        android:backgroundTint="@color/black"
-                        android:visibility="invisible">
+                        app:tint="@color/white">
+
                     </ImageButton>
+
+
                 </RelativeLayout>
-<!--start of list-->
+                <!--start of list-->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
-                        android:src="@drawable/liked_songs"></ImageView>
+                        android:paddingStart="13dp"
+                        android:src="@drawable/liked_songs">
+
+                    </ImageView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -231,8 +241,8 @@
                             android:layout_height="wrap_content"
                             android:text="Liked Songs"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -243,8 +253,8 @@
                             android:layout_height="wrap_content"
                             android:text="Playlist . 71 songs"
                             android:textColor="#808080"
-                            android:textSize="14dp"
-                            android:paddingLeft="10dp">
+                            android:textSize="14sp"
+                            android:paddingStart="10dp">
 
                         </TextView>
 
@@ -252,15 +262,19 @@
 
                     </LinearLayout>
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
+                        android:paddingStart="13dp"
                         android:src="@drawable/img2">
 
                     </ImageView>
@@ -275,8 +289,8 @@
                             android:layout_height="wrap_content"
                             android:text="Top Gaming Tracks"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -287,8 +301,8 @@
                             android:layout_height="wrap_content"
                             android:text="Playlist . Spotify"
                             android:textColor="#808080"
-                            android:textSize="14dp"
-                            android:paddingLeft="10dp">
+                            android:textSize="14sp"
+                            android:paddingStart="10dp">
 
                         </TextView>
 
@@ -297,14 +311,17 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
+                        android:paddingStart="13dp"
                         android:src="@drawable/img3">
 
                     </ImageView>
@@ -319,8 +336,8 @@
                             android:layout_height="wrap_content"
                             android:text="Dance Hits"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -331,8 +348,8 @@
                             android:layout_height="wrap_content"
                             android:text="Playlist . Spotify"
                             android:textColor="#808080"
-                            android:textSize="14dp"
-                            android:paddingLeft="10dp">
+                            android:textSize="14sp"
+                            android:paddingStart="10dp">
 
                         </TextView>
 
@@ -341,14 +358,17 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
+                        android:paddingStart="13dp"
                         android:src="@drawable/img4">
 
                     </ImageView>
@@ -363,8 +383,8 @@
                             android:layout_height="wrap_content"
                             android:text="Pop Shots"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -375,8 +395,8 @@
                             android:layout_height="wrap_content"
                             android:text="Playlist . Spotify"
                             android:textColor="#808080"
-                            android:textSize="14dp"
-                            android:paddingLeft="10dp">
+                            android:textSize="14sp"
+                            android:paddingStart="10dp">
 
                         </TextView>
 
@@ -385,15 +405,20 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
-                        android:src="@drawable/img5"></ImageView>
+                        android:paddingStart="13dp"
+                        android:src="@drawable/img5">
+
+                    </ImageView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -405,8 +430,8 @@
                             android:layout_height="wrap_content"
                             android:text="Your Summer Rewind"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -417,7 +442,7 @@
                             android:layout_height="wrap_content"
                             android:text="Playlist . Spotify"
                             android:textColor="#808080"
-                            android:textSize="14dp"
+                            android:textSize="14sp"
                             android:paddingLeft="10dp">
 
                         </TextView>
@@ -427,14 +452,17 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
+                        android:paddingStart="13dp"
                         android:src="@drawable/img8">
 
                     </ImageView>
@@ -449,8 +477,8 @@
                             android:layout_height="wrap_content"
                             android:text="Dinner and Chill"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -461,8 +489,8 @@
                             android:layout_height="wrap_content"
                             android:text="Playlist . Thang"
                             android:textColor="#808080"
-                            android:textSize="14dp"
-                            android:paddingLeft="10dp">
+                            android:textSize="14sp"
+                            android:paddingStart="10dp">
 
                         </TextView>
 
@@ -471,14 +499,17 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
+                        android:paddingStart="13dp"
                         android:src="@drawable/img13">
 
                     </ImageView>
@@ -493,8 +524,8 @@
                             android:layout_height="wrap_content"
                             android:text="Coffee Table Jazz"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -505,8 +536,8 @@
                             android:layout_height="wrap_content"
                             android:text="Album . Thang"
                             android:textColor="#808080"
-                            android:textSize="14dp"
-                            android:paddingLeft="10dp">
+                            android:textSize="14sp"
+                            android:paddingStart="10dp">
 
                         </TextView>
 
@@ -515,14 +546,17 @@
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:clickable="true"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:focusable="true">
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:paddingLeft="13dp"
+                        android:paddingStart="13dp"
                         android:src="@drawable/img16">
 
                     </ImageView>
@@ -537,8 +571,8 @@
                             android:layout_height="wrap_content"
                             android:text="Release Radar"
                             android:textColor="@color/white"
-                            android:textSize="16dp"
-                            android:paddingLeft="10dp"
+                            android:textSize="16sp"
+                            android:paddingStart="10dp"
                             android:gravity="center"
                             android:paddingTop="20dp">
 
@@ -549,8 +583,8 @@
                             android:layout_height="wrap_content"
                             android:text="Album . Spotify"
                             android:textColor="#808080"
-                            android:textSize="14dp"
-                            android:paddingLeft="10dp">
+                            android:textSize="14sp"
+                            android:paddingStart="10dp">
 
                         </TextView>
 

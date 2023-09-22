@@ -7,7 +7,7 @@
     tools:context=".MusicActivity"
     android:orientation="vertical"
     android:id="@+id/container">
-    
+
     <fragment
         android:id="@+id/HomeFragment"
         android:layout_width="0dp"

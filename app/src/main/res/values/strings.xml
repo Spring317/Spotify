@@ -52,4 +52,8 @@
     <string name="song_title_default">Blank Song</string>
     <string name="author_default">No one</string>
 
+    <string name="artist">View Artist</string>
+    <string name="search">Search</string>
+    <string name="plus">Plus</string>
+
 </resources>
