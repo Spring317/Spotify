@@ -164,6 +164,16 @@ public class SongList extends Fragment  {
                     song_clicked = true;
                     TextView songName = (TextView) view.findViewById(R.id.song_name);
                     songName.setTextColor(getResources().getColor(R.color.green_spotify));
+
+                    MusicActivity activity = (MusicActivity) getActivity();
+                    if (activity != null) {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        activity.popupFragment(mediaPlayer);
+                        song_clicked = false;
+                        songName.setTextColor(getResources().getColor(R.color.white));
+                    }
+
+                    Log.i("Button", "Pressed");
                 }
 
 
