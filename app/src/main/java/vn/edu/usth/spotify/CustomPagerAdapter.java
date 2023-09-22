@@ -7,30 +7,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomPagerAdapter extends FragmentPagerAdapter {
 
+    private final List<Fragment> fragments = new ArrayList<Fragment>();
+
     public CustomPagerAdapter(FragmentManager fragmentManager) {
-        super(fragmentManager);
+        super(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+
+        fragments.add(new HomeFragment());
+        fragments.add(new SearchFragment());
+        fragments.add(new LibraryFragment());
     }
     String TAG = "CustomPagerAdapter";
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                Log.i(TAG, "getItem: HomeFragment");
-                return new HomeFragment();
-
-            case 1:
-                Log.i(TAG, "getItem: searchFragment");
-                return new SearchFragment();
-            case 2:
-                Log.i(TAG, "getItem: LibraryFragment");
-                return new LibraryFragment();
-            default:
-
-                return new Fragment();
-        }
+         return fragments.get(position);
     }
 
     @Override
