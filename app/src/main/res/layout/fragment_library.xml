@@ -12,74 +12,144 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:gravity="top">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:clickable="true"
+                android:paddingStart="5dp"
+                android:paddingTop="20dp"
+                android:src="@drawable/ic_artists"
+                android:contentDescription="Profle"
+                android:focusable="true">
+
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:gravity="left"
+                android:paddingTop="17dp"
+                android:text="Your Library"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded">
+
+            </TextView>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="15dp"
+                    android:paddingRight="5dp"
+                    android:src="@drawable/ic_plus"
+                    android:contentDescription="Plus Icon">
+
+
+                </ImageView>
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/plus"
+                    android:paddingTop="17dp"
+                    android:paddingEnd="7dp"
+                    android:src="@drawable/ic_search_small"
+                    app:tint="@color/white">
+
+                </ImageView>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:gravity="center|top">
+            android:gravity="center|top"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/playListButton"
-                android:layout_width="0dp"
+                android:layout_width="80dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
-                android:layout_marginStart="13dp"
+                android:layout_gravity="center|top"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:text="Playlist"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13sp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
             <Button
-                android:layout_width="0dp"
+                android:layout_width="70dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
+
+                android:layout_gravity="center|top"
                 android:layout_marginStart="6dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:gravity="center"
+
                 android:text="Albums"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13sp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
             <Button
-                android:layout_width="0dp"
+                android:layout_width="70dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
+
+                android:layout_gravity="center|top"
                 android:layout_marginStart="6dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:gravity="center"
+
+
                 android:text="Artists"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13sp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
             <Button
-                android:layout_width="0dp"
+                android:layout_width="100dp"
                 android:layout_height="25dp"
-                android:layout_weight="1"
+                android:layout_gravity="center|top"
                 android:layout_marginStart="6dp"
+                android:background="@drawable/roundstyle"
+                android:backgroundTint="#808080"
                 android:gravity="center"
+
                 android:text="Downloaded"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="13sp"
                 android:textFontWeight="1"
-                android:background="@drawable/roundstyle"
-                android:backgroundTint="#808080">
+                android:textSize="13sp">
 
             </Button>
 
@@ -100,7 +170,8 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp">
 
                     <ImageView
                         android:id="@+id/updown"
@@ -121,6 +192,7 @@
                         android:layout_centerInParent="true"
                         android:layout_toEndOf="@id/updown"
                         android:text="Recents"
+                        android:paddingLeft="10dp"
                         android:textColor="@color/white"
                         android:textSize="20dp">
 
