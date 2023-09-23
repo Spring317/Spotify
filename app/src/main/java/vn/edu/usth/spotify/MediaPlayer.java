@@ -55,7 +55,6 @@ public class MediaPlayer extends Fragment {
         }
 
         super.onDestroy();
-        view = null; // Nullify the reference to the view
 
         Log.i(TAG1, "View destroyed");
     }
@@ -160,15 +159,7 @@ public class MediaPlayer extends Fragment {
             return;
         }
 
-        // cooldown 0.5 sec after a swipe to prevent swipe spam
-        // only when the pager has been set to IDLE state!!!
-        try {
-            Thread.sleep(500); // 0.5 sec
-        } catch (Exception e) {
-            Log.i(TAG1, "Cannot sleep for 1 sec");
-        }
-
-        isStopped = true; // Old thread will be kill within 1 secs
+        isStopped = true; // Old thread will be kill within 0.3 secs
         song_current_percent = 0; // Reset song progress
 
         if (isSwipeRight > 0) {
@@ -301,7 +292,7 @@ public class MediaPlayer extends Fragment {
             public void run() {
                 try {
                     // Slow down new thread for easier control
-                    Thread.sleep(1000); // 1 secs
+                    Thread.sleep(300); // 0.3 secs
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
