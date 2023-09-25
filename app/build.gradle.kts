@@ -51,7 +51,8 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
