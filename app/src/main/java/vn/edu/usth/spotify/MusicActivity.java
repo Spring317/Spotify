@@ -2,6 +2,7 @@ package vn.edu.usth.spotify;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Bitmap;
@@ -19,7 +20,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
+
 public class MusicActivity extends AppCompatActivity {
+
+    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
+    private static final String REDIRECT_URI = "https://localhost:3107/callback";
+    private SpotifyAppRemote mSpotifyAppRemote;
+
 
     ViewPager viewPager;
 
@@ -28,6 +42,8 @@ public class MusicActivity extends AppCompatActivity {
     private final List<Fragment> hide_fragments = new ArrayList<Fragment>();
 
     private static final String TAG = "Spotify";
+
+    String[] textString = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +52,7 @@ public class MusicActivity extends AppCompatActivity {
 
         RelativeLayout container = findViewById(R.id.container);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
+
 
         viewPager = container.findViewById(R.id.view_pager);
         CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
@@ -151,9 +168,64 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart: Started");
+        // Set the connection parameters
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(this, connectionParams,
+                new Connector.ConnectionListener() {
+
+                    @Override
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        Log.d("MainActivity", "Connected! Yay!");
+
+                        // Now you can start interacting with App Remote
+                        connected();
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Log.e("MainActivity", throwable.getMessage(), throwable);
+
+                        // Something went wrong when attempting to connect! Handle errors here
+                    }
+                });
 
     }
+
+    private void connected() {
+        // Play a playlist
+        mSpotifyAppRemote.getPlayerApi().play("spotify:artist:1oD9fKbb7qQ2nhn9JJC24F?si=f0f7d1fa76c54c57" );
+
+        // Subscribe to PlayerState
+        mSpotifyAppRemote.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track + " by " + track.artist.name);
+                    }
+                });
+    }
+
+
+//    private String getTrackName(){
+//        String trackName;
+//        mSpotifyAppRemote.getPlayerApi()
+//                .subscribeToPlayerState()
+//                .setEventCallback(playerState -> {
+//                    final Track track = playerState.track;
+//                    if (track != null) {
+//                        trackName = track.name;
+//                    }
+//                });
+//        return trackName;
+//    }
+
     @Override
     protected void onPause(){
         super.onPause();
@@ -166,6 +238,7 @@ public class MusicActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
         Log.i(TAG, "onStop: Stopped");
     }
     @Override
