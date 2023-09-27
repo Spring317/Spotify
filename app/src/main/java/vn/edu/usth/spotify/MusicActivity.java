@@ -179,7 +179,7 @@ public class MusicActivity extends AppCompatActivity {
                     @Override
                     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                         mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected! Yay!");
+                        Log.d(TAG, "Connected! Yay!");
 
                         // Now you can start interacting with App Remote
                         connected();
@@ -187,7 +187,7 @@ public class MusicActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
+                        Log.e(TAG, throwable.getMessage(), throwable);
 
                         // Something went wrong when attempting to connect! Handle errors here
                     }
@@ -205,7 +205,7 @@ public class MusicActivity extends AppCompatActivity {
                 .setEventCallback(playerState -> {
                     final Track track = playerState.track;
                     if (track != null) {
-                        Log.d("MainActivity", track + " by " + track.artist.name);
+                        Log.d(TAG, track + " by " + track.artist.name);
                     }
                 });
     }
