@@ -42,8 +42,6 @@ public class MusicActivity extends AppCompatActivity {
     private final List<Fragment> hide_fragments = new ArrayList<Fragment>();
 
     private static final String TAG = "Spotify";
-
-    String[] textString = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,18 +211,7 @@ public class MusicActivity extends AppCompatActivity {
     }
 
 
-//    private String getTrackName(){
-//        String trackName;
-//        mSpotifyAppRemote.getPlayerApi()
-//                .subscribeToPlayerState()
-//                .setEventCallback(playerState -> {
-//                    final Track track = playerState.track;
-//                    if (track != null) {
-//                        trackName = track.name;
-//                    }
-//                });
-//        return trackName;
-//    }
+
 
     @Override
     protected void onPause(){
