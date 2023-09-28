@@ -1,38 +1,53 @@
 package vn.edu.usth.spotify;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import androidx.palette.graphics.Palette;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
+import com.android.volley.Network;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
+import com.google.gson.JsonObject;
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationRequest;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
 
 public class MusicActivity extends AppCompatActivity {
 
     private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
     private static final String REDIRECT_URI = "https://localhost:3107/callback";
-    private SpotifyAppRemote mSpotifyAppRemote;
 
 
     ViewPager viewPager;
@@ -79,6 +94,8 @@ public class MusicActivity extends AppCompatActivity {
         Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.selector_home);
         Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.selector_search);
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.selector_library);
+
+
     }
 
     public GradientDrawable getGradientDrawable(Bitmap picBit) {
@@ -166,52 +183,78 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Set the connection parameters
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
-
+//        RequestQueue requestQueue;
+//
+//// Instantiate the cache
+//        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+//
+//// Set up the network to use HttpURLConnection as the HTTP client.
+//        Network network = new BasicNetwork(new HurlStack());
+//
+//// Instantiate the RequestQueue with the cache and network.
+//        requestQueue = new RequestQueue(cache, network);
+//
+//// Start the queue
+//        requestQueue.start();
+        String url = "https://accounts.spotify.com/api/token";
+        Uri uri = Uri.parse(url);
+        String code = uri.getQueryParameter("code");
+        StringRequest tokenRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
-                        connected();
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String token = jsonObject.getString("access_token");
+                            Log.i("Connect", "onResponse:" + token);
+                            int expired_in = jsonObject.getInt("expires_in");
+                            Log.i("Connect", "onResponse: " + expired_in);
+                        } catch (Exception e) {
+                            Log.i("Connect", "onResponse: Request Failed");
+                        }
+                        Log.i("Connect", "onResponse: Request Successful");
                     }
-
+                },
+                new Response.ErrorListener() {
                     @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
+                    public void onErrorResponse(VolleyError error) {
 
-                        // Something went wrong when attempting to connect! Handle errors here
+                        Log.i("Connect", "onErrorResponse: Request Failed");
                     }
-                });
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("grant_type", "authorization_code");
+                params.put("code",code);
+                params.put("redirect_uri", REDIRECT_URI);
+                params.put("client_id", CLIENT_ID);
+                params.put("client_secret", "89f6fd7934d54adfb60c7b61f83988e4");
+                return params;
+            }
+        };
+        Volley.newRequestQueue(this).add(tokenRequest);
+// Formulate the request and handle the response.
+
+//        JsonObjectRequest jasonobjectrequest = new JsonObjectRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        Log.i("Connect", "onResponse: Request Successful");
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.i("Connect", "onErrorResponse: Request Failed");
+//                    }
+//                });
+//
+//// Add the request to the RequestQueue.
+//      requestQueue.add(jasonobjectrequest);
+//    }
 
     }
-
-    private void connected() {
-        // Play a playlist
-        mSpotifyAppRemote.getPlayerApi().play("spotify:artist:1oD9fKbb7qQ2nhn9JJC24F?si=f0f7d1fa76c54c57" );
-
-        // Subscribe to PlayerState
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track + " by " + track.artist.name);
-                    }
-                });
-    }
-
-
-
 
     @Override
     protected void onPause(){
@@ -225,7 +268,6 @@ public class MusicActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
-        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
         Log.i(TAG, "onStop: Stopped");
     }
     @Override

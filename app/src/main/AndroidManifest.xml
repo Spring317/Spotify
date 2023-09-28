@@ -21,7 +21,9 @@
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <data
+                    android:host="callback"
+                    android:scheme="https://localhost:3107/callback"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

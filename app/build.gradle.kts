@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+
 android {
     namespace = "vn.edu.usth.spotify"
     compileSdk = 33
@@ -18,7 +19,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
-            manifestPlaceholders["redirectHostName"]="https://api.spotify.com"
+            manifestPlaceholders["redirectHostName"]="https://localhost:3107/callback"
             manifestPlaceholders["redirectSchemeName"]="spotify"
         }
     }
@@ -36,6 +37,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -52,14 +54,15 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
-
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation ("com.spotify.android:auth:2.1.0")
     implementation ("androidx.browser:browser:1.0.0")
     implementation ("androidx.appcompat:appcompat:appCompatVersion")
-
+    implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
@@ -70,7 +73,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation(files("libs\\appremote.aar"))
+
 
 
     testImplementation("junit:junit:4.13.2")
