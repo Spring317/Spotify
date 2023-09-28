@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,10 +7,12 @@
     tools:context=".SearchFragment"
     android:orientation="vertical"
     android:background="@color/black">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,6 +29,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:id="@+id/Search_text"
                     android:gravity="center"
                     android:paddingTop="17dp"
                     android:text="Search"
@@ -37,7 +40,7 @@
                 </TextView>
 
                 <ImageView
-                    android:id="@+id/camera"
+                    android:id="@+id/cameraicon"
                     android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_alignParentRight="true"
@@ -49,6 +52,7 @@
                 </ImageView>
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,6 +74,7 @@
                     android:textSize="20dp"
                     android:background="@color/white"
                     />
+
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -77,10 +82,13 @@
                     android:layout_centerVertical="true"
                     android:paddingLeft="10dp"
                     />
+
             </RelativeLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:id="@+id/browse_text"
                 android:gravity="center"
                 android:text="Browse All"
                 android:textColor="@color/white"
@@ -88,168 +96,15 @@
                 android:textStyle="bold"
                 android:padding="15dp">
             </TextView>
-
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:paddingLeft="5dp">
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/glow"
-                    android:layout_gravity="left"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1" />
+                android:id="@+id/searchrecyclerview">
 
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/leny"
-                    android:layout_gravity="right"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
+            </androidx.recyclerview.widget.RecyclerView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:paddingLeft="5dp">
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/madeforu"
-                    android:layout_gravity="left"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/newreleases"
-                    android:layout_gravity="right"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:paddingLeft="5dp">
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/vietnamesemusics"
-                    android:layout_gravity="left"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/pop"
-                    android:layout_gravity="right"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:paddingLeft="5dp">
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/kpop"
-                    android:layout_gravity="left"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/hiphop"
-                    android:layout_gravity="right"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:paddingLeft="5dp">
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/charts"
-                    android:layout_gravity="left"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/freshfinds"
-                    android:layout_gravity="right"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:paddingLeft="5dp">
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/equal"
-                    android:layout_gravity="left"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_weight="1" />
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/glow"
-                    android:layout_gravity="right"
-                    android:scaleType="centerInside"
-                    android:padding="0dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1" />
-            </LinearLayout>
         </LinearLayout>
+
     </ScrollView>
-</FrameLayout>
+
+</RelativeLayout>

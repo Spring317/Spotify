@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
+    <runningDeviceTargetSelectedWithDropDown>
+      <Target>
+        <type value="RUNNING_DEVICE_TARGET" />
+        <deviceKey>
+          <Key>
+            <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="C:\Users\Acer\.android\avd\Pixel_2_API_34.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </runningDeviceTargetSelectedWithDropDown>
     <targetSelectedWithDropDown>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-<<<<<<< HEAD
-            <value value="C:\Users\Asus Rog Strix\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
-=======
-            <value value="C:\Users\lViet\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
->>>>>>> MAD008
+            <value value="C:\Users\Acer\.android\avd\Pixel_2_API_34.avd" />
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-<<<<<<< HEAD
-    <timeTargetWasSelectedWithDropDown value="2023-09-20T07:58:12.406106400Z" />
-=======
-    <timeTargetWasSelectedWithDropDown value="2023-09-16T21:50:22.608238600Z" />
->>>>>>> MAD008
+    <timeTargetWasSelectedWithDropDown value="2023-09-28T09:25:28.429394500Z" />
   </component>
 </project>
