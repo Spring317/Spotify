@@ -9,190 +9,142 @@
     android:background="@color/black"
     tools:context=".SongList">
 
+    <RelativeLayout
+        android:padding="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/boundedRelativeLayout">
 
-            <RelativeLayout
-                android:padding="16dp"
+        <ImageButton
+            android:id="@+id/kill_playlist_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/playlist_back"
+            android:scaleType="centerInside"
+            android:background="@null"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <ImageView
+            android:id="@+id/images"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/intothenight"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:importantForAccessibility="no" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/left_group"
+            android:orientation="vertical"
+            android:layout_marginVertical="10dp"
+            android:layout_below="@+id/images">
+            <TextView
+                android:id="@+id/song"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/boundedRelativeLayout">
+                android:text="@string/intothenight"
+                android:textColor="@color/white"
+                android:textSize="30dp"
+                android:layout_gravity="start"/>
 
-                <ImageButton
-                    android:id="@+id/kill_playlist_btn"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
-                    android:src="@drawable/playlist_back"
-                    android:scaleType="centerInside"
-                    android:background="@null"
-                    android:clickable="true"
-                    android:focusable="true"/>
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Into The Void"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_gravity="start" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/images"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:src="@drawable/intothenight"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:importantForAccessibility="no" />
+        <RelativeLayout
+            android:id="@+id/button_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/left_group">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/left_group"
-                    android:orientation="vertical"
-                    android:layout_marginVertical="10dp"
-                    android:layout_below="@+id/images"
-                    >
+            <ImageButton
+                android:id="@+id/btn_like"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:background="@null"
+                android:src="@drawable/heart"
+                android:focusable="true"
+                android:clickable="true"
+                android:scaleType="centerInside"
+                android:paddingStart="0dp"
+                android:paddingEnd="18dp"
+                android:layout_centerVertical="true" />
 
+            <ImageView
+                android:id="@+id/btn_download"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_toEndOf="@+id/btn_like"
+                android:src="@drawable/download"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:paddingStart="0dp"
+                android:paddingEnd="18dp"
+                android:scaleType="centerInside"/>
 
-                        <TextView
-                            android:id="@+id/song"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/intothenight"
-                            android:textColor="@color/white"
-                            android:textSize="30dp"
-                            android:layout_gravity="start"/>
+            <ImageView
+                android:id="@+id/popupmenu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/btn_download"
+                android:background="@null"
+                android:onClick="showPopup"
+                android:paddingStart="0dp"
+                android:paddingEnd="20dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_menu_dots" />
 
-                        <TextView
-                            android:id="@+id/author"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Into The Void"
-                            android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:layout_gravity="start"
-                            />
+            <ImageButton
+                android:id="@+id/btn_shuffle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_toStartOf="@+id/btn_play"
+                android:scaleType="centerInside"
+                android:background="@null"
+                android:src="@drawable/player_shuffle"
+                android:layout_centerVertical="true"/>
 
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/player_resume"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
 
-                </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/button_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:id="@+id/song_pack"
+            android:paddingVertical="10dp"
+            android:focusable="true">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/SongListRecyclerView">
 
-                <RelativeLayout
-                    android:id="@+id/button_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/left_group">
-
-
-                    <ImageButton
-                        android:id="@+id/btn_like"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_alignParentStart="true"
-                        android:background="@null"
-                        android:src="@drawable/heart"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:scaleType="centerInside"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="18dp"
-                        android:layout_centerVertical="true"
-
-                        />
-
-                    <ImageView
-                        android:id="@+id/btn_download"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_toEndOf="@+id/btn_like"
-                        android:src="@drawable/download"
-                        android:background="@null"
-                        android:layout_centerVertical="true"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="18dp"
-                        android:scaleType="centerInside"/>
-
-                    <ImageView
-                        android:id="@+id/popupmenu"
-
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/btn_download"
-                        android:background="@null"
-                        android:onClick="showPopup"
-                        android:paddingStart="0dp"
-                        android:paddingEnd="20dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_menu_dots" />
-
-
-                    <ImageButton
-                        android:id="@+id/btn_shuffle"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_toStartOf="@+id/btn_play"
-                        android:scaleType="centerInside"
-                        android:background="@null"
-                        android:src="@drawable/player_shuffle"
-                        android:layout_centerVertical="true"/>
-
-                    <ImageButton
-                        android:id="@+id/btn_play"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_alignParentEnd="true"
-                        android:background="@null"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/player_resume"
-                        android:layout_centerVertical="true"/>
-
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_below="@+id/button_area"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:clickable="true"
-                    android:id="@+id/song_pack"
-                    android:paddingVertical="10dp"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/song_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Light Switch"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        android:layout_alignParentStart="true"
-                        />
-
-                    <TextView
-                        android:id="@+id/author_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Charlie Puth"
-                        android:textColor="@color/white"
-                        android:textSize="11sp"
-                        android:layout_below="@+id/song_name"
-
-                        />
-
-
-                    <ImageView
-
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:button="@null"
-                        android:id="@+id/song_popupmenu"
-                        android:layout_marginVertical="10dp"
-                        android:src="@drawable/ic_menu_dots"
-                        android:onClick="showPopup"
-                        android:layout_alignParentEnd="true" />
-                </RelativeLayout>
-
-
-
-            </RelativeLayout>
-
-
-
-
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

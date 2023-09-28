@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,10 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SongList extends Fragment  {
     boolean liked = false;
@@ -56,6 +62,23 @@ public class SongList extends Fragment  {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intothenight);
 
         MusicActivity activity = (MusicActivity) getActivity();
+
+        // NEW
+        RecyclerView songListRecyclerView = view.findViewById(R.id.SongListRecyclerView);
+        songListRecyclerView.setHasFixedSize(true);
+        songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        List<ItemSongList> songListList = new ArrayList<>();
+        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
+        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
+        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
+        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
+        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
+
+        SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList);
+
+        songListRecyclerView.setAdapter(songListAdapter);
+        // NEW
 
         assert activity != null;
         relativeLayout.setBackground(activity.getGradientDrawable(bitmap));
@@ -145,43 +168,43 @@ public class SongList extends Fragment  {
                 }
             }
         });
-        ImageView songimgview = (ImageView) view.findViewById(R.id.song_popupmenu);
+//        ImageView songimgview = (ImageView) view.findViewById(R.id.song_popupmenu);
+//
+//        songimgview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                PopupMenu popup = new PopupMenu(getContext(), songimgview);
+//                popup.getMenuInflater().inflate(R.menu.musicmenu, popup.getMenu());
+//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        Toast.makeText(getContext(), item.getTitle(),Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    }
+//
+//                });
+//                popup.show();
+//            }
+//
+//        });
 
-        songimgview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(getContext(), songimgview);
-                popup.getMenuInflater().inflate(R.menu.musicmenu, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(getContext(), item.getTitle(),Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-
-                });
-                popup.show();
-            }
-
-        });
-
-        RelativeLayout songPack = (RelativeLayout) view.findViewById(R.id.song_pack);
-        songPack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                TextView songName = (TextView) view.findViewById(R.id.song_name);
-                songName.setTextColor(getResources().getColor(R.color.green_spotify));
-
-                MusicActivity activity = (MusicActivity) getActivity();
-                if (activity != null) {
-                    MediaPlayer mediaPlayer = new MediaPlayer();
-                    activity.popupFragment(mediaPlayer);
-                    activity.hideFragmentsAndTabLayout();
-                }
-
-                    Log.i("Button", "Pressed");
-                }
-        });
+//        LinearLayout songPack = (LinearLayout) view.findViewById(R.id.song_pack);
+//        songPack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                TextView songName = (TextView) view.findViewById(R.id.song_name);
+//                songName.setTextColor(getResources().getColor(R.color.green_spotify));
+//
+//                MusicActivity activity = (MusicActivity) getActivity();
+//                if (activity != null) {
+//                    MediaPlayer mediaPlayer = new MediaPlayer();
+//                    activity.popupFragment(mediaPlayer);
+//                    activity.hideFragmentsAndTabLayout();
+//                }
+//
+//                    Log.i("Button", "Pressed");
+//                }
+//        });
 
         return view;
     }
