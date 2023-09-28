@@ -102,229 +102,24 @@
             android:paddingVertical="15dp"
             android:textColor="@color/white">
         </TextView>
-        <HorizontalScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="215dp"
-                android:orientation="horizontal">
+                android:layout_height="230dp"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
 
-                <LinearLayout
-                    android:id="@+id/song_1"
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="15dp"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/intothenight"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="Into The Void"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_2"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_2"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_3"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_3"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_4"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_4"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_5"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_5"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_6"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_6"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_7"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_7"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_8"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_8"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:layout_marginRight="15dp"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_9"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_9"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tSERecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-        </HorizontalScrollView>
+        </ScrollView>
 
         <TextView
             android:layout_width="match_parent"
@@ -335,159 +130,24 @@
             android:paddingVertical="15dp"
             android:textColor="@color/white">
         </TextView>
-        <HorizontalScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="215dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="15dp"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_10"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_10"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_11"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_10"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_5"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_5"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_12"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_5"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_13"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_5"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:layout_marginRight="15dp"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_14"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_5"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-
+                android:layout_height="230dp"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
+                
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/featuredChartsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-        </HorizontalScrollView>
+        </ScrollView>
 
         <TextView
             android:layout_width="match_parent"
@@ -498,251 +158,24 @@
             android:paddingVertical="15dp"
             android:textColor="@color/white">
         </TextView>
-        <HorizontalScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="220dp"
-                android:orientation="horizontal">
+                android:layout_height="230dp"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp">
 
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="15dp"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_15"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_11"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_16"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_12"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_17"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_13"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_18"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_14"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_19"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_15"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_20"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_16"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_21"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_17"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_22"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_18"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_23"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_19"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="165dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:layout_marginRight="15dp"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="165dp"
-                        android:src="@drawable/playlist_24"
-                        android:paddingVertical="8dp">
-                    </ImageView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/song_info_20"
-                        android:textSize="@dimen/song_info_size"
-                        android:layout_marginHorizontal="8dp"
-                        android:paddingTop="2dp">
-                    </TextView>
-                </LinearLayout>
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/trendingNowRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-        </HorizontalScrollView>
+        </ScrollView>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
