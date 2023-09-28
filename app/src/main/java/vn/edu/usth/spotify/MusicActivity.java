@@ -4,22 +4,48 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import androidx.palette.graphics.Palette;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationRequest;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MusicActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE = 6912;
+    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
+    private static final String REDIRECT_URI = "https://localhost:3107/callback";
+    private SpotifyAppRemote mSpotifyAppRemote;
 
     ViewPager viewPager;
 
@@ -152,8 +178,58 @@ public class MusicActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart: Started");
+        AuthorizationRequest.Builder builder =
+                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
 
+        builder.setScopes(new String[]{"streaming", "user-read-email", "user-read-private", "user-read-playback-state", "user-modify-playback-state"});
+        AuthorizationRequest request = builder.build();
+
+        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
     }
+
+    protected void onActityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
+
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    // Handle successful response
+                    String accessToken = response.getAccessToken();
+                    int expiresIn = response.getExpiresIn();
+                    Log.i(TAG, "onActivityResult: Success");
+
+                    Log.d(TAG, "Access Token: " + accessToken);
+                    Log.d(TAG, "Expires In: " + expiresIn + " seconds");
+                    break;
+                case ERROR:
+                    // Handle error response
+                    String errorReason = response.getError();
+
+                    Log.i(TAG, "onActivityResult: Error");
+                    Log.e(TAG, "Error Reason: " + errorReason);
+                    break;
+                case UNKNOWN:
+                    // Handle other unknown types
+                    Log.i(TAG, "onActivityResult: Unknown");
+                    break;
+                // Most likely auth flow was cancelled
+                default:
+                    // Handle other cases
+                    Log.i(TAG, "onActivityResult: Default");
+            }
+        }
+        // connected();
+    }
+
+
+    private void playTrack(String trackUri) {
+        mSpotifyAppRemote.getPlayerApi().play(trackUri);
+    }
+
     @Override
     protected void onPause(){
         super.onPause();
