@@ -50,7 +50,7 @@ public class MusicActivity extends AppCompatActivity {
 
     private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
-
+    private String accessToken;
     ViewPager viewPager;
 
     private final List<Fragment> fragments = new ArrayList<Fragment>();
@@ -113,7 +113,8 @@ public class MusicActivity extends AppCompatActivity {
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-            Log.i("Connect", "onActivityResult: "+ response.getType());
+            this.setAccessToken(response.getAccessToken());
+            Log.i("Connect", "onActivityResult: Success");
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
@@ -297,7 +298,14 @@ public class MusicActivity extends AppCompatActivity {
     }
 
 
+    //create getter and setter for access token
 
+    public String getAccessToken(){
+        return accessToken;
+    }
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
+    }
     @Override
     protected void onPause(){
         super.onPause();
