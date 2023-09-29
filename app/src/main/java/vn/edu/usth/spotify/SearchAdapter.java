@@ -23,7 +23,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     @NonNull
     @Override
     public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new SearchViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_search, parent, false));
+        return new SearchViewHolder(LayoutInflater.from(context).inflate(R.layout.fragment_search_data, parent, false));
     }
 
     @Override
