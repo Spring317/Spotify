@@ -45,9 +45,10 @@ import java.util.Objects;
 
 
 public class MusicActivity extends AppCompatActivity {
-
+    private static final int REQUEST_CODE = 1337;
     private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
-    private static final String REDIRECT_URI = "https://localhost:3107/callback";
+
+    private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
 
     ViewPager viewPager;
@@ -73,6 +74,14 @@ public class MusicActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
 
+        AuthorizationRequest.Builder builder =
+                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
+
+        builder.setScopes(new String[]{"streaming"});
+        AuthorizationRequest request = builder.build();
+
+        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -97,6 +106,34 @@ public class MusicActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
+            Log.i("Connect", "onActivityResult: "+ response.getType());
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    // Handle successful response
+                    Log.i("Connect", "Token" + response.getAccessToken());
+                    break;
+
+                // Auth flow returned an error
+                case ERROR:
+                    // Handle error response
+                    Log.i("Connect", "onActivityResult: Error");
+                    break;
+
+                // Most likely auth flow was cancelled
+                default:
+                    // Handle other cases
+            }
+        }
+    }
+
 
     public GradientDrawable getGradientDrawable(Bitmap picBit) {
         // Use Palette to extract dominant colors
@@ -183,6 +220,9 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+
+
 //        RequestQueue requestQueue;
 //
 //// Instantiate the cache
@@ -196,44 +236,44 @@ public class MusicActivity extends AppCompatActivity {
 //
 //// Start the queue
 //        requestQueue.start();
-        String url = "https://accounts.spotify.com/api/token";
-        Uri uri = Uri.parse(url);
-        String code = uri.getQueryParameter("code");
-        StringRequest tokenRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String token = jsonObject.getString("access_token");
-                            Log.i("Connect", "onResponse:" + token);
-                            int expired_in = jsonObject.getInt("expires_in");
-                            Log.i("Connect", "onResponse: " + expired_in);
-                        } catch (Exception e) {
-                            Log.i("Connect", "onResponse: Request Failed");
-                        }
-                        Log.i("Connect", "onResponse: Request Successful");
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        Log.i("Connect", "onErrorResponse: Request Failed");
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("grant_type", "authorization_code");
-                params.put("code",code);
-                params.put("redirect_uri", REDIRECT_URI);
-                params.put("client_id", CLIENT_ID);
-                params.put("client_secret", "89f6fd7934d54adfb60c7b61f83988e4");
-                return params;
-            }
-        };
-        Volley.newRequestQueue(this).add(tokenRequest);
+//        String url = "https://accounts.spotify.com/api/token";
+//        Uri uri = Uri.parse(url);
+//        String code = uri.getQueryParameter("code");
+//        StringRequest tokenRequest = new StringRequest(Request.Method.POST, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(response);
+//                            String token = jsonObject.getString("access_token");
+//                            Log.i("Connect", "onResponse:" + token);
+//                            int expired_in = jsonObject.getInt("expires_in");
+//                            Log.i("Connect", "onResponse: " + expired_in);
+//                        } catch (Exception e) {
+//                            Log.i("Connect", "onResponse: Request Failed");
+//                        }
+//                        Log.i("Connect", "onResponse: Request Successful");
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                        Log.i("Connect", "onErrorResponse: Request Failed");
+//                    }
+//                }){
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("grant_type", "authorization_code");
+//                params.put("code",code);
+//                params.put("redirect_uri", REDIRECT_URI);
+//                params.put("client_id", CLIENT_ID);
+//                params.put("client_secret", "89f6fd7934d54adfb60c7b61f83988e4");
+//                return params;
+//            }
+//        };
+//        Volley.newRequestQueue(this).add(tokenRequest);
 // Formulate the request and handle the response.
 
 //        JsonObjectRequest jasonobjectrequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -256,6 +296,8 @@ public class MusicActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     protected void onPause(){
         super.onPause();
@@ -275,5 +317,7 @@ public class MusicActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(TAG, "onDestroy: Destroyed");
     }
+
+
 
 }
