@@ -40,6 +40,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryViewHolder> {
                 // You can perform any desired action for the clicked item
                 // For example, you can launch a new activity, show a dialog, etc.
                 Log.i("buttonclick", "Clicked on button");
+
+                if (context instanceof MusicActivity) {
+                    MusicActivity activity = (MusicActivity) context;
+                    SongList songList = new SongList();
+                    activity.popupFragment(songList);
+                }
             }
         });
     }
