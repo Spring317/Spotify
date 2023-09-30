@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="230dp"
+    android:orientation="horizontal"
+    android:id="@+id/main_container">
+<!--    Demo-->
+
+    <LinearLayout
+        android:layout_width="165dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/playlist_image"
+            android:layout_width="wrap_content"
+            android:layout_height="165dp"
+            android:src="@drawable/playlist_10"
+            android:paddingVertical="8dp">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/playlist_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/song_info_10"
+            android:textSize="@dimen/song_info_size"
+            android:layout_marginHorizontal="8dp"
+            android:paddingTop="2dp">
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>
