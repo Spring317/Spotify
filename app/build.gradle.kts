@@ -59,7 +59,7 @@ dependencies {
     implementation ("com.spotify.android:auth:2.1.0")
     implementation ("androidx.browser:browser:1.0.0")
     implementation ("androidx.appcompat:appcompat:appCompatVersion")
-
+    implementation("com.android.volley:volley:1.2.1")
     implementation("androidx.palette:palette-ktx:1.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-compose:1.7.2")
