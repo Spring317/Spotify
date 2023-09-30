@@ -80,7 +80,7 @@ public class MusicActivity extends AppCompatActivity {
         builder.setScopes(new String[]{"streaming"});
         AuthorizationRequest request = builder.build();
 
-        AuthorizationClient.openLoginActivity(this, REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(this,REQUEST_CODE ,request);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -113,12 +113,13 @@ public class MusicActivity extends AppCompatActivity {
         // Check if result comes from the correct activity
         if (requestCode == REQUEST_CODE) {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-            this.setAccessToken(response.getAccessToken());
+
             Log.i("Connect", "onActivityResult: Success");
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
                     // Handle successful response
+                    this.setAccessToken(response.getAccessToken());
                     Log.i("Connect", "Token" + response.getAccessToken());
                     break;
 
@@ -133,6 +134,7 @@ public class MusicActivity extends AppCompatActivity {
                     // Handle other cases
             }
         }
+    ;
     }
 
 
@@ -221,79 +223,7 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-
-
-//        RequestQueue requestQueue;
-//
-//// Instantiate the cache
-//        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
-//
-//// Set up the network to use HttpURLConnection as the HTTP client.
-//        Network network = new BasicNetwork(new HurlStack());
-//
-//// Instantiate the RequestQueue with the cache and network.
-//        requestQueue = new RequestQueue(cache, network);
-//
-//// Start the queue
-//        requestQueue.start();
-//        String url = "https://accounts.spotify.com/api/token";
-//        Uri uri = Uri.parse(url);
-//        String code = uri.getQueryParameter("code");
-//        StringRequest tokenRequest = new StringRequest(Request.Method.POST, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject jsonObject = new JSONObject(response);
-//                            String token = jsonObject.getString("access_token");
-//                            Log.i("Connect", "onResponse:" + token);
-//                            int expired_in = jsonObject.getInt("expires_in");
-//                            Log.i("Connect", "onResponse: " + expired_in);
-//                        } catch (Exception e) {
-//                            Log.i("Connect", "onResponse: Request Failed");
-//                        }
-//                        Log.i("Connect", "onResponse: Request Successful");
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//
-//                        Log.i("Connect", "onErrorResponse: Request Failed");
-//                    }
-//                }){
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("grant_type", "authorization_code");
-//                params.put("code",code);
-//                params.put("redirect_uri", REDIRECT_URI);
-//                params.put("client_id", CLIENT_ID);
-//                params.put("client_secret", "89f6fd7934d54adfb60c7b61f83988e4");
-//                return params;
-//            }
-//        };
-//        Volley.newRequestQueue(this).add(tokenRequest);
-// Formulate the request and handle the response.
-
-//        JsonObjectRequest jasonobjectrequest = new JsonObjectRequest(Request.Method.GET, url, null,
-//                new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.i("Connect", "onResponse: Request Successful");
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.i("Connect", "onErrorResponse: Request Failed");
-//                    }
-//                });
-//
-//// Add the request to the RequestQueue.
-//      requestQueue.add(jasonobjectrequest);
-//    }
+        Log.i(TAG, "onStart: Started");
 
     }
 
@@ -318,12 +248,13 @@ public class MusicActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
-        Log.i(TAG, "onStop: Stopped");
+        Log.i(TAG, "onStop: Stopped" + this.getAccessToken());
     }
     @Override
     protected void onDestroy(){
         super.onDestroy();
         Log.i(TAG, "onDestroy: Destroyed");
+
     }
 
 
