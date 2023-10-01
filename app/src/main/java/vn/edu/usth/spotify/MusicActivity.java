@@ -1,5 +1,6 @@
 package vn.edu.usth.spotify;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -16,27 +17,24 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import androidx.palette.graphics.Palette;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.JsonObject;
+
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +48,10 @@ public class MusicActivity extends AppCompatActivity {
 
     private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
+    private static String auth_code;
     private String accessToken;
+
+    private final OkHttpClient mOkHttpClient = new OkHttpClient();
     ViewPager viewPager;
 
     private final List<Fragment> fragments = new ArrayList<Fragment>();
@@ -58,6 +59,10 @@ public class MusicActivity extends AppCompatActivity {
     private final List<Fragment> hide_fragments = new ArrayList<Fragment>();
 
     private static final String TAG = "Spotify";
+
+    public static String getAuth_code() {
+        return auth_code;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +71,6 @@ public class MusicActivity extends AppCompatActivity {
 
         RelativeLayout container = findViewById(R.id.container);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-
-
         viewPager = container.findViewById(R.id.view_pager);
         CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -115,12 +118,14 @@ public class MusicActivity extends AppCompatActivity {
             AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
 
             Log.i("Connect", "onActivityResult: Success");
+            Log.i("Connect", "onActivityResult: ResultCode" + resultCode);
             switch (response.getType()) {
                 // Response was successful and contains auth token
                 case TOKEN:
                     // Handle successful response
                     this.setAccessToken(response.getAccessToken());
                     Log.i("Connect", "Token" + response.getAccessToken());
+                    Log.i("Connect", "onActivityResult: " + response.getType());
                     break;
 
                 // Auth flow returned an error
@@ -257,6 +262,32 @@ public class MusicActivity extends AppCompatActivity {
 
     }
 
+    public void APIcall(String url){
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization","Bearer " + accessToken)
+                .build();
+        Log.i("APICall", "APIcall: Started ");
+        Call mCall = mOkHttpClient.newCall(request);
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.i("APICall", "onFailure: Failed");
+            }
 
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response.body().string());
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                Log.i("APICall", "onResponse: " + jsonObject.toString());
+
+            }
+        });
+    }
 
 }

@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-import androidx.appcompat.app.WindowDecorActionBar;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,14 +21,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class SongList extends Fragment  {
 
@@ -148,9 +151,14 @@ public class SongList extends Fragment  {
         player.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(!played){
                     played = true;
                     player.setImageResource(R.drawable.playlist_pause);
+                    MusicActivity musicActivity = (MusicActivity) getActivity();
+                    if (musicActivity != null) {
+                        musicActivity.APIcall("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
+                    }
                 }
                 else{
                     played = false;
@@ -202,31 +210,6 @@ public class SongList extends Fragment  {
 
 
     }
-
-    public void getAlbumJSON(){
-        String url = "https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl";
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        Log.i("getAlbum", "getAlbumJSON: Started");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.i("getAlbum","Response: " + response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("getAlbum", "onErrorResponse: Failed");
-                    }
-                });
-
-// Add the request to the RequestQueue.
-        queue.add(jsonObjectRequest);
-
-
-    }
-
-
 }
+
+
