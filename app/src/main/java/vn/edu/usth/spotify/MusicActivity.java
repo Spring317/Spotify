@@ -1,10 +1,11 @@
 package vn.edu.usth.spotify;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -14,34 +15,46 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import androidx.palette.graphics.Palette;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+
 import com.google.android.material.tabs.TabLayout;
 
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationRequest;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
-
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.PlayerState;
-import com.spotify.protocol.types.Track;
 
 public class MusicActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE = 1337;
+    private static final String CLIENT_ID = "484acfe42c7e47a7af199d2af5953628";
 
-    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
-    private static final String REDIRECT_URI = "https://localhost:3107/callback";
-    private SpotifyAppRemote mSpotifyAppRemote;
+    private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
+    private String accessToken;
 
+    private final OkHttpClient mOkHttpClient = new OkHttpClient();
     ViewPager viewPager;
+   
+    private final List<Fragment> frags_2b_kill = new ArrayList<Fragment>();
 
-    private final List<Fragment> fragments = new ArrayList<Fragment>();
-
-    private final List<Fragment> hide_fragments = new ArrayList<Fragment>();
+    private final List<Fragment> frags_2b_hide = new ArrayList<Fragment>();
 
     private static final String TAG = "Spotify";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,13 +63,19 @@ public class MusicActivity extends AppCompatActivity {
 
         RelativeLayout container = findViewById(R.id.container);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-
-
         viewPager = container.findViewById(R.id.view_pager);
         CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
+
+        AuthorizationRequest.Builder builder =
+                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
+
+        builder.setScopes(new String[]{"streaming"});
+        AuthorizationRequest request = builder.build();
+
+        AuthorizationClient.openLoginActivity(this,REQUEST_CODE ,request);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -79,7 +98,79 @@ public class MusicActivity extends AppCompatActivity {
         Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(R.drawable.selector_home);
         Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.selector_search);
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.selector_library);
+
+
     }
+
+    // Func for login (currently by real Spotify)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        // Check if result comes from the correct activity
+        if (requestCode == REQUEST_CODE) {
+            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
+
+            Log.i("Connect", "onActivityResult: Success");
+            Log.i("Connect", "onActivityResult: ResultCode" + resultCode);
+            switch (response.getType()) {
+                // Response was successful and contains auth token
+                case TOKEN:
+                    // Handle successful response
+                    this.setAccessToken(response.getAccessToken());
+                    Log.i("Connect", "AccessToken: " + response.getAccessToken());
+                    break;
+
+                // Auth flow returned an error
+                case ERROR:
+                    // Handle error response
+                    Log.i("Connect", "onActivityResult: Error");
+                    break;
+
+                // Most likely auth flow was cancelled
+                default:
+                    // Handle other cases
+            }
+        };
+    }
+    
+    // Getter and Setter for access token
+    public String getAccessToken(){
+        return accessToken;
+    }
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
+    }
+
+    // Func to request data
+    public void APICall(String url){
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization","Bearer " + accessToken)
+                .build();
+        Log.i("APICall", "APICall: Started");
+        Call mCall = mOkHttpClient.newCall(request);
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.i("APICall", "onFailure: Failed");
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response.body().string());
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                Log.i("APICall", "onResponse: " + jsonObject.toString());
+
+            }
+        });
+    }
+
 
     public GradientDrawable getGradientDrawable(Bitmap picBit) {
         // Use Palette to extract dominant colors
@@ -119,43 +210,43 @@ public class MusicActivity extends AppCompatActivity {
                 .commit();
 
         try {
-            // Add parents of popup fragments into list for easy hiding
-            hide_fragments.addAll(fragments);
+            // Add parents of popup frags_2b_kill into list for easy hiding
+            frags_2b_hide.addAll(frags_2b_kill);
             Log.i(TAG, "popupFragment: parent fragment added to hide list");
         } catch (Exception e) {
             Log.i(TAG, "popupFragment: No parent fragment found");
         }
 
 
-        // Add all popup fragments into list for easy killing
-        fragments.add(fragment);
+        // Add all popup frags_2b_kill into list for easy killing
+        frags_2b_kill.add(fragment);
 
     }
 
     public void killAllFragments() {
-        for (int i = 0; i < fragments.size(); i++){
-            getSupportFragmentManager().beginTransaction().remove(fragments.get(i)).commit();
+        for (int i = 0; i < frags_2b_kill.size(); i++){
+            getSupportFragmentManager().beginTransaction().remove(frags_2b_kill.get(i)).commit();
         }
 
-        Log.i(TAG, "All fragments has been killed");
+        Log.i(TAG, "All frags_2b_kill has been killed");
     }
 
     public void hideFragmentsAndTabLayout() {
-        for (int i = 0; i < hide_fragments.size(); i++){
-            getSupportFragmentManager().beginTransaction().hide(hide_fragments.get(i)).commit();
+        for (int i = 0; i < frags_2b_hide.size(); i++){
+            getSupportFragmentManager().beginTransaction().hide(frags_2b_hide.get(i)).commit();
         }
         findViewById(R.id.tab_layout).setVisibility(View.GONE);
 
-        Log.i(TAG, "All fragments and TabLayout has been hidden");
+        Log.i(TAG, "All frags_2b_hide and TabLayout has been hidden");
     }
 
     public void restoreFragmentsAndTabLayout() {
-        for (int i = 0; i < hide_fragments.size(); i++){
-            getSupportFragmentManager().beginTransaction().show(hide_fragments.get(i)).commit();
+        for (int i = 0; i < frags_2b_hide.size(); i++){
+            getSupportFragmentManager().beginTransaction().show(frags_2b_hide.get(i)).commit();
         }
         findViewById(R.id.tab_layout).setVisibility(View.VISIBLE);
 
-        Log.i(TAG, "All fragments and TabLayout has been restored");
+        Log.i(TAG, "All frags_2b_kill and TabLayout has been restored");
     }
 
     public void restoreViewPager() {
@@ -166,52 +257,8 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Set the connection parameters
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(CLIENT_ID)
-                        .setRedirectUri(REDIRECT_URI)
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
-
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d(TAG, "Connected! Yay!");
-
-                        // Now you can start interacting with App Remote
-                        connected();
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e(TAG, throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
-
+        Log.i(TAG, "onStart: Started");
     }
-
-    private void connected() {
-        // Play a playlist
-        mSpotifyAppRemote.getPlayerApi().play("spotify:artist:1oD9fKbb7qQ2nhn9JJC24F?si=f0f7d1fa76c54c57" );
-
-        // Subscribe to PlayerState
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d(TAG, track + " by " + track.artist.name);
-                    }
-                });
-    }
-
-
-
 
     @Override
     protected void onPause(){
@@ -225,13 +272,11 @@ public class MusicActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
-        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
-        Log.i(TAG, "onStop: Stopped");
+        Log.i(TAG, "onStop: Stopped" + this.getAccessToken());
     }
     @Override
     protected void onDestroy(){
         super.onDestroy();
         Log.i(TAG, "onDestroy: Destroyed");
     }
-
 }

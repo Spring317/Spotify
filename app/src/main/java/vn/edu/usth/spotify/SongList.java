@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongList extends Fragment  {
+
+
     boolean liked = false;
     boolean shuffled = false;
 
@@ -63,7 +65,6 @@ public class SongList extends Fragment  {
 
         MusicActivity activity = (MusicActivity) getActivity();
 
-        // NEW
         RecyclerView songListRecyclerView = view.findViewById(R.id.SongListRecyclerView);
         songListRecyclerView.setHasFixedSize(true);
         songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -78,7 +79,6 @@ public class SongList extends Fragment  {
         SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList);
 
         songListRecyclerView.setAdapter(songListAdapter);
-        // NEW
 
         assert activity != null;
         relativeLayout.setBackground(activity.getGradientDrawable(bitmap));
@@ -158,9 +158,14 @@ public class SongList extends Fragment  {
         player.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(!played){
                     played = true;
                     player.setImageResource(R.drawable.playlist_pause);
+                    MusicActivity musicActivity = (MusicActivity) getActivity();
+                    if (musicActivity != null) {
+                        musicActivity.APICall("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
+                    }
                 }
                 else{
                     played = false;
@@ -209,3 +214,5 @@ public class SongList extends Fragment  {
         return view;
     }
 }
+
+
