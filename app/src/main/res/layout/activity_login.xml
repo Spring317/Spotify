@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    tools:context=".LoginActivity"
+    android:background="@color/black"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:id="@+id/btn_get_profile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/spotify_icon" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/product_sans_bold"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="100dp"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:text="Spotify ®"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/product_sans_regular"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginEnd="34dp"
+        android:gravity="center"
+        android:text="Welcome \n Sign up to listen to music on the go."
+        android:textColor="@color/white"
+        android:textSize="13dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/product_sans_regular"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="34dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginEnd="34dp"
+        android:background="@drawable/oval_button"
+        android:gravity="center"
+        android:text="CREATE ACCOUNT"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        tools:ignore="OnClick" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/product_sans_regular"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="420dp"
+        android:layout_marginEnd="34dp"
+        android:gravity="center"
+        android:text="Already a user?"
+        android:textColor="@color/white"
+        android:textSize="13dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/product_sans_regular"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="34dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="460dp"
+        android:layout_marginEnd="34dp"
+        android:background="@drawable/oval_button_white"
+        android:gravity="center"
+        android:onClick="onRequestTokenClicked"
+        android:text="LOG IN"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        tools:ignore="OnClick" />
+
+</RelativeLayout>
