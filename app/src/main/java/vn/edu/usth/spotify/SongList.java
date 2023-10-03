@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,17 +19,6 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class SongList extends Fragment  {
@@ -157,7 +145,7 @@ public class SongList extends Fragment  {
                     player.setImageResource(R.drawable.playlist_pause);
                     MusicActivity musicActivity = (MusicActivity) getActivity();
                     if (musicActivity != null) {
-                        musicActivity.APIcall("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
+                        musicActivity.APICall("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
                     }
                 }
                 else{
@@ -204,11 +192,7 @@ public class SongList extends Fragment  {
                 }
         });
 
-
-
         return view;
-
-
     }
 }
 
