@@ -40,11 +40,12 @@ import java.util.Objects;
 
 public class MusicActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1337;
-    private static final String CLIENT_ID = "484acfe42c7e47a7af199d2af5953628";
+    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
 
     private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
     private String accessToken;
+    private JSONObject jsonObject;
 
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     ViewPager viewPager;
@@ -162,11 +163,11 @@ public class MusicActivity extends AppCompatActivity {
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(response.body().string());
+                    getJSONObject(jsonObject);
+                    Log.i("APICall", "onResponse: Success having jsonObject");
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                Log.i("APICall", "onResponse: " + jsonObject.toString());
-
             }
         });
     }
@@ -249,6 +250,14 @@ public class MusicActivity extends AppCompatActivity {
         Log.i(TAG, "All frags_2b_kill and TabLayout has been restored");
     }
 
+    private void getJSONObject(JSONObject jsonObject){
+        this.jsonObject = jsonObject;
+    }
+
+    private JSONObject setJSONObject(){
+        return jsonObject;
+    }
+
     public void restoreViewPager() {
         viewPager.setVisibility(View.VISIBLE);
         Log.i(TAG, "ViewPager restored");
@@ -272,11 +281,13 @@ public class MusicActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
-        Log.i(TAG, "onStop: Stopped" + this.getAccessToken());
+        Log.i(TAG, "onStop: Stopped");
     }
     @Override
     protected void onDestroy(){
         super.onDestroy();
         Log.i(TAG, "onDestroy: Destroyed");
     }
+
+
 }

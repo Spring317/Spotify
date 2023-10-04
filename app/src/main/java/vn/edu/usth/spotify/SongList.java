@@ -2,6 +2,7 @@ package vn.edu.usth.spotify;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,9 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +63,10 @@ public class SongList extends Fragment  {
         // Reference the kill playlist button
         ImageButton kill_playlist_btn = view.findViewById(R.id.kill_playlist_btn);
 
-        RelativeLayout relativeLayout = view.findViewById(R.id.boundedRelativeLayout);
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intothenight);
-
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intothenight);
+//        ImageView album_cover = view.findViewById(R.id.images);
+//        String imageUrl = "https://i.scdn.co/image/ab67616d0000b273c98af859e9b24d3a6c1c72bb?fbclid=IwAR3qvm4wNTRUEbEtkZd4zAFMvSgCdevfQnfSgUAmxrr9oIh7PyPWb4M0RlI";
+        setImage(view, "https://i.scdn.co/image/ab67616d0000b273c98af859e9b24d3a6c1c72bb?fbclid=IwAR3qvm4wNTRUEbEtkZd4zAFMvSgCdevfQnfSgUAmxrr9oIh7PyPWb4M0RlI");
         MusicActivity activity = (MusicActivity) getActivity();
 
         RecyclerView songListRecyclerView = view.findViewById(R.id.SongListRecyclerView);
@@ -81,7 +85,7 @@ public class SongList extends Fragment  {
         songListRecyclerView.setAdapter(songListAdapter);
 
         assert activity != null;
-        relativeLayout.setBackground(activity.getGradientDrawable(bitmap));
+        // relativeLayout.setBackground(activity.getGradientDrawable(bitmap));
 
         kill_playlist_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +168,7 @@ public class SongList extends Fragment  {
                     player.setImageResource(R.drawable.playlist_pause);
                     MusicActivity musicActivity = (MusicActivity) getActivity();
                     if (musicActivity != null) {
-                        musicActivity.APICall("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
+                        musicActivity.APICall("https://api.spotify.com/v1/albums/6KUcTXmg2VkUuHDtWcjSrd");
                     }
                 }
                 else{
@@ -213,6 +217,37 @@ public class SongList extends Fragment  {
 
         return view;
     }
+
+    private void setImage(View view, String imageURl) {
+        MusicActivity musicActivity = (MusicActivity) getActivity();
+        if (musicActivity != null) {
+            ImageView album_cover = view.findViewById(R.id.images);
+            Picasso.get().load(imageURl).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    album_cover.setImageBitmap(bitmap);
+                    MusicActivity activity = (MusicActivity) getActivity();
+                    if (activity != null) {
+                        view.setBackground(activity.getGradientDrawable(bitmap));
+                    }
+                    Log.i("SongList", "bitmap loaded");
+                }
+
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            });
+
+        }
+    }
+
+
 }
 
 
