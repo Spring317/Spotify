@@ -2,16 +2,19 @@ package vn.edu.usth.spotify;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.net.URI;
 import java.util.List;
 
 public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongListViewHolder> {
@@ -36,12 +39,14 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
     public class SongListViewHolder extends RecyclerView.ViewHolder {
         private TextView mText_1;
         private TextView mText_2;
+        private Uri uri;
         // Demo
         public SongListViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mText_1 = itemView.findViewById(R.id.song_name);
             mText_2 = itemView.findViewById(R.id.author_name);
+
         }
     }
 
@@ -49,6 +54,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
     public void onBindViewHolder(@NonNull SongListAdapter.SongListViewHolder holder, int position) {
         holder.mText_1.setText(itemSongListList.get(position).getSongName());
         holder.mText_2.setText(itemSongListList.get(position).getAuthorName());
+        holder.uri = itemSongListList.get(position).getUri();
         holder.mText_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +100,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
                 Log.i(TAG, "Pressed");
             }
         });
+
+
     }
 
     @Override
