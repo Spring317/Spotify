@@ -164,7 +164,7 @@ public class SongList extends Fragment  {
                     player.setImageResource(R.drawable.playlist_pause);
                     MusicActivity musicActivity = (MusicActivity) getActivity();
                     if (musicActivity != null) {
-                        musicActivity.APICall("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
+//                        musicActivity.APICall("https://api.spotify.com/v1/albums/4aawyAB9vmqN3uQ7FjRGTy");
                     }
                 }
                 else{
