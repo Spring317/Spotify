@@ -69,7 +69,10 @@
                     android:paddingTop="17dp"
                     android:paddingEnd="7dp"
                     android:src="@drawable/ic_search_small"
-                    app:tint="@color/white">
+                    app:tint="@color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:id="@+id/switch_button">
 
                 </ImageView>
 
