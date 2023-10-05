@@ -8,15 +8,17 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import androidx.palette.graphics.Palette;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -27,8 +29,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -144,33 +149,61 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     // Func to request data
-    public void APICall(String url){
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Authorization","Bearer " + accessToken)
-                .build();
-        Log.i("APICall", "APICall: Started");
-        Call mCall = mOkHttpClient.newCall(request);
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.i("APICall", "onFailure: Failed");
-            }
 
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+    private class APICallTask extends AsyncTask<String, Void, JSONObject> {
 
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(response.body().string());
-                    getJSONObject(jsonObject);
-                    Log.i("APICall", "onResponse: Success having jsonObject");
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+        private vn.edu.usth.spotify.Callback callback;
+
+        public APICallTask(vn.edu.usth.spotify.Callback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            String url = params[0];
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("Authorization", "Bearer " + accessToken)
+                    .build();
+
+            Log.i("APICall", "APICall: Started");
+
+            try {
+                Response response = mOkHttpClient.newCall(request).execute();
+
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseBody);
+                    Log.i("APICall", "onResponse: Success having jsonObject " + jsonObject.toString());
+                    return jsonObject;
+
+                } else {
+                    Log.e("APICall", "API call failed");
                 }
+            } catch (IOException | JSONException e) {
+                throw new RuntimeException(e);
             }
-        });
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            if (jsonObject != null) {
+                // getJSONObject(jsonObject);
+                callback.onAPICallComplete(jsonObject);
+                Log.i("APICall", "Delivered jsonObject");
+            } else {
+                Log.i("APICall", "API call failed or JSON parsing error");
+            }
+        }
     }
+
+    public void makeAPICall(String url, vn.edu.usth.spotify.Callback callback) {
+        APICallTask task = new APICallTask(callback);
+        task.execute(url);
+    }
+
 
 
     public GradientDrawable getGradientDrawable(Bitmap picBit) {
@@ -250,14 +283,6 @@ public class MusicActivity extends AppCompatActivity {
         Log.i(TAG, "All frags_2b_kill and TabLayout has been restored");
     }
 
-    private void getJSONObject(JSONObject jsonObject){
-        this.jsonObject = jsonObject;
-    }
-
-    private JSONObject setJSONObject(){
-        return jsonObject;
-    }
-
     public void restoreViewPager() {
         viewPager.setVisibility(View.VISIBLE);
         Log.i(TAG, "ViewPager restored");
@@ -288,6 +313,4 @@ public class MusicActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(TAG, "onDestroy: Destroyed");
     }
-
-
 }
