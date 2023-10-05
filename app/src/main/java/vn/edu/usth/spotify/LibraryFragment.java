@@ -1,5 +1,7 @@
 package vn.edu.usth.spotify;
+import android.annotation.SuppressLint;
 import android.media.Image;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -7,12 +9,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +42,7 @@ public class LibraryFragment extends Fragment {
     private boolean menu_clicked = false;
 
     private RecyclerView recyclerView;
+    private ImageView switchButton;
     List<LibraryItem> items;
     public LibraryFragment() {
         // Required empty public constructor
@@ -69,6 +76,7 @@ public class LibraryFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,7 +98,6 @@ public class LibraryFragment extends Fragment {
                 }
             }
         });
-
         recyclerView = view.findViewById(R.id.libraryrecyclerview);
         List<LibraryItem> items = new ArrayList<LibraryItem>();
         items.add(new LibraryItem("Liked Songs", "Playlist", R.drawable.liked_songs));
@@ -109,6 +116,20 @@ public class LibraryFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LibraryAdapter libraryAdapter = new LibraryAdapter(requireContext(),items);
         recyclerView.setAdapter(libraryAdapter);
+
+        switchButton = view.findViewById(R.id.switch_button);
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("SearchFragment", "Click on Searchbar" );
+
+                MusicActivity musicActivity = (MusicActivity) getActivity();
+                if (musicActivity !=null){
+                    musicActivity.popupFragment(new LibrarySearchLayoutFragment());
+                }
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }

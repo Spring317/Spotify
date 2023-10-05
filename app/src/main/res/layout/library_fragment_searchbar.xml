@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:scrollbars="">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#121212"
+            android:gravity="bottom"
+            android:paddingLeft="15dp"
+            >
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/library_search_bar"
+                android:layout_width="320dp"
+                android:layout_height="30dp"
+                android:gravity="left"
+                app:queryHint="Search"
+                android:inputType="text"
+                android:paddingLeft="-10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:background="#242424"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="10dp"
+                android:layout_centerVertical="true"
+                app:iconifiedByDefault="false"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cancelButton"
+                android:layout_toEndOf="@id/library_search_bar"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
+                android:textAlignment="center"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/browse_text"
+            android:gravity="center"
+            android:text="Recent searches"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="15dp">
+
+        </TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/librarySearchListRecyclerView">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/clearHistoryButton"
+            android:layout_width="140dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center|top"
+            android:background="@drawable/ic_search_big"
+            android:text="Clear recent searches"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="10sp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp">
+
+        </Button>
+
+    </LinearLayout>
+
+</ScrollView>
