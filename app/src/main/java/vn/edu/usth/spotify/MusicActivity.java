@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,16 +40,13 @@ import java.util.Objects;
 
 
 public class MusicActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE = 1337;
-    private static final String CLIENT_ID = "484acfe42c7e47a7af199d2af5953628";
-
-    private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
     private String accessToken;
+    private JSONObject jsonObject;
 
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     ViewPager viewPager;
-   
+
     private final List<Fragment> frags_2b_kill = new ArrayList<Fragment>();
 
     private final List<Fragment> frags_2b_hide = new ArrayList<Fragment>();
@@ -61,6 +59,13 @@ public class MusicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_music);
         Log.i(TAG, "onCreate: Success");
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            this.accessToken = extras.getString("accessToken");
+        } else {
+            Log.i(TAG, "NO ACCESS_TOKEN");
+        }
+
         RelativeLayout container = findViewById(R.id.container);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         viewPager = container.findViewById(R.id.view_pager);
@@ -69,13 +74,7 @@ public class MusicActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
 
-        AuthorizationRequest.Builder builder =
-                new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
 
-        builder.setScopes(new String[]{"streaming"});
-        AuthorizationRequest request = builder.build();
-
-        AuthorizationClient.openLoginActivity(this,REQUEST_CODE ,request);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -102,38 +101,7 @@ public class MusicActivity extends AppCompatActivity {
 
     }
 
-    // Func for login (currently by real Spotify)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
 
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, intent);
-
-            Log.i("Connect", "onActivityResult: Success");
-            Log.i("Connect", "onActivityResult: ResultCode" + resultCode);
-            switch (response.getType()) {
-                // Response was successful and contains auth token
-                case TOKEN:
-                    // Handle successful response
-                    this.setAccessToken(response.getAccessToken());
-                    Log.i("Connect", "AccessToken: " + response.getAccessToken());
-                    break;
-
-                // Auth flow returned an error
-                case ERROR:
-                    // Handle error response
-                    Log.i("Connect", "onActivityResult: Error");
-                    break;
-
-                // Most likely auth flow was cancelled
-                default:
-                    // Handle other cases
-            }
-        };
-    }
-    
     // Getter and Setter for access token
     public String getAccessToken(){
         return accessToken;
@@ -142,35 +110,74 @@ public class MusicActivity extends AppCompatActivity {
         this.accessToken = accessToken;
     }
 
-    // Func to request data
-    public void APICall(String url){
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Authorization","Bearer " + accessToken)
-                .build();
-        Log.i("APICall", "APICall: Started");
-        Call mCall = mOkHttpClient.newCall(request);
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.i("APICall", "onFailure: Failed");
-            }
+    /**
+     * This private inner class, APICallTask, extends AsyncTask to perform an API call in the background
+     * and deliver the result to a specified callback.
+     */
+    private class APICallTask extends AsyncTask<String, Void, JSONObject> {
 
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+        private vn.edu.usth.spotify.Callback callback;
 
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(response.body().string());
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+        /**
+         * Constructor for the APICallTask class.
+         *
+         * @param callback The callback to be notified when the API call is complete.
+         */
+        public APICallTask(vn.edu.usth.spotify.Callback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            String url = params[0];
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("Authorization", "Bearer " + accessToken)
+                    .build();
+
+            Log.i("APICall", "APICall: Started");
+
+            try {
+                Response response = mOkHttpClient.newCall(request).execute();
+
+                if (response.isSuccessful()) {
+                    String responseBody = response.body().string();
+                    JSONObject jsonObject = new JSONObject(responseBody);
+                    Log.i("APICall", "onResponse: Success having jsonObject " + jsonObject.toString());
+                    return jsonObject;
+
+                } else {
+                    Log.e("APICall", "API call failed");
                 }
-                Log.i("APICall", "onResponse: " + jsonObject.toString());
-
+            } catch (IOException | JSONException e) {
+                throw new RuntimeException(e);
             }
-        });
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            if (jsonObject != null) {
+                // getJSONObject(jsonObject);
+                callback.onAPICallComplete(jsonObject);
+                Log.i("APICall", "Delivered jsonObject");
+            } else {
+                Log.i("APICall", "API call failed or JSON parsing error");
+            }
+        }
     }
 
+    /**
+     * Initiates an API call using the provided URL and callback.
+     *
+     * @param url      The URL to make the API call to.
+     * @param callback The callback to be notified when the API call is complete.
+     */
+    public void makeAPICall(String url, vn.edu.usth.spotify.Callback callback) {
+        APICallTask task = new APICallTask(callback);
+        task.execute(url);
+    }
 
     public GradientDrawable getGradientDrawable(Bitmap picBit) {
         // Use Palette to extract dominant colors
@@ -249,6 +256,14 @@ public class MusicActivity extends AppCompatActivity {
         Log.i(TAG, "All frags_2b_kill and TabLayout has been restored");
     }
 
+    private void getJSONObject(JSONObject jsonObject){
+        this.jsonObject = jsonObject;
+    }
+
+    public JSONObject setJSONObject(){
+        return jsonObject;
+    }
+
     public void restoreViewPager() {
         viewPager.setVisibility(View.VISIBLE);
         Log.i(TAG, "ViewPager restored");
@@ -272,11 +287,13 @@ public class MusicActivity extends AppCompatActivity {
     }
     protected void onStop(){
         super.onStop();
-        Log.i(TAG, "onStop: Stopped" + this.getAccessToken());
+        Log.i(TAG, "onStop: Stopped");
     }
     @Override
     protected void onDestroy(){
         super.onDestroy();
         Log.i(TAG, "onDestroy: Destroyed");
     }
+
+
 }
