@@ -2,19 +2,19 @@ package vn.edu.usth.spotify;
 
 public class ItemPlaylistTitle {
 
-    private int image;
-    private int playlistTitle;
+    private String image;
+    private String playlistTitle;
 
-    public ItemPlaylistTitle(int image, int playlistTitle) {
+    public ItemPlaylistTitle(String image, String playlistTitle) {
         this.image = image;
         this.playlistTitle = playlistTitle;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public int getPlaylistTitle() {
+    public String getPlaylistTitle() {
         return playlistTitle;
     }
 }

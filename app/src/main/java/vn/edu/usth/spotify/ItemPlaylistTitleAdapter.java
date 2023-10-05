@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class ItemPlaylistTitleAdapter extends RecyclerView.Adapter<ItemPlaylistTitleAdapter.FeaturedChartsViewHolder> {
@@ -50,7 +52,8 @@ public class ItemPlaylistTitleAdapter extends RecyclerView.Adapter<ItemPlaylistT
     @Override
     public void onBindViewHolder(@NonNull ItemPlaylistTitleAdapter.FeaturedChartsViewHolder holder, int position) {
         holder.mText.setText(itemPlaylistTitleList.get(position).getPlaylistTitle());
-        holder.mImageView.setImageResource(itemPlaylistTitleList.get(position).getImage());
+        // holder.mImageView.setImageResource(itemPlaylistTitleList.get(position).getImage());
+        Picasso.get().load(itemPlaylistTitleList.get(position).getImage()).into(holder.mImageView);
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
