@@ -7,10 +7,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +34,9 @@ public class LibraryFragment extends Fragment {
     private String mParam2;
 
     private boolean menu_clicked = false;
+
+    private RecyclerView recyclerView;
+    List<LibraryItem> items;
     public LibraryFragment() {
         // Required empty public constructor
     }
@@ -82,6 +90,25 @@ public class LibraryFragment extends Fragment {
                 }
             }
         });
+
+        recyclerView = view.findViewById(R.id.libraryrecyclerview);
+        List<LibraryItem> items = new ArrayList<LibraryItem>();
+        items.add(new LibraryItem("Liked Songs", "Playlist", R.drawable.liked_songs));
+        items.add(new LibraryItem("Top Gaming Tracks", "Playlist", R.drawable.img2));
+        items.add(new LibraryItem("Dance Hits", "Album", R.drawable.img3));
+        items.add(new LibraryItem("Pop shots", "Album", R.drawable.img4));
+        items.add(new LibraryItem("Your Summer Rewind", "Album", R.drawable.img5));
+        items.add(new LibraryItem("Dinner And Chill", "Album", R.drawable.img8));
+        items.add(new LibraryItem("Coffee Table Jazz", "Album", R.drawable.img13));
+        items.add(new LibraryItem("Release Radar", "Album", R.drawable.img16));
+
+
+
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setHasFixedSize(true);
+        LibraryAdapter libraryAdapter = new LibraryAdapter(requireContext(),items);
+        recyclerView.setAdapter(libraryAdapter);
         // Inflate the layout for this fragment
         return view;
     }
@@ -93,4 +120,3 @@ public class LibraryFragment extends Fragment {
         inflater.inflate(R.menu.menu_appbar, menu);
     }
 }
-
