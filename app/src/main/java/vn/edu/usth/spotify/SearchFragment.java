@@ -2,9 +2,12 @@ package vn.edu.usth.spotify;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +36,19 @@ public class SearchFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         SearchAdapter searchAdapter = new SearchAdapter(requireContext(),datas);
         recyclerView.setAdapter(searchAdapter);
-//        recyclerView.setAdapter(new SearchAdapter(requireContext(),datas));
+
+        TextView search_bar = view.findViewById(R.id.search_bar);
+        search_bar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("SearchFragment", "Click on Searchbar" );
+
+                MusicActivity musicActivity = (MusicActivity) getActivity();
+                if (musicActivity !=null){
+                    musicActivity.popupFragment(new SearchLayout());
+                }
+            }
+        });
 
         return view;
     }
