@@ -4,15 +4,16 @@ public class ItemSongList {
     String songName;
     String authorName;
     String url;
-
     String uri;
+    int positionInList;
 
-
-    public ItemSongList(String songName, String authorName, String url, String uri) {
+    public ItemSongList(String songName, String authorName, String url, String uri, int positionInList) {
         this.songName = songName;
         this.authorName = authorName;
         this.url = url;
         this.uri = uri;
+        this.positionInList = positionInList;
+
     }
 
     public String getSongName() {
@@ -29,5 +30,9 @@ public class ItemSongList {
 
     public String getUri() {
         return uri;
+    }
+
+    public Integer getPosition() {
+        return positionInList;
     }
 }

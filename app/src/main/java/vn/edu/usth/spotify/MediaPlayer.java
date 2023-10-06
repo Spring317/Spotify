@@ -59,21 +59,31 @@ public class MediaPlayer extends Fragment {
     // Declare direction of view pager
     private int viewPagerDirection = 0;
 
-    // Declare SongList
-    private List<ItemSongList> SongList = new ArrayList<>();
+    List<String> tracksUrl;
+    List<String> tracksUri;
+    Integer positionInList;
 
-    public MediaPlayer(String url){
+    public MediaPlayer(String url, List<String> tracksUrl, List<String> tracksUri, int positionInList){
         this.url = url;
+        this.tracksUrl = tracksUrl;
+        this.tracksUri = tracksUri;
+        this.positionInList = positionInList;
+
+        Log.i(TAG1, "MediaPlayer: url: " + this.url);
+        Log.i(TAG1, "MediaPlayer: tracksUrl: " + this.tracksUrl);
+        Log.i(TAG1, "MediaPlayer: tracksUri: " + this.tracksUri);
+        Log.i(TAG1, "MediaPlayer: positionInList: " + this.positionInList);
     }
 
     @Override
     public void onDestroy() {
-
         // Restore the viewpager and TabLayout
         MusicActivity musicActivity = (MusicActivity) getActivity();
         if (musicActivity != null) {
             musicActivity.restoreFragmentsAndTabLayout();
         }
+
+        isStopped = true;
 
         super.onDestroy();
 
@@ -91,9 +101,7 @@ public class MediaPlayer extends Fragment {
         MusicActivity musicActivity = (MusicActivity) getActivity();
         assert musicActivity != null;
 
-        Log.i(TAG1, "onCreateView: SongList" + SongList);
-
-        // Url from API
+        // Url from API (First time initialize)
         UpdateValue(url);
 
         // Initialize songPicPagerAdapter and songPicPager
@@ -194,17 +202,37 @@ public class MediaPlayer extends Fragment {
         isStopped = true; // Old thread will be kill within 0.3 secs
         song_current_percent = 0; // Reset song progress
 
+        // Reference current MusicActivity
+        MusicActivity musicActivity = (MusicActivity) getActivity();
+        assert musicActivity != null;
+
+
         if (isSwipeRight > 0) {
             Log.i("SongPicPager", "User swiped right");
 
             // Call function to update all the value
-            UpdateValue("https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl");
+            changePosition(1);
+            UpdateValue(tracksUrl.get(positionInList));
+            musicActivity.playSong(tracksUri.get(positionInList));
         }
         else {
             Log.i("SongPicPager", "User swiped left");
 
             // Call function to update all the value
-            UpdateValue(url);
+            changePosition(-1);
+            UpdateValue(tracksUrl.get(positionInList));
+            musicActivity.playSong(tracksUri.get(positionInList));
+        }
+    }
+
+    private void changePosition(Integer value) {
+        positionInList += value;
+
+        // Normalize to repeat list play
+        if (positionInList < 0) {
+            positionInList = tracksUrl.size() - 1;
+        } else if (positionInList > tracksUrl.size() - 1) {
+            positionInList = 0;
         }
     }
 

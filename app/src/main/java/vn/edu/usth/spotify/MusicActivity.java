@@ -382,38 +382,4 @@ public class MusicActivity extends AppCompatActivity {
     public void seekTo(int position) {
         mSpotifyAppRemote.getPlayerApi().seekTo(position);
     }
-
-//    // Subscribe to Player State(get current track)
-//    public void subscribeToPlayerState() {
-//        mSpotifyAppRemote.getPlayerApi()
-//                .subscribeToPlayerState()
-//                .setEventCallback(playerState -> {
-//                    final Track track = playerState.track;
-//                    if (track != null) {
-//                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-//                    }
-//                });
-//    }
-//
-//    // Subscribe to Player Context(get current context)
-//    public void subscribeToPlayerContext() {
-//        mSpotifyAppRemote.getPlayerApi()
-//                .subscribeToPlayerContext()
-//                .setEventCallback(playerContext -> {
-//                    final String title = playerContext.title;
-//                    if (title != null) {
-//                        Log.d("MainActivity", title);
-//                    }
-//                });
-//    }
-//
-//    // Subscribe to Player State(get current playback speed)
-//    public void getPlaybackSpeed() {
-//        mSpotifyAppRemote.getPlayerApi()
-//                .getPlayerState()
-//                .setResultCallback(playerState -> {
-//                    final float playbackSpeed = playerState.playbackSpeed;
-//                    Log.d("MainActivity", String.valueOf(playbackSpeed));
-//                });
-//    }
 }

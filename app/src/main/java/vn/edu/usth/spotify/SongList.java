@@ -35,6 +35,9 @@ import java.util.List;
 
 public class SongList extends Fragment {
 
+    List<String> tracksUrl = new ArrayList<>();
+    List<String> tracksUri = new ArrayList<>();
+
     String url;
     String type;
     boolean liked = false;
@@ -49,6 +52,14 @@ public class SongList extends Fragment {
 
     public SongList() {
         this("https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n", "playlist");
+    }
+
+    public List<String> getTracksUrl() {
+        return tracksUrl;
+    }
+
+    public List<String> getTracksUri() {
+        return tracksUri;
     }
 
     @Override
@@ -82,8 +93,6 @@ public class SongList extends Fragment {
 
         // Reference the kill playlist button
         ImageButton kill_playlist_btn = view.findViewById(R.id.kill_playlist_btn);
-
-        getAlbumInformation(url);
 
         kill_playlist_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,23 +257,24 @@ public class SongList extends Fragment {
                             TrackArtists.append(artists.getJSONObject(artists.length() - 1).getString("name"));
 
                             // Get urls from jsonObj
-//                            String url = items.getJSONObject(i).getString("href");
                             String url = items.getJSONObject(i).getString("href");
 
                             String uri = items.getJSONObject(i).getString("uri");
-                            // Add items to recycler view
 
-                            songListList.add(new ItemSongList(songName, TrackArtists.toString(), url, uri));
+                            tracksUrl.add(url);
+                            tracksUri.add(uri);
+
+                            // Add items to recycler view
+                            songListList.add(new ItemSongList(songName, TrackArtists.toString(), url, uri, i));
 
 
                             Log.i("AlbumList", "onAPICallComplete: " + url);
-
-                            SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList);
-
-                            songListRecyclerView.setAdapter(songListAdapter);
-
-                            Log.i("AlbumListContext", "onAPICallComplete: " + tracks.toString());
                         }
+                        SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList, tracksUrl, tracksUri);
+
+                        songListRecyclerView.setAdapter(songListAdapter);
+
+                        Log.i("AlbumListContext", "onAPICallComplete: " + tracks);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -279,7 +289,7 @@ public class SongList extends Fragment {
         Log.i("SongList", "getPlaylist: Started");
         MusicActivity musicActivity = (MusicActivity) getActivity();
         if (musicActivity != null) {
-            musicActivity.makeAPICall(url, new Callback() {
+            musicActivity.makeAPICall(playlistUrl, new Callback() {
                 @Override
                 public void onAPICallComplete(JSONObject jsonObject) {
                     try {
@@ -327,20 +337,21 @@ public class SongList extends Fragment {
 
                             // Get urls from jsonObj
                             String url = track.getString("href");
-
                             String uri = track.getString("uri");
 
+                            tracksUrl.add(url);
+                            tracksUri.add(uri);
+
                             // Add items to recycler view
-                            songListList.add(new ItemSongList(songName, TrackArtists.toString(), url, uri));
+                            songListList.add(new ItemSongList(songName, TrackArtists.toString(), url, uri, i));
 
                             Log.i("Playlist", "onAPICallComplete: " + url);
-
-                            SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList);
-
-                            songListRecyclerView.setAdapter(songListAdapter);
-
-                            Log.i("PlaylistContext", "onAPICallComplete: " + tracks.toString());
                         }
+                        SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList, tracksUrl, tracksUri);
+
+                        songListRecyclerView.setAdapter(songListAdapter);
+
+                        Log.i("PlaylistContext", "onAPICallComplete: " + tracks);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }

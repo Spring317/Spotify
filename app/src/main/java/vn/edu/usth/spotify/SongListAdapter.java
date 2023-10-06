@@ -22,11 +22,17 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
     private String TAG = "SongList Button";
     private Context context;
     private List<ItemSongList> itemSongListList;
+
+    List<String> tracksUrl;
+    List<String> tracksUri;
+
     private TextView currentClickedTextView = null;
 
-    public SongListAdapter(Context context, List<ItemSongList> itemSongListList) {
+    public SongListAdapter(Context context, List<ItemSongList> itemSongListList, List<String> tracksUrl, List<String> tracksUri) {
         this.itemSongListList = itemSongListList;
         this.context = context;
+        this.tracksUrl = tracksUrl;
+        this.tracksUri = tracksUri;
     }
 
     @NonNull
@@ -43,7 +49,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
 
         private String uri;
 
-        private LoginActivity loginActivity = new LoginActivity();
+        Integer positionInList;
+
         // Demo
         public SongListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,12 +67,13 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
         holder.mText_2.setText(itemSongListList.get(position).getAuthorName());
         holder.url = itemSongListList.get(position).getUrl();
         holder.uri = itemSongListList.get(position).getUri();
+        holder.positionInList = itemSongListList.get(position).getPosition();
         holder.mText_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (context instanceof MusicActivity) {
                     MusicActivity activity = (MusicActivity) context;
-                    MediaPlayer mediaPlayer = new MediaPlayer(holder.url);
+                    MediaPlayer mediaPlayer = new MediaPlayer(holder.url, tracksUrl, tracksUri, holder.positionInList);
 
 
                     Log.i(TAG, "onClick: "+ holder.uri);
@@ -94,7 +102,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
             public void onClick(View view) {
                 if (context instanceof MusicActivity) {
                     MusicActivity activity = (MusicActivity) context;
-                    MediaPlayer mediaPlayer = new MediaPlayer(holder.url);
+                    MediaPlayer mediaPlayer = new MediaPlayer(holder.url, tracksUrl, tracksUri, holder.positionInList);
                     activity.popupFragment(mediaPlayer);
                     activity.hideFragmentsAndTabLayout();
                     activity.playSong(holder.uri);
