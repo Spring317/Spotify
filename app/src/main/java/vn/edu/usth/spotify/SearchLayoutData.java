@@ -4,10 +4,18 @@ public class SearchLayoutData {
     String image;
     String name;
     String declare;
-    public SearchLayoutData(String image, String name, String declare) {
+    Integer positionInList;
+
+    String url;
+    String uri;
+
+    public SearchLayoutData(String image, String name, String declare, String url, String uri, Integer positionInList) {
         this.image = image;
         this.name = name;
         this.declare = declare;
+        this.positionInList = positionInList;
+        this.url = url;
+        this.uri = uri;
     }
     public String getImage() {
         return image;
@@ -31,5 +39,16 @@ public class SearchLayoutData {
 
     public void setDeclare(String declare) {
         this.declare = declare;
+    }
+    public Integer getPosition() {
+        return positionInList;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getUri() {
+        return uri;
     }
 }

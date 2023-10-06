@@ -13,6 +13,13 @@ public class SearchViewHolder extends RecyclerView.ViewHolder {
     ImageButton image2;
     ImageView image;
     TextView name, declare;
+
+    Integer position;
+
+    String url;
+
+    String uri;
+
     public SearchViewHolder(@NonNull View itemView) {
         super(itemView);
         image1 = itemView.findViewById(R.id.image1);

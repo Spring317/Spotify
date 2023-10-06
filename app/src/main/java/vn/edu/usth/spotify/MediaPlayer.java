@@ -85,6 +85,8 @@ public class MediaPlayer extends Fragment {
 
         isStopped = true;
 
+        musicActivity.pauseSong();
+
         super.onDestroy();
 
         Log.i(TAG1, "View destroyed");

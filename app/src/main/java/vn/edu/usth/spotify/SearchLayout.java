@@ -25,6 +25,10 @@ import java.util.List;
 
 public class SearchLayout extends Fragment {
     private String apiUrl = "";
+
+    private List<String> tracksUrl = new ArrayList<>();
+    private List<String> tracksUri = new ArrayList<>();
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -82,16 +86,23 @@ public class SearchLayout extends Fragment {
                                         JSONArray images = album.getJSONArray("images");
                                         String imageURL = images.getJSONObject(0).getString("url");
 
+                                        String trackUrl = items.getJSONObject(i).getString("href");
+                                        String trackUri = items.getJSONObject(i).getString("uri");
+
+                                        tracksUrl.add(trackUrl);
+                                        tracksUri.add(trackUri);
+
+
                                         Log.i("tracksName", tracksName);
                                         Log.i("artistsName", artistsName);
                                         Log.i("imageUrl", imageURL);
 
-                                        datas2.add(new SearchLayoutData(imageURL, tracksName, artistsName));
-                                        // Add datas to recyclerview
-                                        SearchLayoutAdapter searchLayoutAdapter = new SearchLayoutAdapter(requireContext(),datas2);
-                                        recyclerView2.setAdapter(searchLayoutAdapter);
+                                        datas2.add(new SearchLayoutData(imageURL, tracksName, artistsName, trackUrl, trackUri, i));
                                     }
 
+                                    // Add datas to recyclerview
+                                    SearchLayoutAdapter searchLayoutAdapter = new SearchLayoutAdapter(requireContext(),datas2, tracksUrl, tracksUri);
+                                    recyclerView2.setAdapter(searchLayoutAdapter);
 
                                 } catch (JSONException e) {
                                     throw new RuntimeException(e);
