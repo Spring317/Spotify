@@ -74,10 +74,10 @@ public class SongList extends Fragment {
 //        ImageView album_cover = view.findViewById(R.id.images);
 //        String imageUrl = "https://i.scdn.co/image/ab67616d0000b273c98af859e9b24d3a6c1c72bb?fbclid=IwAR3qvm4wNTRUEbEtkZd4zAFMvSgCdevfQnfSgUAmxrr9oIh7PyPWb4M0RlI";
 
-        getImageURL(albumUrl);
-        getAlbumName(albumUrl);
-        getAlbumArtist(albumUrl);
-        getAlbumListContext(albumUrl);
+        getAlbumInformation(albumUrl);
+//        getAlbumName(albumUrl);
+//        getAlbumArtist(albumUrl);
+//        getAlbumListContext(albumUrl);
 
 //        getAlbumListContext(albumUrl);
 
@@ -232,92 +232,49 @@ public class SongList extends Fragment {
 
     }
 
-    public void getImageURL(String albumUrl) {
+    public void getAlbumInformation(String albumUrl) {
         Log.i("SongList", "getImageURL: Started");
         MusicActivity musicActivity = (MusicActivity) getActivity();
-        String imageUrl = "";
         if (musicActivity != null) {
             musicActivity.makeAPICall(albumUrl, new Callback() {
                 @Override
                 public void onAPICallComplete(JSONObject jsonObject) {
                     try {
-
+                        // Create array to store images data from API
                         imageArray = jsonObject.getJSONArray("images");
-                        Log.i("SongList", "image url: Completed " + imageArray.getJSONObject(0).getString("url"));
 
-                        setImage(getView(), imageArray.getJSONObject(0).getString("url"));
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            });
-        }
-    }
-
-    public void getAlbumName(String albumUrl) {
-        MusicActivity musicActivity = (MusicActivity) getActivity();
-        if (musicActivity != null) {
-            musicActivity.makeAPICall(albumUrl, new Callback() {
-                @Override
-                public void onAPICallComplete(JSONObject jsonObject) {
-                    try {
+                        //Set album name
                         String albumName = jsonObject.getString("name");
                         TextView AlbumName = getView().findViewById(R.id.album_name);
                         AlbumName.setText(albumName);
-                        Log.i("AlbumNameArray", "onAPICallComplete: " + albumName);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
 
-                }
-            });
-        }
-    }
-
-    public void getAlbumArtist(String albumUrl) {
-        MusicActivity musicActivity = (MusicActivity) getActivity();
-        if (musicActivity != null) {
-            musicActivity.makeAPICall(albumUrl, new Callback() {
-                @Override
-                public void onAPICallComplete(JSONObject jsonObject) {
-                    try {
-                        artistsArray = jsonObject.getJSONArray("artists");
                         // Get artists from jsonObj
+                        artistsArray = jsonObject.getJSONArray("artists");
                         StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 0; i < artistsArray.length() - 1; i ++) {
-                            stringBuilder.append(artistsArray.getJSONObject(i).getString("name")).append(", ");
-                        }
-                        stringBuilder.append(artistsArray.getJSONObject(artistsArray.length() - 1).getString("name"));
-                        String artistName = stringBuilder.toString();
-
-                        TextView ArtistName = getView().findViewById(R.id.artist_name);
-                        ArtistName.setText(artistName);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            });
-        }
-    }
-
-    public void getAlbumListContext(String albumUrl) {
-        MusicActivity musicActivity = (MusicActivity) getActivity();
-        if (musicActivity != null) {
-            musicActivity.makeAPICall(albumUrl, new Callback() {
-                @Override
-                public void onAPICallComplete(JSONObject jsonObject) {
-                    try {
-
                         JSONObject tracks = jsonObject.getJSONObject("tracks");
                         JSONArray items = tracks.getJSONArray("items");
 
+                        // Set up recycler view
                         RecyclerView songListRecyclerView = getView().findViewById(R.id.SongListRecyclerView);
                         songListRecyclerView.setHasFixedSize(true);
                         songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
                         List<ItemSongList> songListList = new ArrayList<>();
+
+                        for (int i = 0; i < artistsArray.length() - 1; i ++) {
+
+                            stringBuilder.append(artistsArray.getJSONObject(i).getString("name")).append(", ");
+                        }
+
+                        stringBuilder.append(artistsArray.getJSONObject(artistsArray.length() - 1).getString("name"));
+                        String artistName = stringBuilder.toString();
+
+                        TextView ArtistName = getView().findViewById(R.id.artist_name);
+                        ArtistName.setText(artistName);
+
+                        Log.i("SongList", "image url: Completed " + imageArray.getJSONObject(0).getString("url"));
+
+                        setImage(getView(), imageArray.getJSONObject(0).getString("url"));
 
                         for (int i = 0; i < items.length(); i++) {
                             //Get song names from jsonObj
@@ -325,12 +282,10 @@ public class SongList extends Fragment {
 
                             // Get artists from jsonObj
                             JSONArray artists = items.getJSONObject(i).getJSONArray("artists");
-                            StringBuilder stringBuilder = new StringBuilder();
-                            for (int j = 0; j < artists.length() - 1; j ++) {
+                            for (int j = 0; j < artists.length() - 1; j++) {
                                 stringBuilder.append(artists.getJSONObject(j).getString("name")).append(", ");
                             }
                             stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
-                            String artistName = stringBuilder.toString();
 
                             // Get urls from jsonObj
                             String url = items.getJSONObject(i).getString("href");
@@ -345,12 +300,14 @@ public class SongList extends Fragment {
                             songListRecyclerView.setAdapter(songListAdapter);
 
                             Log.i("AlbumListContext", "onAPICallComplete: " + tracks.toString());
+
+
                         }
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                }
 
+                }
             });
         }
     }
