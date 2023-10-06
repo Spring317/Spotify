@@ -78,7 +78,7 @@ public class ItemPlaylistTitleAdapter extends RecyclerView.Adapter<ItemPlaylistT
                         // Animation has ended, now you can call popupFragment
                         if (context instanceof MusicActivity) {
                             MusicActivity activity = (MusicActivity) context;
-                            SongList songList = new SongList();
+                            SongList songList = new SongList(holder.url, holder.type);
                             activity.popupFragment(songList);
                         }
                     }
@@ -101,7 +101,7 @@ public class ItemPlaylistTitleAdapter extends RecyclerView.Adapter<ItemPlaylistT
             public void onClick(View view) {
                 if (context instanceof MusicActivity) {
                     MusicActivity activity = (MusicActivity) context;
-                    SongList songList = new SongList();
+                    SongList songList = new SongList(holder.url, holder.type);
                     activity.popupFragment(songList);
                 }
 

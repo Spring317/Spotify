@@ -47,6 +47,10 @@ public class SongList extends Fragment {
         this.type = type;
     }
 
+    public SongList() {
+        this("https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n", "playlist");
+    }
+
     @Override
     public void onDestroy() {
         MusicActivity activity = (MusicActivity) getActivity();
