@@ -70,19 +70,7 @@ public class SongList extends Fragment {
         // Reference the kill playlist button
         ImageButton kill_playlist_btn = view.findViewById(R.id.kill_playlist_btn);
 
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intothenight);
-//        ImageView album_cover = view.findViewById(R.id.images);
-//        String imageUrl = "https://i.scdn.co/image/ab67616d0000b273c98af859e9b24d3a6c1c72bb?fbclid=IwAR3qvm4wNTRUEbEtkZd4zAFMvSgCdevfQnfSgUAmxrr9oIh7PyPWb4M0RlI";
-
         getAlbumInformation(albumUrl);
-//        getAlbumName(albumUrl);
-//        getAlbumArtist(albumUrl);
-//        getAlbumListContext(albumUrl);
-
-//        getAlbumListContext(albumUrl);
-
-
-//         relativeLayout.setBackground(activity.getGradientDrawable(bitmap));
 
         kill_playlist_btn.setOnClickListener(new View.OnClickListener() {
             @Override

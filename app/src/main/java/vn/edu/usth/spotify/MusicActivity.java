@@ -301,10 +301,14 @@ public class MusicActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
+
+        pauseSong();
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+
         Log.i(TAG, "onDestroy: Destroyed");
     }
 
-    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
+    private static final String CLIENT_ID = "484acfe42c7e47a7af199d2af5953628";
     private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
     private SpotifyAppRemote mSpotifyAppRemote;
@@ -379,39 +383,37 @@ public class MusicActivity extends AppCompatActivity {
         mSpotifyAppRemote.getPlayerApi().seekTo(position);
     }
 
-    // Subscribe to Player State(get current track)
-    public void subscribeToPlayerState() {
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                    }
-                });
-    }
-
-    // Subscribe to Player Context(get current context)
-    public void subscribeToPlayerContext() {
-        mSpotifyAppRemote.getPlayerApi()
-                .subscribeToPlayerContext()
-                .setEventCallback(playerContext -> {
-                    final String title = playerContext.title;
-                    if (title != null) {
-                        Log.d("MainActivity", title);
-                    }
-                });
-    }
-
-    // Subscribe to Player State(get current playback speed)
-    public void getPlaybackSpeed() {
-        mSpotifyAppRemote.getPlayerApi()
-                .getPlayerState()
-                .setResultCallback(playerState -> {
-                    final float playbackSpeed = playerState.playbackSpeed;
-                    Log.d("MainActivity", String.valueOf(playbackSpeed));
-                });
-    }
-
-
+//    // Subscribe to Player State(get current track)
+//    public void subscribeToPlayerState() {
+//        mSpotifyAppRemote.getPlayerApi()
+//                .subscribeToPlayerState()
+//                .setEventCallback(playerState -> {
+//                    final Track track = playerState.track;
+//                    if (track != null) {
+//                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+//                    }
+//                });
+//    }
+//
+//    // Subscribe to Player Context(get current context)
+//    public void subscribeToPlayerContext() {
+//        mSpotifyAppRemote.getPlayerApi()
+//                .subscribeToPlayerContext()
+//                .setEventCallback(playerContext -> {
+//                    final String title = playerContext.title;
+//                    if (title != null) {
+//                        Log.d("MainActivity", title);
+//                    }
+//                });
+//    }
+//
+//    // Subscribe to Player State(get current playback speed)
+//    public void getPlaybackSpeed() {
+//        mSpotifyAppRemote.getPlayerApi()
+//                .getPlayerState()
+//                .setResultCallback(playerState -> {
+//                    final float playbackSpeed = playerState.playbackSpeed;
+//                    Log.d("MainActivity", String.valueOf(playbackSpeed));
+//                });
+//    }
 }
