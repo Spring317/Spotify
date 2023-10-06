@@ -60,10 +60,6 @@ public class MediaPlayer extends Fragment {
         this.url = url;
     }
 
-    public MediaPlayer() {
-        this("https://api.spotify.com/v1/tracks/5uyNAX6MazVAjBjVeOsTvp");
-    }
-
     @Override
     public void onDestroy() {
 
