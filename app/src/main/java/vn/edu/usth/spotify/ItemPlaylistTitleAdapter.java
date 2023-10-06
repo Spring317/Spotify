@@ -40,6 +40,8 @@ public class ItemPlaylistTitleAdapter extends RecyclerView.Adapter<ItemPlaylistT
     public class FeaturedChartsViewHolder extends RecyclerView.ViewHolder {
         private ImageView mImageView;
         private TextView mText;
+        private String url;
+        private String type;
         // Demo
         public FeaturedChartsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -54,6 +56,8 @@ public class ItemPlaylistTitleAdapter extends RecyclerView.Adapter<ItemPlaylistT
         holder.mText.setText(itemPlaylistTitleList.get(position).getPlaylistTitle());
         // holder.mImageView.setImageResource(itemPlaylistTitleList.get(position).getImage());
         Picasso.get().load(itemPlaylistTitleList.get(position).getImage()).into(holder.mImageView);
+        holder.url = itemPlaylistTitleList.get(position).getUrl();
+        holder.type = itemPlaylistTitleList.get(position).getType();
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,18 +66,36 @@ public class ItemPlaylistTitleAdapter extends RecyclerView.Adapter<ItemPlaylistT
                 animation.setDuration(200); // Set the duration of the animation in milliseconds
                 animation.setInterpolator(new DecelerateInterpolator());
 
+                // Add an animation listener to listen for the end of the animation
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation has started
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation has ended, now you can call popupFragment
+                        if (context instanceof MusicActivity) {
+                            MusicActivity activity = (MusicActivity) context;
+                            SongList songList = new SongList();
+                            activity.popupFragment(songList);
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Animation has repeated
+                    }
+                });
+
                 // Apply the animation to the ImageView
                 holder.mImageView.startAnimation(animation);
-
-                if (context instanceof MusicActivity) {
-                    MusicActivity activity = (MusicActivity) context;
-                    SongList songList = new SongList();
-                    activity.popupFragment(songList);
-                }
 
                 Log.i(TAG, "Pressed");
             }
         });
+
         holder.mText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -27,6 +27,8 @@ import java.util.List;
 // Demo
 public class HomeFragment extends Fragment {
 
+    private final String TAG = "HomeFragment";
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -34,7 +36,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("HomeFragment", "View Destroyed");
+        Log.i(TAG, "View Destroyed");
     }
 
     @Override
@@ -54,21 +56,13 @@ public class HomeFragment extends Fragment {
         if (musicActivity != null) {
             // Initiate an API call to retrieve information about a Spotify album using the makeAPICall method
             // and provide a callback to handle the API call result.
-            musicActivity.makeAPICall("https://api.spotify.com/v1/albums/5jDZKqgoVRbob6A3omYTG5", new Callback() {
+            musicActivity.makeAPICall("https://api.spotify.com/v1/browse/featured-playlists?limit=15", new Callback() {
                 @Override
                 public void onAPICallComplete(JSONObject jsonObject) {
                     if (jsonObject != null) {
                         // Log the received JSON object for debugging purposes
-                        Log.i("jsonObject", jsonObject.toString());
+                        Log.i(TAG, "New Releases: " + jsonObject);
                         try {
-                            // Extract relevant information from the JSON object
-                            String playlistName = jsonObject.getString("name");
-                            JSONArray imageArray = jsonObject.getJSONArray("images");
-                            String imageURL = imageArray.getJSONObject(0).getString("url");
-
-                            // Log the extracted playlist name and image URL
-                            Log.i("playlistName", playlistName);
-                            Log.i("imageUrl", imageURL);
 
                             // Initialize and configure RecyclerViews for different playlists
                             // (e.g., "tSE", "featured charts", "trending now") with the extracted data.
@@ -80,16 +74,30 @@ public class HomeFragment extends Fragment {
 
                             List<ItemPlaylistTitle> tSEList = new ArrayList<>();
 
-                            // Add items to the tSEList based on the extracted data
-                            tSEList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            tSEList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            tSEList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            tSEList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            tSEList.add(new ItemPlaylistTitle(imageURL, playlistName));
+                            JSONObject albumsArray = jsonObject.getJSONObject("playlists");
+                            JSONArray itemArray = albumsArray.getJSONArray("items");
 
-                            // Create and set an adapter for the tSE RecyclerView
-                            ItemPlaylistTitleAdapter tSEAdapter = new ItemPlaylistTitleAdapter(requireContext(), tSEList);
-                            tSERecyclerView.setAdapter(tSEAdapter);
+                            int numOfPlaylist = itemArray.length() / 3;
+
+                            for (int i = 0; i < numOfPlaylist; i++) {
+                                JSONObject itemObj = itemArray.getJSONObject(i);
+
+                                JSONArray imageArray = itemObj.getJSONArray("images");
+                                String imageURL = imageArray.getJSONObject(0).getString("url");
+                                Log.i(TAG, "imageURL: " + imageURL);
+
+                                String playlistName = itemObj.getString("name");
+                                Log.i(TAG, "playlistName: "+ playlistName);
+
+                                String playlistURL = itemObj.getString("href");
+                                Log.i(TAG, "playlistURL: "+ playlistURL);
+
+                                String type = itemObj.getString("type");
+                                Log.i(TAG, "type: "+ type);
+
+                                // Add items to the tSEList based on the extracted data
+                                tSEList.add(new ItemPlaylistTitle(imageURL, playlistName, playlistURL, type));
+                            }
 
                             // featureCharts RecyclerView
                             RecyclerView featuredChartsRecyclerView = view.findViewById(R.id.featuredChartsRecyclerView);
@@ -98,16 +106,25 @@ public class HomeFragment extends Fragment {
 
                             List<ItemPlaylistTitle> featuredChartsList = new ArrayList<>();
 
-                            // Add items to the featuredChartsList based on the extracted data
-                            featuredChartsList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            featuredChartsList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            featuredChartsList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            featuredChartsList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            featuredChartsList.add(new ItemPlaylistTitle(imageURL, playlistName));
+                            for (int i = numOfPlaylist; i < numOfPlaylist * 2; i++) {
+                                JSONObject itemObj = itemArray.getJSONObject(i);
 
-                            // Create and set an adapter for the featuredCharts RecyclerView
-                            ItemPlaylistTitleAdapter featuredChartsAdapter = new ItemPlaylistTitleAdapter(requireContext(), featuredChartsList);
-                            featuredChartsRecyclerView.setAdapter(featuredChartsAdapter);
+                                JSONArray imageArray = itemObj.getJSONArray("images");
+                                String imageURL = imageArray.getJSONObject(0).getString("url");
+                                Log.i(TAG, "imageURL: " + imageURL);
+
+                                String playlistName = itemObj.getString("name");
+                                Log.i(TAG, "playlistName: "+ playlistName);
+
+                                String playlistURL = itemObj.getString("href");
+                                Log.i(TAG, "playlistURL: "+ playlistURL);
+
+                                String type = itemObj.getString("type");
+                                Log.i(TAG, "type: "+ type);
+
+                                // Add items to the tSEList based on the extracted data
+                                featuredChartsList.add(new ItemPlaylistTitle(imageURL, playlistName, playlistURL, type));
+                            }
 
                             // trendingNow RecyclerView
                             RecyclerView trendingNowRecyclerView = view.findViewById(R.id.trendingNowRecyclerView);
@@ -116,16 +133,41 @@ public class HomeFragment extends Fragment {
 
                             List<ItemPlaylistTitle> trendingNowList = new ArrayList<>();
 
-                            // Add items to the featuredChartsList based on the extracted data
-                            trendingNowList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            trendingNowList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            trendingNowList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            trendingNowList.add(new ItemPlaylistTitle(imageURL, playlistName));
-                            trendingNowList.add(new ItemPlaylistTitle(imageURL, playlistName));
+                            for (int i = numOfPlaylist * 2; i < numOfPlaylist * 3; i++) {
+                                JSONObject itemObj = itemArray.getJSONObject(i);
+
+                                JSONArray imageArray = itemObj.getJSONArray("images");
+                                String imageURL = imageArray.getJSONObject(0).getString("url");
+                                Log.i(TAG, "imageURL: " + imageURL);
+
+                                String playlistName = itemObj.getString("name");
+                                Log.i(TAG, "playlistName: "+ playlistName);
+
+                                String playlistURL = itemObj.getString("href");
+                                Log.i(TAG, "playlistURL: "+ playlistURL);
+
+                                String type = itemObj.getString("type");
+                                Log.i(TAG, "type: "+ type);
+
+                                // Add items to the tSEList based on the extracted data
+                                trendingNowList.add(new ItemPlaylistTitle(imageURL, playlistName, playlistURL, type));
+                            }
+
+                            Log.i(TAG, "itemArray: " + itemArray);
+                            Log.i(TAG, "albumsArray: " + albumsArray);
+
+                            // Create and set an adapter for the tSE RecyclerView
+                            ItemPlaylistTitleAdapter tSEAdapter = new ItemPlaylistTitleAdapter(requireContext(), tSEList);
+                            tSERecyclerView.setAdapter(tSEAdapter);
+
+                            // Create and set an adapter for the featuredCharts RecyclerView
+                            ItemPlaylistTitleAdapter featuredChartsAdapter = new ItemPlaylistTitleAdapter(requireContext(), featuredChartsList);
+                            featuredChartsRecyclerView.setAdapter(featuredChartsAdapter);
 
                             // Create and set an adapter for the trendingNow RecyclerView
                             ItemPlaylistTitleAdapter trendingNowAdapter = new ItemPlaylistTitleAdapter(requireContext(), trendingNowList);
                             trendingNowRecyclerView.setAdapter(trendingNowAdapter);
+
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
@@ -136,68 +178,6 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
-
-//        RecyclerView tSERecyclerView = view.findViewById(R.id.tSERecyclerView);
-//        tSERecyclerView.setHasFixedSize(true);
-//        tSERecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-//
-//        List<ItemPlaylistTitle> tSEList = new ArrayList<>();
-//
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_1, R.string.song_info_1));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_2, R.string.song_info_2));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_3, R.string.song_info_3));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_4, R.string.song_info_4));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_5, R.string.song_info_5));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_6, R.string.song_info_6));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_7, R.string.song_info_7));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_8, R.string.song_info_8));
-//        tSEList.add(new ItemPlaylistTitle(R.drawable.playlist_9, R.string.song_info_9));
-//
-//        ItemPlaylistTitleAdapter tSEAdapter = new ItemPlaylistTitleAdapter(requireContext(), tSEList);
-//
-//        tSERecyclerView.setAdapter(tSEAdapter);
-
-        // Feature Charts RecyclerView
-        RecyclerView featuredChartsRecyclerView = view.findViewById(R.id.featuredChartsRecyclerView);
-        featuredChartsRecyclerView.setHasFixedSize(true);
-        featuredChartsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        List<ItemPlaylistTitle> featuredChartsList = new ArrayList<>();
-
-//        featuredChartsList.add(new ItemPlaylistTitle(R.drawable.playlist_10, R.string.song_info_10));
-//        featuredChartsList.add(new ItemPlaylistTitle(R.drawable.playlist_11, R.string.song_info_10));
-//        featuredChartsList.add(new ItemPlaylistTitle(R.drawable.playlist_5, R.string.song_info_5));
-//        featuredChartsList.add(new ItemPlaylistTitle(R.drawable.playlist_12, R.string.song_info_5));
-//        featuredChartsList.add(new ItemPlaylistTitle(R.drawable.playlist_13, R.string.song_info_5));
-//        featuredChartsList.add(new ItemPlaylistTitle(R.drawable.playlist_14, R.string.song_info_5));
-
-        // Demo
-        ItemPlaylistTitleAdapter featuredChartsAdapter = new ItemPlaylistTitleAdapter(requireContext(), featuredChartsList);
-
-        featuredChartsRecyclerView.setAdapter(featuredChartsAdapter);
-
-        // Trending Now RecyclerView
-        RecyclerView trendingNowRecyclerView = view.findViewById(R.id.trendingNowRecyclerView);
-        trendingNowRecyclerView.setHasFixedSize(true);
-        trendingNowRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        List<ItemPlaylistTitle> trendingNowList = new ArrayList<>();
-
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_15, R.string.song_info_11));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_16, R.string.song_info_12));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_17, R.string.song_info_13));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_18, R.string.song_info_14));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_19, R.string.song_info_15));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_20, R.string.song_info_16));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_21, R.string.song_info_17));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_22, R.string.song_info_18));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_23, R.string.song_info_19));
-//        trendingNowList.add(new ItemPlaylistTitle(R.drawable.playlist_24, R.string.song_info_20));
-
-        // Demo
-        ItemPlaylistTitleAdapter trendingNowAdapter = new ItemPlaylistTitleAdapter(requireContext(), trendingNowList);
-
-        trendingNowRecyclerView.setAdapter(trendingNowAdapter);
 
         return view;
     }
