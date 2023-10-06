@@ -50,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="30dp"
-                android:layout_gravity="start"/>
+                android:layout_gravity="start"
+                android:fontFamily="@font/spotify_bold"/>
 
             <TextView
                 android:id="@+id/artist_name"
@@ -58,7 +59,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="15sp"
-                android:layout_gravity="start" />
+                android:layout_gravity="start"
+                android:fontFamily="@font/spotify_bold"/>
         </LinearLayout>
 
         <RelativeLayout
