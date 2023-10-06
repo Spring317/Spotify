@@ -31,6 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MediaPlayer extends Fragment {
     private static final String TAG1 = "MediaPlayer";
 
@@ -53,8 +56,11 @@ public class MediaPlayer extends Fragment {
     private boolean isPaused = false, isStopped = false;
     private String url = null;
 
-    // Declare current position of view pager
+    // Declare direction of view pager
     private int viewPagerDirection = 0;
+
+    // Declare SongList
+    private List<ItemSongList> SongList = new ArrayList<>();
 
     public MediaPlayer(String url){
         this.url = url;
@@ -80,6 +86,12 @@ public class MediaPlayer extends Fragment {
         view = inflater.inflate(R.layout.fragment_current_song, container, false);
 
         Log.i(TAG1, "View created");
+
+        // Reference current MusicActivity
+        MusicActivity musicActivity = (MusicActivity) getActivity();
+        assert musicActivity != null;
+
+        Log.i(TAG1, "onCreateView: SongList" + SongList);
 
         // Url from API
         UpdateValue(url);
@@ -153,12 +165,16 @@ public class MediaPlayer extends Fragment {
                 if (playPauseBtn.isChecked()){
                     isPaused = true;
 
+                    musicActivity.pauseSong();
+
                     Log.i(TAG1, "Song paused");
                 }
                 else{
                     isPaused = false;
 
                     setProgressBar(song_length);
+
+                    musicActivity.resumeSong();
 
                     Log.i(TAG1, "Song playing");
                 }

@@ -83,6 +83,8 @@ public class SongList extends Fragment {
         // Reference the kill playlist button
         ImageButton kill_playlist_btn = view.findViewById(R.id.kill_playlist_btn);
 
+        getAlbumInformation(url);
+
         kill_playlist_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
