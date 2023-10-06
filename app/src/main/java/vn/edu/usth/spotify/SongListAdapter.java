@@ -40,6 +40,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
         private TextView mText_1;
         private TextView mText_2;
         private String url;
+
+        private String uri;
+
+        private LoginActivity loginActivity = new LoginActivity();
         // Demo
         public SongListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,14 +59,21 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
         holder.mText_1.setText(itemSongListList.get(position).getSongName());
         holder.mText_2.setText(itemSongListList.get(position).getAuthorName());
         holder.url = itemSongListList.get(position).getUrl();
+        holder.uri = itemSongListList.get(position).getUri();
         holder.mText_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (context instanceof MusicActivity) {
                     MusicActivity activity = (MusicActivity) context;
                     MediaPlayer mediaPlayer = new MediaPlayer(holder.url);
+
+
+                    Log.i(TAG, "onClick: "+ holder.uri);
+
                     activity.popupFragment(mediaPlayer);
                     activity.hideFragmentsAndTabLayout();
+                    activity.playSong(holder.uri);
+
 
                     if (currentClickedTextView != null) {
                         currentClickedTextView.setTextColor(Color.WHITE);
@@ -86,6 +97,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
                     MediaPlayer mediaPlayer = new MediaPlayer(holder.url);
                     activity.popupFragment(mediaPlayer);
                     activity.hideFragmentsAndTabLayout();
+                    activity.playSong(holder.uri);
 
                     if (currentClickedTextView != null) {
                         currentClickedTextView.setTextColor(Color.WHITE);
@@ -103,6 +115,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
 
 
     }
+
 
     @Override
     public int getItemCount() {
