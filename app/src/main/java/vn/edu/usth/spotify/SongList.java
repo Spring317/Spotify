@@ -35,19 +35,16 @@ import java.util.List;
 
 public class SongList extends Fragment {
 
-    String albumUrl = "https://api.spotify.com/v1/albums/5jDZKqgoVRbob6A3omYTG5";
+    String url;
+    String type;
     boolean liked = false;
     boolean shuffled = false;
 
     boolean played = false;
 
-    JSONArray imageArray;
-
-
-    JSONArray artistsArray;
-
-    public SongList() {
-        // Required empty public constructor
+    public SongList(String url, String type) {
+        this.url = url;
+        this.type = type;
     }
 
     @Override
@@ -67,22 +64,20 @@ public class SongList extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_song_list, container, false);
 
+        // Determine display album or playlist
+        switch (type) {
+            case "album":{
+                getAlbumInformation(url);
+                break;
+            }
+            case "playlist":{
+                getPlaylistInformation(url);
+                break;
+            }
+        }
+
         // Reference the kill playlist button
         ImageButton kill_playlist_btn = view.findViewById(R.id.kill_playlist_btn);
-
-//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intothenight);
-//        ImageView album_cover = view.findViewById(R.id.images);
-//        String imageUrl = "https://i.scdn.co/image/ab67616d0000b273c98af859e9b24d3a6c1c72bb?fbclid=IwAR3qvm4wNTRUEbEtkZd4zAFMvSgCdevfQnfSgUAmxrr9oIh7PyPWb4M0RlI";
-
-        getAlbumInformation(albumUrl);
-//        getAlbumName(albumUrl);
-//        getAlbumArtist(albumUrl);
-//        getAlbumListContext(albumUrl);
-
-//        getAlbumListContext(albumUrl);
-
-
-//         relativeLayout.setBackground(activity.getGradientDrawable(bitmap));
 
         kill_playlist_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,47 +159,11 @@ public class SongList extends Fragment {
                 }
             }
         });
-//        ImageView songimgview = (ImageView) view.findViewById(R.id.song_popupmenu);
-//
-//        songimgview.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                PopupMenu popup = new PopupMenu(getContext(), songimgview);
-//                popup.getMenuInflater().inflate(R.menu.musicmenu, popup.getMenu());
-//                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    public boolean onMenuItemClick(MenuItem item) {
-//                        Toast.makeText(getContext(), item.getTitle(),Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    }
-//
-//                });
-//                popup.show();
-//            }
-//
-//        });
-
-//        LinearLayout songPack = (LinearLayout) view.findViewById(R.id.song_pack);
-//        songPack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                TextView songName = (TextView) view.findViewById(R.id.song_name);
-//                songName.setTextColor(getResources().getColor(R.color.green_spotify));
-//
-//                MusicActivity activity = (MusicActivity) getActivity();
-//                if (activity != null) {
-//                    MediaPlayer mediaPlayer = new MediaPlayer();
-//                    activity.popupFragment(mediaPlayer);
-//                    activity.hideFragmentsAndTabLayout();
-//                }
-//
-//                    Log.i("Button", "Pressed");
-//                }
-//        });
 
         return view;
     }
 
+    // Generate bitmap from cdn link
     public void setImage(View view, String albumimageUrl) {
         MusicActivity musicActivity = (MusicActivity) getActivity();
         ImageView album_cover = view.findViewById(R.id.images);
@@ -217,28 +176,25 @@ public class SongList extends Fragment {
                     Log.i("SongList", "bitmap loaded");
                 }
             }
-
             @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-            }
-
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {}
             @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
+            public void onPrepareLoad(Drawable placeHolderDrawable) {}
         });
 
     }
 
+    // Function to display album
     public void getAlbumInformation(String albumUrl) {
-        Log.i("SongList", "getImageURL: Started");
+        Log.i("SongList", "getAlbum: Started");
         MusicActivity musicActivity = (MusicActivity) getActivity();
         if (musicActivity != null) {
             musicActivity.makeAPICall(albumUrl, new Callback() {
                 @Override
                 public void onAPICallComplete(JSONObject jsonObject) {
                     try {
+                        JSONArray imageArray;
+                        JSONArray artistsArray;
                         // Create array to store images data from API
                         imageArray = jsonObject.getJSONArray("images");
 
@@ -249,7 +205,6 @@ public class SongList extends Fragment {
 
                         // Get artists from jsonObj
                         artistsArray = jsonObject.getJSONArray("artists");
-                        StringBuilder stringBuilder = new StringBuilder();
                         JSONObject tracks = jsonObject.getJSONObject("tracks");
                         JSONArray items = tracks.getJSONArray("items");
 
@@ -259,17 +214,16 @@ public class SongList extends Fragment {
                         songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
                         List<ItemSongList> songListList = new ArrayList<>();
-
+                        StringBuilder AlbumArtists = new StringBuilder();
                         for (int i = 0; i < artistsArray.length() - 1; i ++) {
 
-                            stringBuilder.append(artistsArray.getJSONObject(i).getString("name")).append(", ");
+                            AlbumArtists.append(artistsArray.getJSONObject(i).getString("name")).append(", ");
                         }
 
-                        stringBuilder.append(artistsArray.getJSONObject(artistsArray.length() - 1).getString("name"));
-                        String artistName = stringBuilder.toString();
+                        AlbumArtists.append(artistsArray.getJSONObject(artistsArray.length() - 1).getString("name"));
 
                         TextView ArtistName = getView().findViewById(R.id.artist_name);
-                        ArtistName.setText(artistName);
+                        ArtistName.setText(AlbumArtists.toString());
 
                         Log.i("SongList", "image url: Completed " + imageArray.getJSONObject(0).getString("url"));
 
@@ -281,16 +235,17 @@ public class SongList extends Fragment {
 
                             // Get artists from jsonObj
                             JSONArray artists = items.getJSONObject(i).getJSONArray("artists");
+                            StringBuilder TrackArtists = new StringBuilder();
                             for (int j = 0; j < artists.length() - 1; j++) {
-                                stringBuilder.append(artists.getJSONObject(j).getString("name")).append(", ");
+                                TrackArtists.append(artists.getJSONObject(j).getString("name")).append(", ");
                             }
-                            stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
+                            TrackArtists.append(artists.getJSONObject(artists.length() - 1).getString("name"));
 
                             // Get urls from jsonObj
                             String url = items.getJSONObject(i).getString("href");
 
                             // Add items to recycler view
-                            songListList.add(new ItemSongList(songName, artistName, url));
+                            songListList.add(new ItemSongList(songName, TrackArtists.toString(), url));
 
                             Log.i("AlbumList", "onAPICallComplete: " + url);
 
@@ -299,8 +254,80 @@ public class SongList extends Fragment {
                             songListRecyclerView.setAdapter(songListAdapter);
 
                             Log.i("AlbumListContext", "onAPICallComplete: " + tracks.toString());
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
 
+                }
+            });
+        }
+    }
 
+    // Function to display playlist
+    public void getPlaylistInformation(String playlistUrl) {
+        Log.i("SongList", "getPlaylist: Started");
+        MusicActivity musicActivity = (MusicActivity) getActivity();
+        if (musicActivity != null) {
+            musicActivity.makeAPICall(url, new Callback() {
+                @Override
+                public void onAPICallComplete(JSONObject jsonObject) {
+                    try {
+                        JSONArray imageArray;
+                        // Create array to store images data from API
+                        imageArray = jsonObject.getJSONArray("images");
+
+                        //Set playlist name
+                        String name = jsonObject.getString("name");
+                        TextView playlistName = getView().findViewById(R.id.album_name);
+                        playlistName.setText(name);
+
+                        // Get description from jsonObj
+                        String description = jsonObject.getString("description");
+
+                        JSONObject tracks = jsonObject.getJSONObject("tracks");
+                        JSONArray items = tracks.getJSONArray("items");
+
+                        // Set up recycler view
+                        RecyclerView songListRecyclerView = getView().findViewById(R.id.SongListRecyclerView);
+                        songListRecyclerView.setHasFixedSize(true);
+                        songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+                        List<ItemSongList> songListList = new ArrayList<>();
+
+                        TextView descriptionView = getView().findViewById(R.id.artist_name);
+                        descriptionView.setText(description);
+
+                        Log.i("SongList", "image url: Completed " + imageArray.getJSONObject(0).getString("url"));
+
+                        setImage(getView(), imageArray.getJSONObject(0).getString("url"));
+
+                        for (int i = 0; i < items.length(); i++) {
+                            JSONObject track = items.getJSONObject(i).getJSONObject("track");
+                            //Get song names from jsonObj
+                            String songName = track.getString("name");
+
+                            // Get artists from jsonObj
+                            JSONArray artists = track.getJSONArray("artists");
+                            StringBuilder TrackArtists = new StringBuilder();
+                            for (int j = 0; j < artists.length() - 1; j++) {
+                                TrackArtists.append(artists.getJSONObject(j).getString("name")).append(", ");
+                            }
+                            TrackArtists.append(artists.getJSONObject(artists.length() - 1).getString("name"));
+
+                            // Get urls from jsonObj
+                            String url = track.getString("href");
+
+                            // Add items to recycler view
+                            songListList.add(new ItemSongList(songName, TrackArtists.toString(), url));
+
+                            Log.i("Playlist", "onAPICallComplete: " + url);
+
+                            SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList);
+
+                            songListRecyclerView.setAdapter(songListAdapter);
+
+                            Log.i("PlaylistContext", "onAPICallComplete: " + tracks.toString());
                         }
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
