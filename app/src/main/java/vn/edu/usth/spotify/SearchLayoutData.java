@@ -1,19 +1,19 @@
 package vn.edu.usth.spotify;
 
 public class SearchLayoutData {
-    int image;
+    String image;
     String name;
     String declare;
-    public SearchLayoutData(int image, String name, String declare) {
+    public SearchLayoutData(String image, String name, String declare) {
         this.image = image;
         this.name = name;
         this.declare = declare;
     }
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
