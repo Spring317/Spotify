@@ -45,7 +45,7 @@ import java.util.Objects;
 
 public class MusicActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1337;
-    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
+    private static final String CLIENT_ID = "484acfe42c7e47a7af199d2af5953628";
 
     private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
@@ -149,7 +149,6 @@ public class MusicActivity extends AppCompatActivity {
     }
 
     // Func to request data
-
     private class APICallTask extends AsyncTask<String, Void, JSONObject> {
 
         private vn.edu.usth.spotify.Callback callback;
@@ -191,7 +190,11 @@ public class MusicActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject jsonObject) {
             if (jsonObject != null) {
                 // getJSONObject(jsonObject);
-                callback.onAPICallComplete(jsonObject);
+                try {
+                    callback.onAPICallComplete(jsonObject);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
                 Log.i("APICall", "Delivered jsonObject");
             } else {
                 Log.i("APICall", "API call failed or JSON parsing error");

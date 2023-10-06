@@ -35,7 +35,7 @@ import java.util.List;
 
 public class SongList extends Fragment {
 
-    String albumUrl = "https://api.spotify.com/v1/albums/68w73FF3dYC6C3RWdcV0Yl";
+    String albumUrl = "https://api.spotify.com/v1/albums/5jDZKqgoVRbob6A3omYTG5";
     boolean liked = false;
     boolean shuffled = false;
 
@@ -283,7 +283,14 @@ public class SongList extends Fragment {
                 public void onAPICallComplete(JSONObject jsonObject) {
                     try {
                         artistsArray = jsonObject.getJSONArray("artists");
-                        String artistName = artistsArray.getJSONObject(0).getString("name");
+                        // Get artists from jsonObj
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < artistsArray.length() - 1; i ++) {
+                            stringBuilder.append(artistsArray.getJSONObject(i).getString("name")).append(", ");
+                        }
+                        stringBuilder.append(artistsArray.getJSONObject(artistsArray.length() - 1).getString("name"));
+                        String artistName = stringBuilder.toString();
+
                         TextView ArtistName = getView().findViewById(R.id.artist_name);
                         ArtistName.setText(artistName);
                     } catch (JSONException e) {
@@ -306,13 +313,6 @@ public class SongList extends Fragment {
                         JSONObject tracks = jsonObject.getJSONObject("tracks");
                         JSONArray items = tracks.getJSONArray("items");
 
-
-                        JSONArray artists = items.getJSONObject(0).getJSONArray("artists");
-                        String artistName = artists.getJSONObject(0).getString("name");
-                        String uriString = items.getJSONObject(0).getString("uri");
-
-                        Uri uri = Uri.parse(uriString);
-
                         RecyclerView songListRecyclerView = getView().findViewById(R.id.SongListRecyclerView);
                         songListRecyclerView.setHasFixedSize(true);
                         songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -320,15 +320,25 @@ public class SongList extends Fragment {
                         List<ItemSongList> songListList = new ArrayList<>();
 
                         for (int i = 0; i < items.length(); i++) {
+                            //Get song names from jsonObj
                             String songName = items.getJSONObject(i).get("name").toString();
-                            songListList.add(new ItemSongList(songName, artistName, uri));
-                            Log.i("AlbumList", "onAPICallComplete: " + uri);
-//
-//                        songListList.add(new ItemSongList(songName, artistName));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
+
+                            // Get artists from jsonObj
+                            JSONArray artists = items.getJSONObject(i).getJSONArray("artists");
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (int j = 0; j < artists.length() - 1; j ++) {
+                                stringBuilder.append(artists.getJSONObject(j).getString("name")).append(", ");
+                            }
+                            stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
+                            String artistName = stringBuilder.toString();
+
+                            // Get urls from jsonObj
+                            String url = items.getJSONObject(i).getString("href");
+
+                            // Add items to recycler view
+                            songListList.add(new ItemSongList(songName, artistName, url));
+
+                            Log.i("AlbumList", "onAPICallComplete: " + url);
 
                             SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList);
 

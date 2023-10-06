@@ -1,18 +1,15 @@
 package vn.edu.usth.spotify;
 
-import android.net.Uri;
-
 public class ItemSongList {
     String songName;
     String authorName;
+    String url;
 
-    Uri uri;
 
-
-    public ItemSongList(String songName, String authorName, Uri uri) {
+    public ItemSongList(String songName, String authorName, String url) {
         this.songName = songName;
         this.authorName = authorName;
-        this.uri = uri;
+        this.url = url;
     }
 
     public String getSongName() {
@@ -23,7 +20,7 @@ public class ItemSongList {
         return authorName;
     }
 
-    public Uri getUri() {
-        return uri;
+    public String getUrl() {
+        return url;
     }
 }

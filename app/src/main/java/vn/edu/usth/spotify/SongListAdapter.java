@@ -39,7 +39,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
     public class SongListViewHolder extends RecyclerView.ViewHolder {
         private TextView mText_1;
         private TextView mText_2;
-        private Uri uri;
+        private String url;
         // Demo
         public SongListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -54,13 +54,13 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
     public void onBindViewHolder(@NonNull SongListAdapter.SongListViewHolder holder, int position) {
         holder.mText_1.setText(itemSongListList.get(position).getSongName());
         holder.mText_2.setText(itemSongListList.get(position).getAuthorName());
-        holder.uri = itemSongListList.get(position).getUri();
+        holder.url = itemSongListList.get(position).getUrl();
         holder.mText_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (context instanceof MusicActivity) {
                     MusicActivity activity = (MusicActivity) context;
-                    MediaPlayer mediaPlayer = new MediaPlayer();
+                    MediaPlayer mediaPlayer = new MediaPlayer(holder.url);
                     activity.popupFragment(mediaPlayer);
                     activity.hideFragmentsAndTabLayout();
 
@@ -83,7 +83,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongLi
             public void onClick(View view) {
                 if (context instanceof MusicActivity) {
                     MusicActivity activity = (MusicActivity) context;
-                    MediaPlayer mediaPlayer = new MediaPlayer();
+                    MediaPlayer mediaPlayer = new MediaPlayer(holder.url);
                     activity.popupFragment(mediaPlayer);
                     activity.hideFragmentsAndTabLayout();
 
