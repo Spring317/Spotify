@@ -5,11 +5,14 @@ public class ItemSongList {
     String authorName;
     String url;
 
+    String uri;
 
-    public ItemSongList(String songName, String authorName, String url) {
+
+    public ItemSongList(String songName, String authorName, String url, String uri) {
         this.songName = songName;
         this.authorName = authorName;
         this.url = url;
+        this.uri = uri;
     }
 
     public String getSongName() {
@@ -22,5 +25,9 @@ public class ItemSongList {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getUri() {
+        return uri;
     }
 }

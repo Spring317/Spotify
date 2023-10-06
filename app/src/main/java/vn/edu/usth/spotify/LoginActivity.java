@@ -1,5 +1,13 @@
 package vn.edu.usth.spotify;
 
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.nfc.Tag;
@@ -46,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
+
+
         AuthorizationRequest.Builder builder =
                 new AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, REDIRECT_URI);
 
@@ -53,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         AuthorizationRequest request = builder.build();
 
         AuthorizationClient.openLoginActivity(this,REQUEST_CODE ,request);
-        mButton.setOnClickListener(v -> appremote());
+
     }
 
     // Spotify app remote goes here
@@ -82,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Play song
     public void playSong(String uri) {
-        uri = "spotify:track:6R6ihJhRbgu7JxJKIbW57w";
         if (mSpotifyAppRemote != null) {
             try {
             mSpotifyAppRemote.getPlayerApi().play(uri);

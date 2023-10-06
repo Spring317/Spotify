@@ -287,10 +287,12 @@ public class SongList extends Fragment {
                             stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
 
                             // Get urls from jsonObj
+//                            String url = items.getJSONObject(i).getString("href");
                             String url = items.getJSONObject(i).getString("href");
 
+                            String uri = items.getJSONObject(i).getString("uri");
                             // Add items to recycler view
-                            songListList.add(new ItemSongList(songName, artistName, url));
+                            songListList.add(new ItemSongList(songName, artistName, url, uri));
 
                             Log.i("AlbumList", "onAPICallComplete: " + url);
 

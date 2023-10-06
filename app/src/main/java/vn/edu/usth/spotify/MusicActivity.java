@@ -26,6 +26,11 @@ import okhttp3.Response;
 
 import com.google.android.material.tabs.TabLayout;
 
+import com.spotify.android.appremote.api.AppRemote;
+import com.spotify.android.appremote.api.ConnectionParams;
+import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.types.Track;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -58,6 +63,7 @@ public class MusicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
         Log.i(TAG, "onCreate: Success");
+        appremote();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -296,6 +302,115 @@ public class MusicActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         Log.i(TAG, "onDestroy: Destroyed");
+    }
+
+    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
+    private static final String REDIRECT_URI = "http://localhost:8888/callback";
+
+    private SpotifyAppRemote mSpotifyAppRemote;
+    private void appremote() {
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+        SpotifyAppRemote.connect(this, connectionParams,
+                new Connector.ConnectionListener() {
+                    @Override
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        Log.d("MainActivity", "Connected! Yay!");
+                        // Now you can start interacting with App Remote
+                        // connected();
+                    }
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        Log.e("Failed to connect", throwable.getMessage(), throwable);
+                    }
+                }
+        );
+    }
+
+    // Play song
+    public void playSong(String uri) {
+        if (mSpotifyAppRemote != null) {
+            try {
+                mSpotifyAppRemote.getPlayerApi().play(uri);
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+        }
+
+        mSpotifyAppRemote.getPlayerApi().play(uri);
+    }
+
+    // Pause song
+    public void pauseSong() {
+        mSpotifyAppRemote.getPlayerApi().pause();
+    }
+
+    // Resume song
+    public void resumeSong() {
+        mSpotifyAppRemote.getPlayerApi().resume();
+    }
+
+    // Skip to next song
+    public void skipNext() {
+        mSpotifyAppRemote.getPlayerApi().skipNext();
+    }
+
+    // Skip to previous song
+    public void skipPrevious() {
+        mSpotifyAppRemote.getPlayerApi().skipPrevious();
+    }
+
+    // Repeat song
+    public void repeat() {
+        mSpotifyAppRemote.getPlayerApi().toggleRepeat();
+    }
+
+    // Shuffle song
+    public void shuffle(boolean shuffle) {
+        mSpotifyAppRemote.getPlayerApi().setShuffle(shuffle);
+    }
+
+    // Seek to position
+    public void seekTo(int position) {
+        mSpotifyAppRemote.getPlayerApi().seekTo(position);
+    }
+
+    // Subscribe to Player State(get current track)
+    public void subscribeToPlayerState() {
+        mSpotifyAppRemote.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                    }
+                });
+    }
+
+    // Subscribe to Player Context(get current context)
+    public void subscribeToPlayerContext() {
+        mSpotifyAppRemote.getPlayerApi()
+                .subscribeToPlayerContext()
+                .setEventCallback(playerContext -> {
+                    final String title = playerContext.title;
+                    if (title != null) {
+                        Log.d("MainActivity", title);
+                    }
+                });
+    }
+
+    // Subscribe to Player State(get current playback speed)
+    public void getPlaybackSpeed() {
+        mSpotifyAppRemote.getPlayerApi()
+                .getPlayerState()
+                .setResultCallback(playerState -> {
+                    final float playbackSpeed = playerState.playbackSpeed;
+                    Log.d("MainActivity", String.valueOf(playbackSpeed));
+                });
     }
 
 
