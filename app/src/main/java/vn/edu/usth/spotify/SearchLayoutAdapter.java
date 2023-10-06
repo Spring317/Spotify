@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class SearchLayoutAdapter extends RecyclerView.Adapter<SearchViewHolder> {
@@ -29,7 +31,7 @@ public class SearchLayoutAdapter extends RecyclerView.Adapter<SearchViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
-        holder.image.setImageResource(datas.get(position).getImage());
+        Picasso.get().load(datas.get(position).getImage()).into(holder.image);
         holder.name.setText(datas.get(position).getName());
         holder.declare.setText(datas.get(position).getDeclare());
 
