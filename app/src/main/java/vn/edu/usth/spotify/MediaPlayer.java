@@ -436,12 +436,12 @@ public class MediaPlayer extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                if (!isPaused) {
-                    // Reset remain time to 0 because the remain time was plus 1 sec
-                    remain_time.setText(getString(R.string.remain_time_default));
-
-                    Log.i(TAG2, "finished the song");
-                }
+//                if (!isPaused) {
+//                    // Reset remain time to 0 because the remain time was plus 1 sec
+//                    remain_time.setText(getString(R.string.remain_time_default));
+//
+//                    Log.i(TAG2, "finished the song");
+//                }
 
                 Log.i(TAG2, "THREAD: finished");
             }
