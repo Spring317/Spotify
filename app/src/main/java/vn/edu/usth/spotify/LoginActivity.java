@@ -17,7 +17,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1337;
 
-    private static final String CLIENT_ID = "bf079723f4b04b7aa40d812775d111d4";
+    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
 
     private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
