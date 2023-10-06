@@ -35,7 +35,7 @@ import java.util.List;
 
 public class SongList extends Fragment {
 
-    String albumUrl = "https://api.spotify.com/v1/albums/68w73FF3dYC6C3RWdcV0Yl";
+    String albumUrl = "https://api.spotify.com/v1/albums/5jDZKqgoVRbob6A3omYTG5";
     boolean liked = false;
     boolean shuffled = false;
 
@@ -74,10 +74,10 @@ public class SongList extends Fragment {
 //        ImageView album_cover = view.findViewById(R.id.images);
 //        String imageUrl = "https://i.scdn.co/image/ab67616d0000b273c98af859e9b24d3a6c1c72bb?fbclid=IwAR3qvm4wNTRUEbEtkZd4zAFMvSgCdevfQnfSgUAmxrr9oIh7PyPWb4M0RlI";
 
-        getImageURL(albumUrl);
-        getAlbumName(albumUrl);
-        getAlbumArtist(albumUrl);
-        getAlbumListContext(albumUrl);
+        getAlbumInformation(albumUrl);
+//        getAlbumName(albumUrl);
+//        getAlbumArtist(albumUrl);
+//        getAlbumListContext(albumUrl);
 
 //        getAlbumListContext(albumUrl);
 
@@ -231,115 +231,82 @@ public class SongList extends Fragment {
 
     }
 
-    public void getImageURL(String albumUrl) {
+    public void getAlbumInformation(String albumUrl) {
         Log.i("SongList", "getImageURL: Started");
         MusicActivity musicActivity = (MusicActivity) getActivity();
-        String imageUrl = "";
         if (musicActivity != null) {
             musicActivity.makeAPICall(albumUrl, new Callback() {
                 @Override
                 public void onAPICallComplete(JSONObject jsonObject) {
                     try {
-
+                        // Create array to store images data from API
                         imageArray = jsonObject.getJSONArray("images");
-                        Log.i("SongList", "image url: Completed " + imageArray.getJSONObject(0).getString("url"));
 
-                        setImage(getView(), imageArray.getJSONObject(0).getString("url"));
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            });
-        }
-    }
-
-    public void getAlbumName(String albumUrl) {
-        MusicActivity musicActivity = (MusicActivity) getActivity();
-        if (musicActivity != null) {
-            musicActivity.makeAPICall(albumUrl, new Callback() {
-                @Override
-                public void onAPICallComplete(JSONObject jsonObject) {
-                    try {
+                        //Set album name
                         String albumName = jsonObject.getString("name");
                         TextView AlbumName = getView().findViewById(R.id.album_name);
                         AlbumName.setText(albumName);
-                        Log.i("AlbumNameArray", "onAPICallComplete: " + albumName);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
 
-                }
-            });
-        }
-    }
-
-    public void getAlbumArtist(String albumUrl) {
-        MusicActivity musicActivity = (MusicActivity) getActivity();
-        if (musicActivity != null) {
-            musicActivity.makeAPICall(albumUrl, new Callback() {
-                @Override
-                public void onAPICallComplete(JSONObject jsonObject) {
-                    try {
+                        // Get artists from jsonObj
                         artistsArray = jsonObject.getJSONArray("artists");
-                        String artistName = artistsArray.getJSONObject(0).getString("name");
-                        TextView ArtistName = getView().findViewById(R.id.artist_name);
-                        ArtistName.setText(artistName);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                }
-            });
-        }
-    }
-
-    public void getAlbumListContext(String albumUrl) {
-        MusicActivity musicActivity = (MusicActivity) getActivity();
-        if (musicActivity != null) {
-            musicActivity.makeAPICall(albumUrl, new Callback() {
-                @Override
-                public void onAPICallComplete(JSONObject jsonObject) {
-                    try {
-
+                        StringBuilder stringBuilder = new StringBuilder();
                         JSONObject tracks = jsonObject.getJSONObject("tracks");
                         JSONArray items = tracks.getJSONArray("items");
 
-
-                        JSONArray artists = items.getJSONObject(0).getJSONArray("artists");
-                        String artistName = artists.getJSONObject(0).getString("name");
-                        String uriString = items.getJSONObject(0).getString("uri");
-
-                        Uri uri = Uri.parse(uriString);
-
+                        // Set up recycler view
                         RecyclerView songListRecyclerView = getView().findViewById(R.id.SongListRecyclerView);
                         songListRecyclerView.setHasFixedSize(true);
                         songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
                         List<ItemSongList> songListList = new ArrayList<>();
 
+                        for (int i = 0; i < artistsArray.length() - 1; i ++) {
+
+                            stringBuilder.append(artistsArray.getJSONObject(i).getString("name")).append(", ");
+                        }
+
+                        stringBuilder.append(artistsArray.getJSONObject(artistsArray.length() - 1).getString("name"));
+                        String artistName = stringBuilder.toString();
+
+                        TextView ArtistName = getView().findViewById(R.id.artist_name);
+                        ArtistName.setText(artistName);
+
+                        Log.i("SongList", "image url: Completed " + imageArray.getJSONObject(0).getString("url"));
+
+                        setImage(getView(), imageArray.getJSONObject(0).getString("url"));
+
                         for (int i = 0; i < items.length(); i++) {
+                            //Get song names from jsonObj
                             String songName = items.getJSONObject(i).get("name").toString();
-                            songListList.add(new ItemSongList(songName, artistName, uri));
-                            Log.i("AlbumList", "onAPICallComplete: " + uri);
-//
-//                        songListList.add(new ItemSongList(songName, artistName));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
-//                        songListList.add(new ItemSongList("Light Switch", "Charlie Puth"));
+
+                            // Get artists from jsonObj
+                            JSONArray artists = items.getJSONObject(i).getJSONArray("artists");
+                            for (int j = 0; j < artists.length() - 1; j++) {
+                                stringBuilder.append(artists.getJSONObject(j).getString("name")).append(", ");
+                            }
+                            stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
+
+                            // Get urls from jsonObj
+                            String url = items.getJSONObject(i).getString("href");
+
+                            // Add items to recycler view
+                            songListList.add(new ItemSongList(songName, artistName, url));
+
+                            Log.i("AlbumList", "onAPICallComplete: " + url);
 
                             SongListAdapter songListAdapter = new SongListAdapter(requireContext(), songListList);
 
                             songListRecyclerView.setAdapter(songListAdapter);
 
                             Log.i("AlbumListContext", "onAPICallComplete: " + tracks.toString());
+
+
                         }
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                }
 
+                }
             });
         }
     }

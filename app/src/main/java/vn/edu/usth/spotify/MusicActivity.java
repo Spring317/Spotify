@@ -44,7 +44,6 @@ import java.util.Objects;
 
 
 public class MusicActivity extends AppCompatActivity {
-
     private String accessToken;
     private JSONObject jsonObject;
 
@@ -164,7 +163,11 @@ public class MusicActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject jsonObject) {
             if (jsonObject != null) {
                 // getJSONObject(jsonObject);
-                callback.onAPICallComplete(jsonObject);
+                try {
+                    callback.onAPICallComplete(jsonObject);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
                 Log.i("APICall", "Delivered jsonObject");
             } else {
                 Log.i("APICall", "API call failed or JSON parsing error");
