@@ -1,113 +1,76 @@
 package vn.edu.usth.spotify;
 
-import android.os.Bundle;
+import android.util.Log;
 
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
-import com.google.gson.*;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class LyricsFetcher {
+    private static final String BASE_URL = "https://api.genius.com";
+    private static final String ACCESS_TOKEN = "n2z4IPlI5D5umdjhdGeU1_qc1KYnEOnHb4bdqrzyw3czL8NMOymsM7zUYyYr8h92";
 
-    public static String fetchLyrics(String songTitle, String artistName) {
-        try {
-            // Construct the Genius API URL with your API key
-            String apiKey = "VgEgarls_Ajcn1LUkhHIQp6qZAbjtXbzbDeB4kySvVOiNPu4E01dlzHWCvOcAQkR";
-            String apiUrl = "https://api.genius.com/search?q=" +
-                    songTitle + " " + artistName;
-            // Make the HTTP request
-            String jsonResponse = Network.fetchGeniusLyrics(apiUrl);
-            // Parse the JSON response using Gson
-            // You'll need to create appropriate classes for Gson parsing
-            // Extract and return the lyrics from the JSON response
-            String lyrics = parseLyricsFromJson(jsonResponse);
-            return lyrics;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    LyricsFetcher lyricsFetcher = new LyricsFetcher();
+
+    String query = "Despacito";
+
+    private OkHttpClient client;
+    private Gson gson;
+
+    public LyricsFetcher() {
+        client = new OkHttpClient();
+        gson = new Gson();
     }
 
-    private static String parseLyricsFromJson(String jsonResponse) {
-        // Implement Gson parsing here to extract lyrics
-        Gson gson = new Gson();
-        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+    public List<Song> search(String query) throws IOException {
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/search?q=" + query)
+                .addHeader("Authorization", "Bearer " + ACCESS_TOKEN)
+                .build();
 
-        // Check if the response contains a 'response' key
-        if (jsonObject.has("response")) {
-            JsonObject response = jsonObject.getAsJsonObject("response");
-
-            // Check if the response contains 'hits' (search results)
-            if (response.has("hits")) {
-                JsonArray hits = response.getAsJsonArray("hits");
-
-                // Check if there are any search results
-                if (hits.size() > 0) {
-                    JsonObject firstHit = hits.get(0).getAsJsonObject();
-
-                    // Check if the hit contains a 'result' object
-                    if (firstHit.has("result")) {
-                        JsonObject result = firstHit.getAsJsonObject("result");
-
-                        // Check if the result contains 'url' (lyrics URL)
-                        if (result.has("url")) {
-                            String lyricsUrl = result.get("url").getAsString();
-                            // You can further process the lyrics URL or fetch the actual lyrics
-                            // from the URL here
-                            return fetchLyricsFromUrl(lyricsUrl);
-                        }
-                    }
-                }
-            }
-        }
-        return "Lyrics not found";
-    }
-
-    private static String fetchLyricsFromUrl(String lyricsUrl) {
-        // You can implement logic here to fetch and extract lyrics from the lyrics URL
-        // This may involve making another HTTP request to the lyrics page or using a lyrics API
-        // Return the lyrics as a string
-        OkHttpClient client = new OkHttpClient();
         try {
-            // Make an HTTP request to the lyrics URL
-            Request request = new Request.Builder()
-                    .url(lyricsUrl)
-                    .build();
+            List<Song> searchResults = lyricsFetcher.search(query);
 
-            Response response = client.newCall(request).execute();
-
-            if (response.isSuccessful()) {
-                String html = response.body().string();
-                // Extract the lyrics using regex (adjust the regex pattern as needed)
-                String lyrics = extractLyricsFromHtml(html);
-                return lyrics;
-            } else {
-                return "Error fetching lyrics from the URL.";
+            // Handle the search results here
+            for (Song song : searchResults) {
+                // Access the information about each song (e.g., title, artist)
+                String title = song.getTitle();
+                String artist = song.getArtist();
+                // Display or process the search results as needed
             }
         } catch (IOException e) {
+            // Handle any errors that may occur during the API request
             e.printStackTrace();
-            return "Error fetching lyrics from the URL.";
         }
+
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            Log.e("LyricsFetcher", "Unexpected response body: " + response.body().string());
+            throw new IOException("Unexpected response code: " + response.code());
+        }
+
+        return gson.fromJson(response.body().string(), new TypeToken<List<Song>>(){}.getType());
     }
 
-    private static String extractLyricsFromHtml(String html) {
-        // Use regex to extract lyrics from the HTML (adjust the pattern as needed)
-        Pattern pattern = Pattern.compile("<div class=\"lyrics\">(.*?)</div>", Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(html);
+    public Song getLyrics(String songId) throws IOException {
+        songId = "378195";
+        Request request = new Request.Builder()
+                .url(BASE_URL + "/songs/" + songId)
+                .addHeader("Authorization", "Bearer " + ACCESS_TOKEN)
+                .build();
 
-        if (matcher.find()) {
-            String lyrics = matcher.group(1)
-                    .replaceAll("<br>", "\n") // Replace line breaks
-                    .replaceAll("<.*?>", ""); // Remove HTML tags
-            return lyrics.trim();
-        } else {
-            return "Lyrics not found on the webpage.";
+        Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) {
+            throw new IOException("Unexpected response code: " + response.code());
         }
+
+        return gson.fromJson(response.body().string(), Song.class);
     }
+
 }
 
