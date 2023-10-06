@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchLayout extends Fragment {
+    private String apiUrl = "";
     @Override
     public void onDestroy() {
         super.onDestroy();
         MusicActivity musicActivity = (MusicActivity) getActivity();
-        if (musicActivity !=null){
+        if (musicActivity != null){
             musicActivity.restoreViewPager();
         }
     }
@@ -38,6 +39,82 @@ public class SearchLayout extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.search_layout, container, false);
+
+        SearchView searchView = view.findViewById(R.id.search_bar);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                MusicActivity musicActivity = (MusicActivity) getActivity();
+                Log.i("test2",apiUrl);
+                if(musicActivity != null) {
+                    // Initiate an API call to retrieve information about a Spotify album using the makeAPICall method
+                    // and provide a callback to handle the API call result.
+                    musicActivity.makeAPICall(apiUrl, new Callback() {
+                        @Override
+                        public void onAPICallComplete(JSONObject jsonObject) {
+                            if (jsonObject != null) {
+                                Log.i("jsonObject", jsonObject.toString());
+                                try {
+                                    // Extract relevant information from the JSON object
+                                    JSONObject tracks = jsonObject.getJSONObject("tracks");
+                                    JSONArray items = tracks.getJSONArray("items");
+
+                                    RecyclerView recyclerView2 = view.findViewById(R.id.searchlistrecyclerview);
+                                    recyclerView2.setHasFixedSize(true);
+                                    recyclerView2.setLayoutManager(new LinearLayoutManager(requireContext()));
+                                    List<SearchLayoutData> datas2 = new ArrayList<>();
+
+                                    for (int i = 0; i < items.length(); i++) {
+                                        // Make many tracks appear
+                                        JSONArray artists = items.getJSONObject(i).getJSONArray("artists");
+
+                                        StringBuilder stringBuilder = new StringBuilder();
+                                        for (int j = 0; j < artists.length() - 1; j++) {
+                                            // Make many author names appear
+                                            stringBuilder.append(artists.getJSONObject(j).getString("name")).append(", ");
+                                        }
+                                        stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
+                                        String artistsName = stringBuilder.toString();
+
+                                        String tracksName = items.getJSONObject(i).getString("name");
+                                        JSONObject album = items.getJSONObject(i).getJSONObject("album");
+                                        JSONArray images = album.getJSONArray("images");
+                                        String imageURL = images.getJSONObject(0).getString("url");
+
+                                        Log.i("tracksName", tracksName);
+                                        Log.i("artistsName", artistsName);
+                                        Log.i("imageUrl", imageURL);
+
+                                        datas2.add(new SearchLayoutData(imageURL, tracksName, artistsName));
+                                        // Add datas to recyclerview
+                                        SearchLayoutAdapter searchLayoutAdapter = new SearchLayoutAdapter(requireContext(),datas2);
+                                        recyclerView2.setAdapter(searchLayoutAdapter);
+                                    }
+
+
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            } else {
+                                // Handle the case where the received JSON object is null
+                                Log.e("jsonObject", "JSONObject is null");
+                            }
+                        }
+                    });
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//                currentQuery = newText;
+                apiUrl = SpotifyTrackSearchEncoder.constructSearchUrl(newText);
+//                Log.i("newText", "New Text Appear");
+                Log.i("test", apiUrl);
+                return true;
+            }
+        });
 
         TextView Cancelbtn = view.findViewById(R.id.Cancelbtn);
         // Find the TextView by its ID
@@ -53,64 +130,64 @@ public class SearchLayout extends Fragment {
             }
         });
 
-        MusicActivity musicActivity = (MusicActivity) getActivity();
-        if(musicActivity != null) {
-            // Initiate an API call to retrieve information about a Spotify album using the makeAPICall method
-            // and provide a callback to handle the API call result.
-            String apiUrl = "https://api.spotify.com/v1/search?q=t&type=track";
-            musicActivity.makeAPICall(apiUrl, new Callback() {
-                @Override
-                public void onAPICallComplete(JSONObject jsonObject) {
-                    if (jsonObject != null) {
-                        Log.i("jsonObject", jsonObject.toString());
-                        try {
-                            // Extract relevant information from the JSON object
-                            JSONObject tracks = jsonObject.getJSONObject("tracks");
-                            JSONArray items = tracks.getJSONArray("items");
-
-                            RecyclerView recyclerView2 = view.findViewById(R.id.searchlistrecyclerview);
-                            recyclerView2.setHasFixedSize(true);
-                            recyclerView2.setLayoutManager(new LinearLayoutManager(requireContext()));
-                            List<SearchLayoutData> datas2 = new ArrayList<>();
-
-                            for (int i = 0; i < items.length(); i++) {
-                                // Make many tracks appear
-                                JSONArray artists = items.getJSONObject(i).getJSONArray("artists");
-
-                                StringBuilder stringBuilder = new StringBuilder();
-                                for (int j = 0; j < artists.length() - 1; j++) {
-                                    // Make many author names appear
-                                    stringBuilder.append(artists.getJSONObject(j).getString("name")).append(", ");
-                                }
-                                stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
-                                String artistsName = stringBuilder.toString();
-
-                                String tracksName = items.getJSONObject(i).getString("name");
-                                JSONObject album = items.getJSONObject(i).getJSONObject("album");
-                                JSONArray images = album.getJSONArray("images");
-                                String imageURL = images.getJSONObject(0).getString("url");
-
-                                Log.i("tracksName", tracksName);
-                                Log.i("artistsName", artistsName);
-                                Log.i("imageUrl", imageURL);
-
-                                datas2.add(new SearchLayoutData(imageURL, tracksName, artistsName));
-                                // Add datas to recyclerview
-                                SearchLayoutAdapter searchLayoutAdapter = new SearchLayoutAdapter(requireContext(),datas2);
-                                recyclerView2.setAdapter(searchLayoutAdapter);
-                            }
-
-
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        // Handle the case where the received JSON object is null
-                        Log.e("jsonObject", "JSONObject is null");
-                    }
-                }
-            });
-        }
+//        MusicActivity musicActivity = (MusicActivity) getActivity();
+//        if(musicActivity != null) {
+//            // Initiate an API call to retrieve information about a Spotify album using the makeAPICall method
+//            // and provide a callback to handle the API call result.
+//            apiUrl = "https://api.spotify.com/v1/search?q=t&type=track";
+//            musicActivity.makeAPICall(apiUrl, new Callback() {
+//                @Override
+//                public void onAPICallComplete(JSONObject jsonObject) {
+//                    if (jsonObject != null) {
+//                        Log.i("jsonObject", jsonObject.toString());
+//                        try {
+//                            // Extract relevant information from the JSON object
+//                            JSONObject tracks = jsonObject.getJSONObject("tracks");
+//                            JSONArray items = tracks.getJSONArray("items");
+//
+//                            RecyclerView recyclerView2 = view.findViewById(R.id.searchlistrecyclerview);
+//                            recyclerView2.setHasFixedSize(true);
+//                            recyclerView2.setLayoutManager(new LinearLayoutManager(requireContext()));
+//                            List<SearchLayoutData> datas2 = new ArrayList<>();
+//
+//                            for (int i = 0; i < items.length(); i++) {
+//                                // Make many tracks appear
+//                                JSONArray artists = items.getJSONObject(i).getJSONArray("artists");
+//
+//                                StringBuilder stringBuilder = new StringBuilder();
+//                                for (int j = 0; j < artists.length() - 1; j++) {
+//                                    // Make many author names appear
+//                                    stringBuilder.append(artists.getJSONObject(j).getString("name")).append(", ");
+//                                }
+//                                stringBuilder.append(artists.getJSONObject(artists.length() - 1).getString("name"));
+//                                String artistsName = stringBuilder.toString();
+//
+//                                String tracksName = items.getJSONObject(i).getString("name");
+//                                JSONObject album = items.getJSONObject(i).getJSONObject("album");
+//                                JSONArray images = album.getJSONArray("images");
+//                                String imageURL = images.getJSONObject(0).getString("url");
+//
+//                                Log.i("tracksName", tracksName);
+//                                Log.i("artistsName", artistsName);
+//                                Log.i("imageUrl", imageURL);
+//
+//                                datas2.add(new SearchLayoutData(imageURL, tracksName, artistsName));
+//                                // Add datas to recyclerview
+//                                SearchLayoutAdapter searchLayoutAdapter = new SearchLayoutAdapter(requireContext(),datas2);
+//                                recyclerView2.setAdapter(searchLayoutAdapter);
+//                            }
+//
+//
+//                        } catch (JSONException e) {
+//                            throw new RuntimeException(e);
+//                        }
+//                    } else {
+//                        // Handle the case where the received JSON object is null
+//                        Log.e("jsonObject", "JSONObject is null");
+//                    }
+//                }
+//            });
+//        }
 
         return view;
     }
