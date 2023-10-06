@@ -79,6 +79,7 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
+
     implementation(files("libs\\appremote.aar"))
     implementation("androidx.recyclerview:recyclerview-selection:1.1.0")
     testImplementation("junit:junit:4.13.2")

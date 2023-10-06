@@ -46,12 +46,9 @@ import java.util.Objects;
 public class MusicActivity extends AppCompatActivity {
     private String accessToken;
     private JSONObject jsonObject;
-
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     ViewPager viewPager;
-
     private final List<Fragment> frags_2b_kill = new ArrayList<Fragment>();
-
     private final List<Fragment> frags_2b_hide = new ArrayList<Fragment>();
 
     private static final String TAG = "Spotify";
@@ -76,7 +73,6 @@ public class MusicActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager);
-
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
