@@ -2,9 +2,11 @@ package vn.edu.usth.spotify;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,6 +24,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MediaPlayer extends Fragment {
     private static final String TAG1 = "MediaPlayer";
 
@@ -36,14 +45,24 @@ public class MediaPlayer extends Fragment {
     View view;
 
     // Initial value of the MediaPlayer
-    private int image = R.drawable.blank_song;
+    private Bitmap image = null;
     private int song_length = 0;
     private String song_title = "Blank_Song";
     private String song_author = "No one";
-
     private int song_current_percent = 0;
-
     private boolean isPaused = false, isStopped = false;
+    private String url = null;
+
+    // Declare current position of view pager
+    private int viewPagerDirection = 0;
+
+    public MediaPlayer(String url){
+        this.url = url;
+    }
+
+    public MediaPlayer() {
+        this("https://api.spotify.com/v1/tracks/5uyNAX6MazVAjBjVeOsTvp");
+    }
 
     @Override
     public void onDestroy() {
@@ -66,13 +85,12 @@ public class MediaPlayer extends Fragment {
 
         Log.i(TAG1, "View created");
 
-        // Simulate database from API
-        UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
-        UpdateContent();
+        // Url from API
+        UpdateValue(url);
 
         // Initialize songPicPagerAdapter and songPicPager
         songPicPager = view.findViewById(R.id.Song_pic);
-        songPicPagerAdapter = new SongPicPagerAdapter(requireContext(), this.image);
+        songPicPagerAdapter = new SongPicPagerAdapter(requireContext());
         songPicPager.setAdapter(songPicPagerAdapter);
         songPicPager.setCurrentItem(Integer.MAX_VALUE / 2,false);
 
@@ -106,6 +124,8 @@ public class MediaPlayer extends Fragment {
                 isSwipeRight = Integer.compare(position, previousPosition);
 
                 previousPosition = position;
+
+                viewPagerDirection = isSwipeRight;
 
             }
 
@@ -165,31 +185,64 @@ public class MediaPlayer extends Fragment {
         if (isSwipeRight > 0) {
             Log.i("SongPicPager", "User swiped right");
 
-            // Simulate database from API
             // Call function to update all the value
-            UpdateValue(R.drawable.kill_this_love, 188, 0, "Kill This Love", "Blackpink");
-
-            // Call func to update all the content
-            UpdateContent();
+            UpdateValue("https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl");
         }
         else {
             Log.i("SongPicPager", "User swiped left");
 
-            // Simulate database from API
-            UpdateValue(R.drawable.light_switch, 205, 0, "Light Switch", "Charlie Puth");
-
-            // Call func to update all the content
-            UpdateContent();
+            // Call function to update all the value
+            UpdateValue(url);
         }
     }
 
     // Function to update all the content value
-    private void UpdateValue(int image, int song_length, int current_progress, String title, String author) {
-        this.image = image;
-        this.song_length = song_length;
-        this.song_current_percent = current_progress;
-        this.song_title = title;
-        this.song_author = author;
+    private void UpdateValue(String Url) {
+        MusicActivity musicActivity = (MusicActivity) getActivity();
+        assert musicActivity != null;
+        musicActivity.makeAPICall(Url, new Callback() {
+            @Override
+            public void onAPICallComplete(JSONObject jsonObject) throws JSONException {
+                Log.i(TAG1, "onAPICallComplete: " + jsonObject);
+
+                // Update the title value
+                song_title = jsonObject.getString("name");
+
+                // Update the author value
+                JSONArray authorArray = jsonObject.getJSONArray("artists");
+                song_author = "";
+                StringBuilder stringBuilder = new StringBuilder(song_author);
+                for (int i = 0; i < authorArray.length() - 1; i ++) {
+                    stringBuilder.append(authorArray.getJSONObject(i).getString("name")).append(", ");
+                }
+                stringBuilder.append(authorArray.getJSONObject(authorArray.length() - 1).getString("name"));
+                song_author = stringBuilder.toString();
+
+                // Update the image value
+                JSONArray imageArray = jsonObject.getJSONObject("album").getJSONArray("images");
+                String imageUrl = imageArray.getJSONObject(0).getString("url");
+
+                // Update the song length value
+                song_length = jsonObject.getInt("duration_ms");
+
+                Picasso.get().load(imageUrl).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        image = bitmap;
+                        Log.i(TAG1, "Image value updated");
+
+                        // Call function to update values to view
+                        UpdateContent();
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {}
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {}
+                });
+            }
+        });
 
         Log.i(TAG1, "All the content value has been updated");
     }
@@ -199,7 +252,7 @@ public class MediaPlayer extends Fragment {
         UpdateBackGround(this.image);
 
         try {
-            songPicPagerAdapter.updatePic(this.image); // Call func to update the song picture
+            songPicPagerAdapter.updatePic(this.image, viewPagerDirection); // Call func to update the song picture
         } catch (Exception exception) {
             Log.i(TAG1, "error while update image: " + exception);
         }
@@ -231,16 +284,13 @@ public class MediaPlayer extends Fragment {
 
     // Function to get the dominant color of Song picture
     // set gradient background and lyrics background
-    private void UpdateBackGround(int image) {
+    private void UpdateBackGround(Bitmap image) {
         // Simulate gradient background
-        // Load the picture into a Bitmap
-        Bitmap picBit = BitmapFactory.decodeResource(getResources(), image);
-
         // Reference music activity
         MusicActivity activity = (MusicActivity) getActivity();
         assert activity != null;
 
-        GradientDrawable gradientDrawable = activity.getGradientDrawable(picBit);
+        GradientDrawable gradientDrawable = activity.getGradientDrawable(image);
 
         // Set the background to gradient
         view.setBackground(gradientDrawable);
@@ -254,7 +304,7 @@ public class MediaPlayer extends Fragment {
         GradientDrawable lyrics_drawable = (GradientDrawable) lyrics_area.getBackground();
 
         // Change background color
-        lyrics_drawable.setColor(activity.getDominantColor(picBit));
+        lyrics_drawable.setColor(activity.getDominantColor(image));
         lyrics_area.setBackground(lyrics_drawable);
 
         Log.i(TAG1, "Lyrics background updated");
@@ -280,7 +330,7 @@ public class MediaPlayer extends Fragment {
         remain_time = view.findViewById(R.id.remain_time);
 
         final int totalProgress = 1000;
-        final int SecProgress = (int)((time / 100) * 100);
+        final int SecProgress = (int)(time / 1000);
         final Handler handler = new Handler(Looper.getMainLooper());
 
         // Runnable() aka lambda function!!!

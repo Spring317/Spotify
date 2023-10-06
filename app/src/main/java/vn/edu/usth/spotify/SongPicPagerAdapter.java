@@ -1,6 +1,7 @@
 package vn.edu.usth.spotify;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,14 @@ import java.util.Objects;
 public class SongPicPagerAdapter extends PagerAdapter {
     private final LayoutInflater layoutInflater;
 
-    private View itemView;
-
-    private final int initial_image;
+    private ViewGroup container;
 
     private final String TAG = "SongPicPagerAdapter";
 
-    public SongPicPagerAdapter(Context context, int image) {
+    private int direction;
+
+    public SongPicPagerAdapter(Context context) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.initial_image = image;
     }
 
 
@@ -41,6 +41,8 @@ public class SongPicPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((RelativeLayout) object);
+
+
         Log.i(TAG, "View " + position + " has been destroyed");
     }
 
@@ -48,27 +50,36 @@ public class SongPicPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         // Inflate song_pic_item.xml
-        itemView = layoutInflater.inflate(R.layout.song_pic_item, container, false);
+        View itemView = layoutInflater.inflate(R.layout.song_pic_item, container, false);
 
         Log.i(TAG, "View " + position + " has been created");
 
         // Adding the View
         Objects.requireNonNull(container).addView(itemView);
 
-        if (position == Integer.MAX_VALUE / 2)
-            updatePic(initial_image);
+        this.container = container;
 
         return itemView;
     }
 
     // Function to update the Song picture
-    public void updatePic(int image) {
+    public void updatePic(Bitmap image, int direction) {
+        int index = 0;
+
+        // direction: 1 min right and 0 min left
+        if (this.direction != 0) {
+            if (this.direction == direction)
+                index = 1;
+        } else if (direction != 0)
+            index = 1;
+
         // Referencing the image view from the item.xml file
-        ImageView SongPic = itemView.findViewById(R.id.Pic);
+        ImageView SongPic = container.getChildAt(index)
+                .findViewById(R.id.Pic);
+        SongPic.setImageBitmap(image);
 
-        // Setting the image in the imageView
-        SongPic.setImageResource(image);
+        this.direction = direction;
 
-        Log.i(TAG, "Picture updated");
+        Log.i(TAG, "Picture updated at view: " + index + "in ViewGroup container");
     }
 }
