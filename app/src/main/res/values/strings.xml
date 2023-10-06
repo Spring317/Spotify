@@ -3,7 +3,7 @@
     <string name="greeting"><b>Good evening</b></string>
 
     <string name="album_title_1"><b>Try something else</b></string>
-    <string name="album_title_2"><b>Featured Charts</b></string>
+    <string name="album_title_2"><b>Recently Played</b></string>
     <string name="album_title_3"><b>Trending now</b></string>
     <string name="album_title_4">Shows To Try</string>
     <string name="album_title_5">Mood</string>
