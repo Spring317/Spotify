@@ -49,6 +49,14 @@ public class SearchLayout extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//                currentQuery = newText;
+                apiUrl = SpotifyTrackSearchEncoder.constructSearchUrl(newText);
                 MusicActivity musicActivity = (MusicActivity) getActivity();
                 Log.i("test2",apiUrl);
                 if(musicActivity != null) {
@@ -114,13 +122,6 @@ public class SearchLayout extends Fragment {
                         }
                     });
                 }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-//                currentQuery = newText;
-                apiUrl = SpotifyTrackSearchEncoder.constructSearchUrl(newText);
 //                Log.i("newText", "New Text Appear");
                 Log.i("test", apiUrl);
                 return true;

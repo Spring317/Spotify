@@ -306,9 +306,10 @@ public class MusicActivity extends AppCompatActivity {
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
 
         Log.i(TAG, "onDestroy: Destroyed");
+
     }
 
-    private static final String CLIENT_ID = "484acfe42c7e47a7af199d2af5953628";
+    private static final String CLIENT_ID = "a20d64ca1933453ca9c626261564b4d1";
     private static final String REDIRECT_URI = "http://localhost:8888/callback";
 
     private SpotifyAppRemote mSpotifyAppRemote;
