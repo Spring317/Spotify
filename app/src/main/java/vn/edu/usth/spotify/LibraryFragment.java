@@ -19,9 +19,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +49,11 @@ public class LibraryFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ImageView switchButton;
-    List<LibraryItem> items;
+    LibraryAdapter libraryAdapter;
+
+    List<LibraryItem> items = new ArrayList<>();
+
+
     public LibraryFragment() {
         // Required empty public constructor
     }
@@ -82,62 +92,78 @@ public class LibraryFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_library, container, false);
+        MusicActivity musicActivity = (MusicActivity) getActivity();
+        if (musicActivity != null) {
+            // Initiate an API call to retrieve information about a Spotify album using the makeAPICall method
+            // and provide a callback to handle the API call result.
+
+            musicActivity.makeAPICall("https://api.spotify.com/v1/users/31hxiif37rtibeakz7c44wkesoj4/playlists", new Callback() {
+                @Override
+                public void onAPICallComplete(JSONObject jsonObject) {
+                    if (jsonObject != null) {
+                        Log.i("jsonObject", jsonObject.toString());
+                        try {
+                            JSONArray itemArray = jsonObject.getJSONArray("items");
+                            //Init RecyclerView for LibraryFragment
+                            items.clear();
+                            for (int i = 0; i < itemArray.length(); i++) {
+                                JSONObject albumObj = itemArray.getJSONObject(i);
+                                JSONArray imageArray = albumObj.getJSONArray("images");
+                                String imageURL = imageArray.getJSONObject(0).getString("url");
+                                Log.i("imageURL", imageURL);
+
+                                String albumName = albumObj.getString("name");
+                                Log.i("albumName", albumName);
+
+                                String albumType = albumObj.getString("type");
+                                Log.i("albumType", albumType);
+
+                                items.add(new LibraryItem(albumName, albumType, imageURL));
+                            }
+
+                            libraryAdapter = new LibraryAdapter(requireContext(), items);
+                            recyclerView.setAdapter(libraryAdapter);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 
 
-        ImageButton button = (ImageButton) view.findViewById(R.id.menu);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!menu_clicked) {
-                    button.setImageResource(R.drawable.list);
-                    menu_clicked = true;
-                } else {
-                    button.setImageResource(R.drawable.menu);
-                    menu_clicked =false;
                 }
-            }
-        });
-        recyclerView = view.findViewById(R.id.libraryrecyclerview);
-        List<LibraryItem> items = new ArrayList<LibraryItem>();
-        items.add(new LibraryItem("Liked Songs", "Playlist", R.drawable.liked_songs));
-        items.add(new LibraryItem("Top Gaming Tracks", "Playlist", R.drawable.img2));
-        items.add(new LibraryItem("Dance Hits", "Album", R.drawable.img3));
-        items.add(new LibraryItem("Pop shots", "Album", R.drawable.img4));
-        items.add(new LibraryItem("Your Summer Rewind", "Album", R.drawable.img5));
-        items.add(new LibraryItem("Dinner And Chill", "Album", R.drawable.img8));
-        items.add(new LibraryItem("Coffee Table Jazz", "Album", R.drawable.img13));
-        items.add(new LibraryItem("Release Radar", "Album", R.drawable.img16));
+            });
+            recyclerView = view.findViewById(R.id.libraryrecyclerview);
+            recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+            recyclerView.setHasFixedSize(true);
 
-
-
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recyclerView.setHasFixedSize(true);
-        LibraryAdapter libraryAdapter = new LibraryAdapter(requireContext(),items);
-        recyclerView.setAdapter(libraryAdapter);
-
-        switchButton = view.findViewById(R.id.switch_button);
-        switchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("SearchFragment", "Click on Searchbar" );
-
-                MusicActivity musicActivity = (MusicActivity) getActivity();
-                if (musicActivity !=null){
-                    musicActivity.popupFragment(new LibrarySearchLayoutFragment());
+            ImageButton button = (ImageButton) view.findViewById(R.id.menu);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!menu_clicked) {
+                        button.setImageResource(R.drawable.list);
+                        menu_clicked = true;
+                    } else {
+                        button.setImageResource(R.drawable.menu);
+                        menu_clicked = false;
+                    }
                 }
-            }
-        });
+            });
 
-        // Inflate the layout for this fragment
+
+            switchButton = view.findViewById(R.id.switch_button);
+            switchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("LibraryFragment", "Click on Searchbar");
+
+                    MusicActivity musicActivity = (MusicActivity) getActivity();
+                    if (musicActivity != null) {
+                        musicActivity.popupFragment(new LibrarySearchLayoutFragment(libraryAdapter));
+                    }
+                }
+            });
+
+        }
         return view;
-    }
-
-
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_appbar, menu);
     }
 }

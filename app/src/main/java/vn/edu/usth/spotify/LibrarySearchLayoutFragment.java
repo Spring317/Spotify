@@ -2,6 +2,7 @@ package vn.edu.usth.spotify;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +20,12 @@ import java.util.List;
 
 public class LibrarySearchLayoutFragment extends Fragment {
 
+    private LibraryAdapter libraryAdapter;
+
+    public LibrarySearchLayoutFragment(LibraryAdapter libraryAdapter) {
+        this.libraryAdapter = libraryAdapter;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -33,7 +40,6 @@ public class LibrarySearchLayoutFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.library_fragment_searchbar, container, false);
-
         RecyclerView recyclerView = view.findViewById(R.id.librarySearchListRecyclerView);
         List<LibraryItem> items = new ArrayList<>();
 
@@ -48,12 +54,23 @@ public class LibrarySearchLayoutFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setHasFixedSize(true);
-        LibraryAdapter libraryAdapter = new LibraryAdapter(requireContext(),items);
         recyclerView.setAdapter(libraryAdapter);
 
+        androidx.appcompat.widget.SearchView searchView = view.findViewById(R.id.library_search_bar);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                libraryAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
         return view;
     }
 }
